@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intervallfasten24</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <!-- Button um Einstellungen als Popup zu öffnen -->
+        <button id="btn_ShowModal">16:8</button>
+    </header>
+
+
+
+    <!-- Modal -->
+    <div id="overlay">
+        <div id="modal">
+            <div class="header">
+                <button id="close-modal" class="buttonClose">X</button>
+            </div>
+            <div class="modalContentContainer">
+                <h1>Einstellungen</h1>
+                <p id="showRest">
+                    <label for="intervallTime">Fasten:Essen</label>
+                    <input type="text" id="lblfastingTime" disabled >
+
+                    <button id="btn_DecreaseFasting">-</button>
+                    <button id="btn_IncreaseFasting">+</button>
+                </p>
+                <p>
+                    <label for="themeColor">Erscheinungsbild (Farbe)</label>
+                    <select>
+                        <option value="">Hell</option>
+                        <option value="">Dunkel</option>
+                    </select>
+                </p>
+                <br>
+                <button class="saveButton" id="btnSaveSettings">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- website-Content -->
+    <div class="main-website">
+
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
