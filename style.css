@@ -102,12 +102,15 @@ background-color: rgba(0,0,0,0.5);
 }
 
 .smallButton{
-    width: 70px;
-    height: 40px;
+    width: 110px;
+    height: 45px;
     border-radius: 10px;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.068);
     margin: 10px;
     font-weight: bold;
     font-size: 1.1rem;
+    color: black;
     background: linear-gradient(to right, rgb(172, 171, 171), rgb(214, 214, 214));
+    box-shadow: inset 2px 2px 4px white;
+
 }
