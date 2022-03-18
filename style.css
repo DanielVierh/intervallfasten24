@@ -58,10 +58,11 @@ background-color: rgba(0,0,0,0.5);
 
 }
 
-.header{
+.madalHeader{
     display: flex;
     justify-content: right;
     padding: 0.3rem;
+    background: red;
 }
 
 .main-website{
@@ -98,4 +99,15 @@ background-color: rgba(0,0,0,0.5);
 
 .saveButton:active{
     transform: scale(0.9);
+}
+
+.smallButton{
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    background: linear-gradient(to right, rgb(172, 171, 171), rgb(214, 214, 214));
 }

@@ -3,8 +3,8 @@ var btn_ShowModalButton = document.getElementById('btn_ShowModal');
 var btn_CloseModal = document.getElementById('close-modal');
 var btn_DecreaseFasting = document.getElementById('btn_DecreaseFasting');
 var btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
-// var labelFastingTime = (<HTMLInputElement>document.getElementById('lblfastingTime')).value;//document.getElementById('lblfastingTime');
 var labelFastingTime = document.getElementById('lblfastingTime');
+var fastingChangeButton = document.getElementById('fastingChangeButton');
 var btn_SaveSettings = document.getElementById('btnSaveSettings');
 var fastingTime = 16;
 var eatTime = 8;
@@ -52,10 +52,10 @@ function changeFastingTime(direction) {
 btn_SaveSettings === null || btn_SaveSettings === void 0 ? void 0 : btn_SaveSettings.addEventListener('click', function () {
     fastingTime = newFastingTime;
     eatTime = newEatingTime;
-    btn_ShowModalButton.innerText = "".concat(fastingTime, ":").concat(eatTime);
+    fastingChangeButton.innerText = "".concat(fastingTime, ":").concat(eatTime);
     overlay.style.display = 'none';
 });
-// Zeigt die Werte im veränderbaren Inputfeld an
+// Zeigt die Werte im veränderbaren Inputfeld an  
 function displayFastingTime() {
     labelFastingTime.value = "".concat(newFastingTime, ":").concat(newEatingTime);
 }

@@ -4,6 +4,7 @@ const btn_CloseModal = document.getElementById('close-modal');
 const btn_DecreaseFasting = document.getElementById('btn_DecreaseFasting');
 const btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
 const labelFastingTime = document.getElementById('lblfastingTime') as HTMLInputElement;
+const fastingChangeButton = document.getElementById('fastingChangeButton')
 const btn_SaveSettings = document.getElementById('btnSaveSettings');
 
 let fastingTime: number = 16;
@@ -57,11 +58,12 @@ function changeFastingTime(direction: string) {
 btn_SaveSettings?.addEventListener('click', () => {
     fastingTime = newFastingTime;
     eatTime = newEatingTime;
-    btn_ShowModalButton!.innerText = `${fastingTime}:${eatTime}`;
+    fastingChangeButton!.innerText = `${fastingTime}:${eatTime}`;
     overlay!.style.display = 'none';
 });
 
-// Zeigt die Werte im veränderbaren Inputfeld an
+
+// Zeigt die Werte im veränderbaren Inputfeld an  
 function displayFastingTime() {
     labelFastingTime.value = `${newFastingTime}:${newEatingTime}`;
 }
