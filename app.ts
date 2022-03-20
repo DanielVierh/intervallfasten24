@@ -14,6 +14,7 @@ const inpFastingStartTime = document.getElementById(
 ) as HTMLInputElement;
 const outputWhatNow = document.getElementById("outputWhatNow") as HTMLInputElement;
 const lblTimer = document.getElementById("lblTimer") as HTMLInputElement;
+const txtPercent = document.getElementById("txtPercent") as HTMLInputElement;
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -21,8 +22,8 @@ let isFastingTime: Boolean = false;
 
 
 let intervalEventObject: {fastingTime: number; eatTime: number; fastingStartTime: string} = {
-    fastingTime: 17,
-    eatTime: 7,
+    fastingTime: 16,
+    eatTime: 8,
     fastingStartTime: '17:00'
 };
 
@@ -38,41 +39,47 @@ function checkFastingStatus() {
     const date = new Date();
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    const now = `${addZero(hours)}:${addZero(minutes)}`
-    const splittedFastingTime = intervalEventObject.fastingStartTime.split(':')
-    const fastingStartHour: number = parseInt(splittedFastingTime[0])
-    const fastingStartMinute: number = parseInt(splittedFastingTime[1])
-    const fastingStartTimeMinusEatTime: number = fastingStartHour - intervalEventObject.eatTime
+    const now = `${addZero(hours)}:${addZero(minutes)}`;
+    const splittedFastingTime = intervalEventObject.fastingStartTime.split(':');
+    const fastingStartHour: number = parseInt(splittedFastingTime[0]);
+    const fastingStartMinute: number = parseInt(splittedFastingTime[1]);
+    const fastingStartTimeMinusEatTime: number = fastingStartHour - intervalEventObject.eatTime;
 
     // console.log(diff(`${now}`,`${intervalEventObject.fastingStartTime}`));
     // console.log(`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`);
-    const diffToFasting = diff(`${now}`,`${intervalEventObject.fastingStartTime}`)
-    const diffToEating = diff(`${now}`,`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`)
-    console.log('DiffToEating', diffToEating);
+    const diffToFasting = diff(`${now}`,`${intervalEventObject.fastingStartTime}`);
+    const diffToEating = diff(`${now}`,`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`);
+    // diff * 100 / eatingtime
+    const diffToFastingInPercent = (timeStampIntoNumber(diffToFasting) * 100 / (intervalEventObject.eatTime * 60 * 60)).toFixed(0);
+    const diffToEatingInPercent = (timeStampIntoNumber(diffToEating) * 100 / (intervalEventObject.fastingTime * 60 * 60)).toFixed(0);
     
-    const diffToFastingInSeconds = timeStampIntoNumber(diffToFasting)
+    console.log(diffToFastingInPercent);
+    
+    const diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
     // console.log('Essenszeit in Sec: ', intervalEventObject.eatTime * 60 * 60);
         // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
     if(diffToFastingInSeconds < (intervalEventObject.eatTime * 60 * 60)) {
         // console.log("Fasten is false");
         outputWhatNow.innerHTML = "Jetzt: Essen";
-        lblTimer.innerHTML = `${diffToFasting}`
+        lblTimer.innerHTML = `${diffToFasting}`;
+        txtPercent.innerHTML = `${diffToFastingInPercent}%`;
     }else{
         // console.log("Fasten is true");
         outputWhatNow.innerHTML = "Jetzt: Fasten";
         lblTimer.innerHTML = `${diffToEating}`
+        txtPercent.innerHTML = `${diffToEatingInPercent}%`;
     }
 
 }
 
 function timeStampIntoNumber(timeStamp: string) {
-    const splittedTimestamp = timeStamp.split(':')
-    const splittedHour_inSeconds: number = parseInt(splittedTimestamp[0]) * 60 * 60
-    const splittedMinute_inSeconds: number = parseInt(splittedTimestamp[1]) * 60
+    const splittedTimestamp = timeStamp.split(':');
+    const splittedHour_inSeconds: number = parseInt(splittedTimestamp[0]) * 60 * 60;
+    const splittedMinute_inSeconds: number = parseInt(splittedTimestamp[1]) * 60;
     const secondsSum = splittedHour_inSeconds + splittedMinute_inSeconds;
     // console.log('Timestamp in Sec: ', secondsSum);
     
-    return secondsSum
+    return secondsSum;
 }
 
 // Sekündlicher Funktionsaufruf für Check Func

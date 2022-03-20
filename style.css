@@ -204,12 +204,11 @@ header{
     stroke-width: 1;
     stroke: rgba(211, 211, 211, 0.233);
     fill: none;
-    stroke-width: 15;
-
+    stroke-width: 30;
 }
 
 .progress {
-    stroke-width: 15;
+    stroke-width: 30;
     stroke: rgb(12, 255, 12);
     stroke-linecap: round;
     fill: none;
@@ -219,7 +218,7 @@ header{
 }
 
 .percentText{
-    font-size: 18px;
+    font-size: 43px;
     font-weight: bold;
     font-family: sans-serif;
     fill: black;

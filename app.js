@@ -10,12 +10,13 @@ var btnSetNextEvent = document.getElementById('btnSetNextEvent');
 var inpFastingStartTime = document.getElementById('inpFastingStartTime');
 var outputWhatNow = document.getElementById("outputWhatNow");
 var lblTimer = document.getElementById("lblTimer");
+var txtPercent = document.getElementById("txtPercent");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
 var intervalEventObject = {
-    fastingTime: 17,
-    eatTime: 7,
+    fastingTime: 16,
+    eatTime: 8,
     fastingStartTime: '17:00'
 };
 // Wenn 17:00 Fasten-Start ist: um zu ermitteln, in welchem Bereich wir uns gegenw. befinden
@@ -38,7 +39,10 @@ function checkFastingStatus() {
     // console.log(`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`);
     var diffToFasting = diff("".concat(now), "".concat(intervalEventObject.fastingStartTime));
     var diffToEating = diff("".concat(now), "".concat(fastingStartTimeMinusEatTime, ":").concat(fastingStartMinute));
-    console.log('DiffToEating', diffToEating);
+    // diff * 100 / eatingtime
+    var diffToFastingInPercent = (timeStampIntoNumber(diffToFasting) * 100 / (intervalEventObject.eatTime * 60 * 60)).toFixed(0);
+    var diffToEatingInPercent = (timeStampIntoNumber(diffToEating) * 100 / (intervalEventObject.fastingTime * 60 * 60)).toFixed(0);
+    console.log(diffToFastingInPercent);
     var diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
     // console.log('Essenszeit in Sec: ', intervalEventObject.eatTime * 60 * 60);
     // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
@@ -46,11 +50,13 @@ function checkFastingStatus() {
         // console.log("Fasten is false");
         outputWhatNow.innerHTML = "Jetzt: Essen";
         lblTimer.innerHTML = "".concat(diffToFasting);
+        txtPercent.innerHTML = "".concat(diffToFastingInPercent, "%");
     }
     else {
         // console.log("Fasten is true");
         outputWhatNow.innerHTML = "Jetzt: Fasten";
         lblTimer.innerHTML = "".concat(diffToEating);
+        txtPercent.innerHTML = "".concat(diffToEatingInPercent, "%");
     }
 }
 function timeStampIntoNumber(timeStamp) {
