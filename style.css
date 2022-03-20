@@ -1,3 +1,7 @@
+*{
+    font-family: sans-serif;
+}
+
 #overlay{
 display: none;
 position: fixed;
@@ -67,10 +71,7 @@ background-color: rgba(0,0,0,0.5);
     background: rgb(75, 85, 88);
 }
 
-.main-website{
-    height: 90vh;
 
-}
 
 .buttonClose{
     background-color: red;
@@ -116,7 +117,7 @@ background-color: rgba(0,0,0,0.5);
     font-weight: bold;
     font-size: 1.1rem;
     color: black;
-    background: linear-gradient(to right, rgb(172, 171, 171), rgb(214, 214, 214));
+    /* background: linear-gradient(to right, rgb(172, 171, 171), rgb(214, 214, 214)); */
     box-shadow: inset 2px 2px 4px white;
 }
 
@@ -128,4 +129,89 @@ background-color: rgba(0,0,0,0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+.main-website{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+header{
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.circleContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    /* border: 1px solid rgba(173, 216, 230, 0.88); */
+    /* background-color: #111f3dde; */
+    border-radius: 30px;
+}
+
+.track {
+    stroke-width: 1;
+    stroke: rgba(211, 211, 211, 0.233);
+    fill: none;
+    stroke-width: 15;
+    
+}
+
+.progress {
+    stroke-width: 15;
+    stroke: rgb(12, 255, 12);
+    stroke-linecap: round;
+    fill: none;
+    transform: rotate(270deg);
+    transform-origin: center;
+    transition: 1s ease-in-out;
+}
+
+.percentText{
+    font-size: 18px;
+    font-weight: bold;
+    font-family: sans-serif;
+    fill: black;
+}
+
+.setButton{
+    width: 160px;
+    height: 40px;
+    border-radius: 25px;
+    background-color: orange;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    border: 1px solid gray;
+    box-shadow: inset 2px 2px 5px white;
+}
+
+
+.timeContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.box{
+    margin: auto;
+    text-align: center;
 }

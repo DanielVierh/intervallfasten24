@@ -12,7 +12,8 @@
 
     <header>
         <!-- Button um Einstellungen als Modal zu öffnen -->
-        <button id="btn_ShowModal" class="smallButton"><span id="fastingChangeButton">16:8</span> <span id="pencil"><i class="fa-solid fa-pen"></i></span> </button>
+        <button id="btn_ShowModal" class="smallButton"><span id="fastingChangeButton">16:8</span> <span><i class="fa-solid fa-pen"></i></span> </button>
+        <button class="smallButton"><span>160000</span> <span><i class="fa-solid fa-clock"></i></span> </button>
     </header>
 
     <!-- Modal -->
@@ -44,7 +45,28 @@
 
     <!-- website-Content -->
     <div class="main-website">
+        <h1>Jetzt: Essen</h1>
+        <p>Endet in: </p>
+        <h2>00:00:00</h2>
+        <div class="circleContainer" id="circleAnimationArea">
+            <svg width="125" height="125">
+              <circle r="50" cx="62" cy="62" class="track"></circle>
+              <text x="43" y="69" class="percentText" id="txtPercent">100%</text>
+              <circle r="50" cx="62" cy="62" class="progress"></circle>
+            </svg>
+        </div>
+        <div class="setButton" id="btnSetNextEvent">Starte Fasten</div>
 
+        <div class="timeContainer">
+            <div class="box">
+                <p style="font-weight: bold;">Von</p>
+                <p>20.03-15:39</p>
+            </div>
+            <div class="box">
+                <p style="font-weight: bold;">Bis</p>
+                <p>21.03-07:39</p>
+            </div>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>

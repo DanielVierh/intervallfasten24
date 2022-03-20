@@ -67,3 +67,4 @@ btn_SaveSettings?.addEventListener('click', () => {
 function displayFastingTime() {
     labelFastingTime.value = `${newFastingTime}:${newEatingTime}`;
 }
+
