@@ -11,6 +11,7 @@ var fastingTime = 16;
 var eatTime = 8;
 var newFastingTime = 0;
 var newEatingTime = 0;
+var isFastingTime = false;
 // Einstellungen einblenden
 btn_ShowModalButton === null || btn_ShowModalButton === void 0 ? void 0 : btn_ShowModalButton.addEventListener('click', function () {
     overlay.style.display = 'block';

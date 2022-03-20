@@ -12,6 +12,7 @@ let fastingTime: number = 16;
 let eatTime: number = 8;
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
+let isFastingTime: Boolean = false;
 
 
 // Einstellungen einblenden
