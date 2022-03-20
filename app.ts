@@ -3,8 +3,10 @@ const btn_ShowModalButton = document.getElementById('btn_ShowModal');
 const btn_CloseModal = document.getElementById('close-modal');
 const btn_DecreaseFasting = document.getElementById('btn_DecreaseFasting');
 const btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
-const labelFastingTime = document.getElementById('lblfastingTime') as HTMLInputElement;
-const fastingChangeButton = document.getElementById('fastingChangeButton')
+const labelFastingTime = document.getElementById(
+    'lblfastingTime',
+) as HTMLInputElement;
+const fastingChangeButton = document.getElementById('fastingChangeButton');
 const btn_SaveSettings = document.getElementById('btnSaveSettings');
 const btnSetNextEvent = document.getElementById('btnSetNextEvent');
 
@@ -14,6 +16,21 @@ let newFastingTime: number = 0;
 let newEatingTime: number = 0;
 let isFastingTime: Boolean = false;
 
+
+class EventObj {
+    eventName: string;
+    timeRange: number;
+    startTime: Date;
+    constructor(evntNm: string, tmRng: number, strtTm: Date) {
+        this.eventName = evntNm;
+        this.timeRange = tmRng;
+        this.startTime = strtTm;
+    }
+}
+
+/*
+    Wenn in den Einstellungen
+*/
 
 // Einstellungen einblenden
 btn_ShowModalButton?.addEventListener('click', () => {
@@ -65,16 +82,12 @@ btn_SaveSettings?.addEventListener('click', () => {
     overlay!.style.display = 'none';
 });
 
-
-// Zeigt die Werte im veränderbaren Inputfeld an  
+// Zeigt die Werte im veränderbaren Inputfeld an
 function displayFastingTime() {
     labelFastingTime.value = `${newFastingTime}:${newEatingTime}`;
 }
 
-
 // Event setzen
-btnSetNextEvent?.addEventListener("click", ()=>{
-    console.log("Feffe");
-    
-})
-
+btnSetNextEvent?.addEventListener('click', () => {
+    console.log('Feffe');
+});

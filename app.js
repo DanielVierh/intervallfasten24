@@ -12,6 +12,17 @@ var eatTime = 8;
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
+var EventObj = /** @class */ (function () {
+    function EventObj(evntNm, tmRng, strtTm) {
+        this.eventName = evntNm;
+        this.timeRange = tmRng;
+        this.startTime = strtTm;
+    }
+    return EventObj;
+}());
+/*
+    Wenn in den Einstellungen
+*/
 // Einstellungen einblenden
 btn_ShowModalButton === null || btn_ShowModalButton === void 0 ? void 0 : btn_ShowModalButton.addEventListener('click', function () {
     overlay.style.display = 'block';
@@ -57,11 +68,11 @@ btn_SaveSettings === null || btn_SaveSettings === void 0 ? void 0 : btn_SaveSett
     fastingChangeButton.innerText = "".concat(fastingTime, ":").concat(eatTime);
     overlay.style.display = 'none';
 });
-// Zeigt die Werte im veränderbaren Inputfeld an  
+// Zeigt die Werte im veränderbaren Inputfeld an
 function displayFastingTime() {
     labelFastingTime.value = "".concat(newFastingTime, ":").concat(newEatingTime);
 }
 // Event setzen
-btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener("click", function () {
-    console.log("Feffe");
+btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener('click', function () {
+    console.log('Feffe');
 });

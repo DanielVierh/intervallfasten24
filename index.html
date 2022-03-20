@@ -31,6 +31,10 @@
                     <div id="btn_IncreaseFasting" class="settingButton">+</div>
                 </div>
                 <div class="showRest">
+                    <label for="themeColor">Fasten starten</label>
+                    <input type="time" class="startTimeInput">
+                </div>
+                <div class="showRest">
                     <label for="themeColor">Erscheinungsbild</label>
                     <select>
                         <option value="">Hell</option>
@@ -47,11 +51,11 @@
     <div class="main-website">
 
         <h1>Jetzt: Essen</h1>
-        
+
         <p style="margin: 0;">Endet in: </p>
-        
+
         <h2 class="timer" id="lblTimer">00:00:00</h2>
-        
+
         <div class="circleContainer" id="circleAnimationArea">
             <svg width="125" height="125">
               <circle r="50" cx="62" cy="62" class="track"></circle>
@@ -59,7 +63,7 @@
               <circle r="50" cx="62" cy="62" class="progress"></circle>
             </svg>
         </div>
-        
+
         <div class="setButton" id="btnSetNextEvent">Starte Fasten</div>
 
         <div class="timeContainer">
