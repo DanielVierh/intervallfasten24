@@ -7,27 +7,52 @@ var labelFastingTime = document.getElementById('lblfastingTime');
 var fastingChangeButton = document.getElementById('fastingChangeButton');
 var btn_SaveSettings = document.getElementById('btnSaveSettings');
 var btnSetNextEvent = document.getElementById('btnSetNextEvent');
-var fastingTime = 16;
-var eatTime = 8;
+var inpFastingStartTime = document.getElementById('inpFastingStartTime');
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
-var EventObj = /** @class */ (function () {
-    function EventObj(evntNm, tmRng, strtTm) {
-        this.eventName = evntNm;
-        this.timeRange = tmRng;
-        this.startTime = strtTm;
-    }
-    return EventObj;
-}());
-/*
-    Wenn in den Einstellungen
-*/
+var intervalEventObject = {
+    fastingTime: 17,
+    eatTime: 7,
+    fastingStartTime: '17:00'
+};
+// Wenn 17:00 Fasten-Start ist: um zu ermitteln, in welchem Bereich wir uns gegenw. befinden
+// Aktuelle Uhrzeit als Variable matchen mit Intervallfasten Start - Essen
+// Essen = 8 Stunden -- 17:00 - 8 Stunden
+// Wenn aktuelle Uhrzeit innerhalb dieser Range, isFasting auf false setzen
+// Zeit runterzählen bis 17:00
+// Wenn nach 17:00 Uhr und vor Essens Range, isFasting auf true setzen
+// und zeit bis vor Essens Range
+function checkFastingStatus() {
+    var splittedFastingTime = intervalEventObject.fastingStartTime.split(':');
+    var fastingStartHour = parseInt(splittedFastingTime[0]);
+    var fastingStartMinute = parseInt(splittedFastingTime[1]);
+    var fastingStartTimeMinusEatTime = fastingStartHour - intervalEventObject.eatTime;
+    console.log(diff("".concat(fastingStartTimeMinusEatTime, ":").concat(fastingStartMinute), "".concat(intervalEventObject.fastingStartTime)));
+    // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
+}
+checkFastingStatus();
+// console.log(diff('23:45','17:00'));
+// Diff Berechnung
+function diff(start, end) {
+    start = start.split(":");
+    end = end.split(":");
+    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+    var diff = endDate.getTime() - startDate.getTime();
+    var hours = Math.floor(diff / 1000 / 60 / 60);
+    diff -= hours * 1000 * 60 * 60;
+    var minutes = Math.floor(diff / 1000 / 60);
+    if (hours < 0)
+        hours = hours + 24;
+    return (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
+}
 // Einstellungen einblenden
 btn_ShowModalButton === null || btn_ShowModalButton === void 0 ? void 0 : btn_ShowModalButton.addEventListener('click', function () {
     overlay.style.display = 'block';
-    newFastingTime = fastingTime;
-    newEatingTime = eatTime;
+    newFastingTime = intervalEventObject.fastingTime;
+    newEatingTime = intervalEventObject.eatTime;
+    inpFastingStartTime.value = intervalEventObject.fastingStartTime;
     displayFastingTime();
 });
 // Fasten Wert rauf und runter schalten
@@ -63,9 +88,11 @@ function changeFastingTime(direction) {
 }
 // Einstellungen speichern
 btn_SaveSettings === null || btn_SaveSettings === void 0 ? void 0 : btn_SaveSettings.addEventListener('click', function () {
-    fastingTime = newFastingTime;
-    eatTime = newEatingTime;
-    fastingChangeButton.innerText = "".concat(fastingTime, ":").concat(eatTime);
+    intervalEventObject.fastingTime = newFastingTime;
+    intervalEventObject.eatTime = newEatingTime;
+    console.log(inpFastingStartTime.value);
+    intervalEventObject.fastingStartTime = inpFastingStartTime.value;
+    fastingChangeButton.innerText = "".concat(intervalEventObject.fastingTime, ":").concat(intervalEventObject.eatTime);
     overlay.style.display = 'none';
 });
 // Zeigt die Werte im veränderbaren Inputfeld an
@@ -74,5 +101,5 @@ function displayFastingTime() {
 }
 // Event setzen
 btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener('click', function () {
-    console.log('Feffe');
+    console.log('Fasten starten');
 });
