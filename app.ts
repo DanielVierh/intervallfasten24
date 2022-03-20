@@ -12,6 +12,8 @@ const btnSetNextEvent = document.getElementById('btnSetNextEvent');
 const inpFastingStartTime = document.getElementById(
     'inpFastingStartTime',
 ) as HTMLInputElement;
+const outputWhatNow = document.getElementById("outputWhatNow") as HTMLInputElement;
+const lblTimer = document.getElementById("lblTimer") as HTMLInputElement;
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -33,18 +35,62 @@ let intervalEventObject: {fastingTime: number; eatTime: number; fastingStartTime
 // Wenn nach 17:00 Uhr und vor Essens Range, isFasting auf true setzen
 // und zeit bis vor Essens Range
 function checkFastingStatus() {
+    const date = new Date();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const now = `${addZero(hours)}:${addZero(minutes)}`
     const splittedFastingTime = intervalEventObject.fastingStartTime.split(':')
     const fastingStartHour: number = parseInt(splittedFastingTime[0])
     const fastingStartMinute: number = parseInt(splittedFastingTime[1])
     const fastingStartTimeMinusEatTime: number = fastingStartHour - intervalEventObject.eatTime
-    console.log(diff(`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`,`${intervalEventObject.fastingStartTime}`));
-    // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
 
+    // console.log(diff(`${now}`,`${intervalEventObject.fastingStartTime}`));
+    // console.log(`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`);
+    const diffToFasting = diff(`${now}`,`${intervalEventObject.fastingStartTime}`)
+    const diffToEating = diff(`${now}`,`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`)
+    console.log('DiffToEating', diffToEating);
+    
+    const diffToFastingInSeconds = timeStampIntoNumber(diffToFasting)
+    // console.log('Essenszeit in Sec: ', intervalEventObject.eatTime * 60 * 60);
+        // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
+    if(diffToFastingInSeconds < (intervalEventObject.eatTime * 60 * 60)) {
+        // console.log("Fasten is false");
+        outputWhatNow.innerHTML = "Jetzt: Essen";
+        lblTimer.innerHTML = `${diffToFasting}`
+    }else{
+        // console.log("Fasten is true");
+        outputWhatNow.innerHTML = "Jetzt: Fasten";
+        lblTimer.innerHTML = `${diffToEating}`
+    }
 
 }
-checkFastingStatus()
 
-// console.log(diff('23:45','17:00'));
+function timeStampIntoNumber(timeStamp: string) {
+    const splittedTimestamp = timeStamp.split(':')
+    const splittedHour_inSeconds: number = parseInt(splittedTimestamp[0]) * 60 * 60
+    const splittedMinute_inSeconds: number = parseInt(splittedTimestamp[1]) * 60
+    const secondsSum = splittedHour_inSeconds + splittedMinute_inSeconds;
+    // console.log('Timestamp in Sec: ', secondsSum);
+    
+    return secondsSum
+}
+
+// Sekündlicher Funktionsaufruf für Check Func
+function checkIntervall() {
+    setInterval(() => {
+        checkFastingStatus()
+    }, 1000);
+}
+
+checkIntervall();
+
+function addZero(val: any) {
+    if(val < 10) {
+        val = '0' + val
+    }
+    return val;
+}
+
 
 // Diff Berechnung
 function diff(start: any, end: any) {
