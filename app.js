@@ -6,6 +6,7 @@ var btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
 var labelFastingTime = document.getElementById('lblfastingTime');
 var fastingChangeButton = document.getElementById('fastingChangeButton');
 var btn_SaveSettings = document.getElementById('btnSaveSettings');
+var btnSetNextEvent = document.getElementById('btnSetNextEvent');
 var fastingTime = 16;
 var eatTime = 8;
 var newFastingTime = 0;
@@ -59,3 +60,7 @@ btn_SaveSettings === null || btn_SaveSettings === void 0 ? void 0 : btn_SaveSett
 function displayFastingTime() {
     labelFastingTime.value = "".concat(newFastingTime, ":").concat(newEatingTime);
 }
+// Event setzen
+btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener("click", function () {
+    console.log("Feffe");
+});

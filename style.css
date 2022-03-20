@@ -27,6 +27,11 @@ background-color: rgba(0,0,0,0.5);
     border-radius: 15px;
     box-shadow: 0 0 35px black;
 }
+.showRest{
+ display: flex;
+ align-items: center;
+ margin-bottom: 25px;
+}
 
 .modalContentContainer{
     display: flex;
@@ -52,6 +57,15 @@ background-color: rgba(0,0,0,0.5);
 .modalContentContainer input{
     max-width: 60px;
     text-align: center;
+    background-color: lightblue;
+    color: black;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 5px;
+    height: 40px;
 }
 
 .modalContentContainer p{
@@ -129,7 +143,11 @@ background-color: rgba(0,0,0,0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    background-color: lightblue;
+    margin: 9px;
 }
+
 
 
 .main-website{
@@ -157,8 +175,6 @@ header{
     align-items: center;
     justify-content: center;
     margin: 5px;
-    /* border: 1px solid rgba(173, 216, 230, 0.88); */
-    /* background-color: #111f3dde; */
     border-radius: 30px;
 }
 
@@ -201,6 +217,19 @@ header{
     margin-top: 20px;
     border: 1px solid gray;
     box-shadow: inset 2px 2px 5px white;
+    cursor: pointer;
+
+    /* Vermeidet Text Selektion */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+.setButton:active{
+    transform: scale(0.9);
 }
 
 
@@ -214,4 +243,9 @@ header{
 .box{
     margin: auto;
     text-align: center;
+}
+
+.timer{
+    font-size: 3rem;
+    margin: 0;
 }

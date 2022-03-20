@@ -13,7 +13,7 @@
     <header>
         <!-- Button um Einstellungen als Modal zu öffnen -->
         <button id="btn_ShowModal" class="smallButton"><span id="fastingChangeButton">16:8</span> <span><i class="fa-solid fa-pen"></i></span> </button>
-        <button class="smallButton"><span>160000</span> <span><i class="fa-solid fa-clock"></i></span> </button>
+        <button class="smallButton"><span>0</span> <span><i class="fa-solid fa-clock"></i></span> </button>
     </header>
 
     <!-- Modal -->
@@ -24,19 +24,19 @@
             </div>
             <div class="modalContentContainer">
                 <h1>Einstellungen</h1>
-                <p id="showRest">
+                <div class="showRest">
                     <label for="intervallTime">Fasten:Essen</label>
-                    <button id="btn_DecreaseFasting" class="settingButton">-</button>
+                    <div id="btn_DecreaseFasting" class="settingButton">-</div>
                     <input type="text" id="lblfastingTime" disabled >
-                    <button id="btn_IncreaseFasting" class="settingButton">+</button>
-                </p>
-                <p>
+                    <div id="btn_IncreaseFasting" class="settingButton">+</div>
+                </div>
+                <div class="showRest">
                     <label for="themeColor">Erscheinungsbild</label>
                     <select>
                         <option value="">Hell</option>
                         <option value="">Dunkel</option>
                     </select>
-                </p>
+                </div>
                 <br>
                 <button class="saveButton" id="btnSaveSettings">Speichern</button>
             </div>
@@ -45,16 +45,21 @@
 
     <!-- website-Content -->
     <div class="main-website">
+
         <h1>Jetzt: Essen</h1>
-        <p>Endet in: </p>
-        <h2>00:00:00</h2>
+        
+        <p style="margin: 0;">Endet in: </p>
+        
+        <h2 class="timer" id="lblTimer">00:00:00</h2>
+        
         <div class="circleContainer" id="circleAnimationArea">
             <svg width="125" height="125">
               <circle r="50" cx="62" cy="62" class="track"></circle>
-              <text x="43" y="69" class="percentText" id="txtPercent">100%</text>
+              <text x="43" y="69" class="percentText" id="txtPercent">0%</text>
               <circle r="50" cx="62" cy="62" class="progress"></circle>
             </svg>
         </div>
+        
         <div class="setButton" id="btnSetNextEvent">Starte Fasten</div>
 
         <div class="timeContainer">

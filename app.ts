@@ -6,11 +6,13 @@ const btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
 const labelFastingTime = document.getElementById('lblfastingTime') as HTMLInputElement;
 const fastingChangeButton = document.getElementById('fastingChangeButton')
 const btn_SaveSettings = document.getElementById('btnSaveSettings');
+const btnSetNextEvent = document.getElementById('btnSetNextEvent');
 
 let fastingTime: number = 16;
 let eatTime: number = 8;
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
+
 
 // Einstellungen einblenden
 btn_ShowModalButton?.addEventListener('click', () => {
@@ -67,4 +69,11 @@ btn_SaveSettings?.addEventListener('click', () => {
 function displayFastingTime() {
     labelFastingTime.value = `${newFastingTime}:${newEatingTime}`;
 }
+
+
+// Event setzen
+btnSetNextEvent?.addEventListener("click", ()=>{
+    console.log("Feffe");
+    
+})
 
