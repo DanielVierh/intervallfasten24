@@ -66,6 +66,7 @@ background-color: rgba(0,0,0,0.5);
     font-weight: bold;
     border-radius: 5px;
     height: 20px;
+
 }
 
 .modalContentContainer select{
@@ -202,14 +203,14 @@ header{
 
 .track {
     stroke-width: 1;
-    stroke: rgba(211, 211, 211, 0.233);
+    stroke: rgba(211, 211, 211, 0.7);
     fill: none;
     stroke-width: 30;
 }
 
 .progress {
     stroke-width: 30;
-    stroke: rgb(12, 255, 12);
+    stroke: rgb(12, 166, 255);
     stroke-linecap: round;
     fill: none;
     transform: rotate(270deg);
@@ -223,6 +224,7 @@ header{
     font-family: sans-serif;
     fill: black;
 }
+
 
 .setButton{
     width: 160px;

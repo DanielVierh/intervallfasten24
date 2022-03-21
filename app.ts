@@ -14,8 +14,8 @@ const inpFastingStartTime = document.getElementById(
 ) as HTMLInputElement;
 const outputWhatNow = document.getElementById("outputWhatNow") as HTMLInputElement;
 const lblTimer = document.getElementById("lblTimer") as HTMLInputElement;
-const txtPercent = document.getElementById("txtPercent") as HTMLInputElement;
-const progressCircle = document.querySelector('.progress') as HTMLInputElement;
+const txtPercent = document.getElementById("txtPercent") as any;
+const progressCircle = document.querySelector('.progress') as any
 
 
 let newFastingTime: number = 0;
@@ -46,32 +46,34 @@ function checkFastingStatus() {
     const fastingStartHour: number = parseInt(splittedFastingTime[0]);
     const fastingStartMinute: number = parseInt(splittedFastingTime[1]);
     const fastingStartTimeMinusEatTime: number = fastingStartHour - intervalEventObject.eatTime;
-
-    // console.log(diff(`${now}`,`${intervalEventObject.fastingStartTime}`));
-    // console.log(`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`);
     const diffToFasting = diff(`${now}`,`${intervalEventObject.fastingStartTime}`);
     const diffToEating = diff(`${now}`,`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`);
-    // diff * 100 / eatingtime
     const diffToFastingInPercent = (timeStampIntoNumber(diffToFasting) * 100 / (intervalEventObject.eatTime * 60 * 60)).toFixed(0);
     const diffToEatingInPercent = (timeStampIntoNumber(diffToEating) * 100 / (intervalEventObject.fastingTime * 60 * 60)).toFixed(0);
-    
-    console.log(diffToFastingInPercent);
-    
     const diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
-    // console.log('Essenszeit in Sec: ', intervalEventObject.eatTime * 60 * 60);
-        // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
+    // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
     if(diffToFastingInSeconds < (intervalEventObject.eatTime * 60 * 60)) {
-        // console.log("Fasten is false");
         outputWhatNow.innerHTML = "Jetzt: Essen";
         lblTimer.innerHTML = `${diffToFasting}`;
         txtPercent.innerHTML = `${diffToFastingInPercent}%`;
+        circleProgress(parseInt(diffToFastingInPercent))
+        if(parseInt(diffToFastingInPercent) < 10) {
+            txtPercent.style.transform = 'translateX(1.3rem)';
+        }else{
+            txtPercent.style.transform = 'translateX(0rem)';
+        }
     }else{
-        // console.log("Fasten is true");
         outputWhatNow.innerHTML = "Jetzt: Fasten";
         lblTimer.innerHTML = `${diffToEating}`
         txtPercent.innerHTML = `${diffToEatingInPercent}%`;
-    }
+        circleProgress(parseInt(diffToEatingInPercent))
+        if(parseInt(diffToEatingInPercent) < 10) {
+           txtPercent.style.transform = 'translateX(1.3rem)';
+        }else{
+           txtPercent.style.transform = 'translateX(0rem)';
+        }
 
+    }
 }
 
 let radius = progressCircle.r.baseVal.value;
@@ -87,7 +89,7 @@ function timeStampIntoNumber(timeStamp: string) {
     const splittedMinute_inSeconds: number = parseInt(splittedTimestamp[1]) * 60;
     const secondsSum = splittedHour_inSeconds + splittedMinute_inSeconds;
     // console.log('Timestamp in Sec: ', secondsSum);
-    
+
     return secondsSum;
 }
 

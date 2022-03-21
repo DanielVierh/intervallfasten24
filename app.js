@@ -11,6 +11,7 @@ var inpFastingStartTime = document.getElementById('inpFastingStartTime');
 var outputWhatNow = document.getElementById("outputWhatNow");
 var lblTimer = document.getElementById("lblTimer");
 var txtPercent = document.getElementById("txtPercent");
+var progressCircle = document.querySelector('.progress');
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
@@ -35,29 +36,42 @@ function checkFastingStatus() {
     var fastingStartHour = parseInt(splittedFastingTime[0]);
     var fastingStartMinute = parseInt(splittedFastingTime[1]);
     var fastingStartTimeMinusEatTime = fastingStartHour - intervalEventObject.eatTime;
-    // console.log(diff(`${now}`,`${intervalEventObject.fastingStartTime}`));
-    // console.log(`${fastingStartTimeMinusEatTime}:${fastingStartMinute}`);
     var diffToFasting = diff("".concat(now), "".concat(intervalEventObject.fastingStartTime));
     var diffToEating = diff("".concat(now), "".concat(fastingStartTimeMinusEatTime, ":").concat(fastingStartMinute));
-    // diff * 100 / eatingtime
     var diffToFastingInPercent = (timeStampIntoNumber(diffToFasting) * 100 / (intervalEventObject.eatTime * 60 * 60)).toFixed(0);
     var diffToEatingInPercent = (timeStampIntoNumber(diffToEating) * 100 / (intervalEventObject.fastingTime * 60 * 60)).toFixed(0);
-    console.log(diffToFastingInPercent);
     var diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
-    // console.log('Essenszeit in Sec: ', intervalEventObject.eatTime * 60 * 60);
     // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
     if (diffToFastingInSeconds < (intervalEventObject.eatTime * 60 * 60)) {
-        // console.log("Fasten is false");
         outputWhatNow.innerHTML = "Jetzt: Essen";
         lblTimer.innerHTML = "".concat(diffToFasting);
         txtPercent.innerHTML = "".concat(diffToFastingInPercent, "%");
+        circleProgress(parseInt(diffToFastingInPercent));
+        if (parseInt(diffToFastingInPercent) < 10) {
+            txtPercent.style.transform = 'translateX(1.3rem)';
+        }
+        else {
+            txtPercent.style.transform = 'translateX(0rem)';
+        }
     }
     else {
-        // console.log("Fasten is true");
         outputWhatNow.innerHTML = "Jetzt: Fasten";
         lblTimer.innerHTML = "".concat(diffToEating);
         txtPercent.innerHTML = "".concat(diffToEatingInPercent, "%");
+        circleProgress(parseInt(diffToEatingInPercent));
+        if (parseInt(diffToEatingInPercent) < 10) {
+            txtPercent.style.transform = 'translateX(1.3rem)';
+        }
+        else {
+            txtPercent.style.transform = 'translateX(0rem)';
+        }
     }
+}
+var radius = progressCircle.r.baseVal.value;
+var circumference = radius * 2 * Math.PI;
+progressCircle.style.strokeDasharray = circumference;
+function circleProgress(percent) {
+    progressCircle.style.strokeDashoffset = circumference - (percent / 100) * circumference;
 }
 function timeStampIntoNumber(timeStamp) {
     var splittedTimestamp = timeStamp.split(':');
