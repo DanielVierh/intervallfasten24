@@ -12,6 +12,8 @@ const outputWhatNow = document.getElementById('outputWhatNow') as HTMLInputEleme
 const lblTimer = document.getElementById('lblTimer') as HTMLInputElement;
 const txtPercent = document.getElementById('txtPercent') as any;
 const progressCircle = document.querySelector('.progress') as any;
+const outputFrom = document.getElementById("outputFrom");
+const outputTo = document.getElementById('outputTo');
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -76,6 +78,8 @@ function checkFastingStatus() {
         lblTimer.innerHTML = `${diffToFasting}`;
         btnSetNextEvent!.innerHTML = 'Fasten starten';
         txtPercent.innerHTML = `${diffToFastingInPercent}%`;
+        outputFrom!.innerHTML = `${addZero(fastingStartTimeMinusEatTime)}:${addZero(fastingStartMinute)}`;
+        outputTo!.innerHTML = `${intervalEventObject.fastingStartTime}`;
         circleProgress(parseInt(diffToFastingInPercent));
         if (parseInt(diffToFastingInPercent) < 10) {
             txtPercent.style.transform = 'translateX(1.5rem)';
@@ -87,6 +91,8 @@ function checkFastingStatus() {
         lblTimer.innerHTML = `${diffToEating}`;
         btnSetNextEvent!.innerHTML = 'Essen starten';
         txtPercent.innerHTML = `${diffToEatingInPercent}%`;
+        outputFrom!.innerHTML = `${intervalEventObject.fastingStartTime}`;
+        outputTo!.innerHTML = `${addZero(fastingStartTimeMinusEatTime)}:${addZero(fastingStartMinute)}`;
         circleProgress(parseInt(diffToEatingInPercent));
         if (parseInt(diffToEatingInPercent) < 10) {
             txtPercent.style.transform = 'translateX(1.5rem)';

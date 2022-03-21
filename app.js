@@ -12,6 +12,8 @@ var outputWhatNow = document.getElementById('outputWhatNow');
 var lblTimer = document.getElementById('lblTimer');
 var txtPercent = document.getElementById('txtPercent');
 var progressCircle = document.querySelector('.progress');
+var outputFrom = document.getElementById("outputFrom");
+var outputTo = document.getElementById('outputTo');
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
@@ -54,6 +56,8 @@ function checkFastingStatus() {
         lblTimer.innerHTML = "".concat(diffToFasting);
         btnSetNextEvent.innerHTML = 'Fasten starten';
         txtPercent.innerHTML = "".concat(diffToFastingInPercent, "%");
+        outputFrom.innerHTML = "".concat(addZero(fastingStartTimeMinusEatTime), ":").concat(addZero(fastingStartMinute));
+        outputTo.innerHTML = "".concat(intervalEventObject.fastingStartTime);
         circleProgress(parseInt(diffToFastingInPercent));
         if (parseInt(diffToFastingInPercent) < 10) {
             txtPercent.style.transform = 'translateX(1.5rem)';
@@ -67,6 +71,8 @@ function checkFastingStatus() {
         lblTimer.innerHTML = "".concat(diffToEating);
         btnSetNextEvent.innerHTML = 'Essen starten';
         txtPercent.innerHTML = "".concat(diffToEatingInPercent, "%");
+        outputFrom.innerHTML = "".concat(intervalEventObject.fastingStartTime);
+        outputTo.innerHTML = "".concat(addZero(fastingStartTimeMinusEatTime), ":").concat(addZero(fastingStartMinute));
         circleProgress(parseInt(diffToEatingInPercent));
         if (parseInt(diffToEatingInPercent) < 10) {
             txtPercent.style.transform = 'translateX(1.5rem)';
