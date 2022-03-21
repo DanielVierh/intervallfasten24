@@ -33,7 +33,7 @@ let intervalEventObject: {
 };
 
 
-
+// Init -- Start
 function init() {
     load_from_LocalStorage();
     checkIntervall();

@@ -24,6 +24,7 @@ var intervalEventObject = {
     fastingStartTime: '17:00',
     theme: 'light'
 };
+// Init -- Start
 function init() {
     load_from_LocalStorage();
     checkIntervall();
