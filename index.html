@@ -31,14 +31,14 @@
                     <div id="btn_IncreaseFasting" class="settingButton">+</div>
                 </div>
                 <div class="showRest">
-                    <label for="themeColor">Fasten starten</label>
+                    <label for="inpFastingStartTime">Fasten starten</label>
                     <input type="time" class="startTimeInput" id="inpFastingStartTime">
                 </div>
                 <div class="showRest">
                     <label for="themeColor">Erscheinungsbild</label>
-                    <select>
-                        <option value="">Hell</option>
-                        <option value="">Dunkel</option>
+                    <select id="themeStyle">
+                        <option value="Hell">Hell</option>
+                        <option value="Dunkel">Dunkel</option>
                     </select>
                 </div>
                 <br>
@@ -64,7 +64,7 @@
             </svg>
         </div>
 
-        <div class="setButton" id="btnSetNextEvent">Starte Fasten</div>
+        <div class="setButton" id="btnSetNextEvent">-</div>
 
         <div class="timeContainer">
             <div class="box">

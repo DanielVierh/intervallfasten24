@@ -14,6 +14,7 @@ const txtPercent = document.getElementById('txtPercent') as any;
 const progressCircle = document.querySelector('.progress') as any;
 const outputFrom = document.getElementById("outputFrom");
 const outputTo = document.getElementById('outputTo');
+const themeStyle = document.getElementById("themeStyle") as HTMLInputElement;
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -46,10 +47,7 @@ init();
 // Wenn nach 17:00 Uhr und vor Essens Range, isFasting auf true setzen
 // und zeit bis vor Essens Range
 function checkFastingStatus() {
-    const date = new Date();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const now = `${addZero(hours)}:${addZero(minutes)}`;
+    const now = currentTime();
     const splittedFastingTime = intervalEventObject.fastingStartTime.split(':');
     const fastingStartHour: number = parseInt(splittedFastingTime[0]);
     const fastingStartMinute: number = parseInt(splittedFastingTime[1]);
@@ -73,7 +71,8 @@ function checkFastingStatus() {
     ).toFixed(1);
     const diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
     // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
-    if (diffToFastingInSeconds <= intervalEventObject.eatTime * 60 * 60) {
+    if (diffToFastingInSeconds < intervalEventObject.eatTime * 60 * 60) {
+        isFastingTime = false;
         outputWhatNow.innerHTML = 'Jetzt: Essen';
         lblTimer.innerHTML = `${diffToFasting}`;
         btnSetNextEvent!.innerHTML = 'Fasten starten';
@@ -87,6 +86,7 @@ function checkFastingStatus() {
             txtPercent.style.transform = 'translateX(0rem)';
         }
     } else {
+        isFastingTime = true;
         outputWhatNow.innerHTML = 'Jetzt: Fasten';
         lblTimer.innerHTML = `${diffToEating}`;
         btnSetNextEvent!.innerHTML = 'Essen starten';
@@ -121,6 +121,15 @@ function timeStampIntoNumber(timeStamp: string) {
 
     return secondsSum;
 }
+
+function currentTime() {
+    const date = new Date();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const now = `${addZero(hours)}:${addZero(minutes)}`;
+    return now;
+}
+
 
 // Sekündlicher Funktionsaufruf für Check Func
 function checkIntervall() {
@@ -164,6 +173,7 @@ btn_ShowModalButton?.addEventListener('click', () => {
     newFastingTime = intervalEventObject.fastingTime;
     newEatingTime = intervalEventObject.eatTime;
     inpFastingStartTime!.value = intervalEventObject.fastingStartTime;
+    themeStyle!.value = intervalEventObject.theme;
     displayFastingTime();
 });
 
@@ -205,8 +215,8 @@ function changeFastingTime(direction: string) {
 btn_SaveSettings?.addEventListener('click', () => {
     intervalEventObject.fastingTime = newFastingTime;
     intervalEventObject.eatTime = newEatingTime;
-    console.log(inpFastingStartTime!.value);
     intervalEventObject.fastingStartTime = inpFastingStartTime!.value;
+    intervalEventObject.theme = themeStyle!.value;
     fastingChangeButton!.innerText = `${intervalEventObject.fastingTime}:${intervalEventObject.eatTime}`;
     overlay!.style.display = 'none';
     save_into_LocalStorage();
@@ -219,13 +229,24 @@ function displayFastingTime() {
 
 // Event setzen
 btnSetNextEvent?.addEventListener('click', () => {
-    // console.log('Fasten starten');
+    const now = currentTime();
+    const splittedNow = now.split(':');
+    const minuteMinus1 = parseInt(splittedNow[1]) - 1;
+    if(isFastingTime === true) {
+        // Berechne neue Fastenzeit now + Essenszeit
+        const newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
+        const newFastingStart = `${newFastingStartRaw}:${addZero(minuteMinus1)}`
+        console.log('Neue FastenStartZeit', newFastingStart);
+        intervalEventObject.fastingStartTime = newFastingStart;
+    }else{
+        // Setze jetzige Zeit als Fastenzeit
+        intervalEventObject.fastingStartTime = `${splittedNow[0]}:${addZero(minuteMinus1)}`
+    }
+     save_into_LocalStorage()
 });
 
 const save_into_LocalStorage = () => {
     localStorage.setItem('stored_IntervallObj', JSON.stringify(intervalEventObject));
-    // console.log('Gespeichert');
-
 };
 
 

@@ -14,6 +14,7 @@ var txtPercent = document.getElementById('txtPercent');
 var progressCircle = document.querySelector('.progress');
 var outputFrom = document.getElementById("outputFrom");
 var outputTo = document.getElementById('outputTo');
+var themeStyle = document.getElementById("themeStyle");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
@@ -35,10 +36,7 @@ init();
 // Wenn nach 17:00 Uhr und vor Essens Range, isFasting auf true setzen
 // und zeit bis vor Essens Range
 function checkFastingStatus() {
-    var date = new Date();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var now = "".concat(addZero(hours), ":").concat(addZero(minutes));
+    var now = currentTime();
     var splittedFastingTime = intervalEventObject.fastingStartTime.split(':');
     var fastingStartHour = parseInt(splittedFastingTime[0]);
     var fastingStartMinute = parseInt(splittedFastingTime[1]);
@@ -51,7 +49,8 @@ function checkFastingStatus() {
         (intervalEventObject.fastingTime * 60 * 60)).toFixed(1);
     var diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
     // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
-    if (diffToFastingInSeconds <= intervalEventObject.eatTime * 60 * 60) {
+    if (diffToFastingInSeconds < intervalEventObject.eatTime * 60 * 60) {
+        isFastingTime = false;
         outputWhatNow.innerHTML = 'Jetzt: Essen';
         lblTimer.innerHTML = "".concat(diffToFasting);
         btnSetNextEvent.innerHTML = 'Fasten starten';
@@ -67,6 +66,7 @@ function checkFastingStatus() {
         }
     }
     else {
+        isFastingTime = true;
         outputWhatNow.innerHTML = 'Jetzt: Fasten';
         lblTimer.innerHTML = "".concat(diffToEating);
         btnSetNextEvent.innerHTML = 'Essen starten';
@@ -96,6 +96,13 @@ function timeStampIntoNumber(timeStamp) {
     var secondsSum = splittedHour_inSeconds + splittedMinute_inSeconds;
     // console.log('Timestamp in Sec: ', secondsSum);
     return secondsSum;
+}
+function currentTime() {
+    var date = new Date();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var now = "".concat(addZero(hours), ":").concat(addZero(minutes));
+    return now;
 }
 // Sekündlicher Funktionsaufruf für Check Func
 function checkIntervall() {
@@ -134,6 +141,7 @@ btn_ShowModalButton === null || btn_ShowModalButton === void 0 ? void 0 : btn_Sh
     newFastingTime = intervalEventObject.fastingTime;
     newEatingTime = intervalEventObject.eatTime;
     inpFastingStartTime.value = intervalEventObject.fastingStartTime;
+    themeStyle.value = intervalEventObject.theme;
     displayFastingTime();
 });
 // Fasten Wert rauf und runter schalten
@@ -171,8 +179,8 @@ function changeFastingTime(direction) {
 btn_SaveSettings === null || btn_SaveSettings === void 0 ? void 0 : btn_SaveSettings.addEventListener('click', function () {
     intervalEventObject.fastingTime = newFastingTime;
     intervalEventObject.eatTime = newEatingTime;
-    console.log(inpFastingStartTime.value);
     intervalEventObject.fastingStartTime = inpFastingStartTime.value;
+    intervalEventObject.theme = themeStyle.value;
     fastingChangeButton.innerText = "".concat(intervalEventObject.fastingTime, ":").concat(intervalEventObject.eatTime);
     overlay.style.display = 'none';
     save_into_LocalStorage();
@@ -183,11 +191,24 @@ function displayFastingTime() {
 }
 // Event setzen
 btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener('click', function () {
-    // console.log('Fasten starten');
+    var now = currentTime();
+    var splittedNow = now.split(':');
+    var minuteMinus1 = parseInt(splittedNow[1]) - 1;
+    if (isFastingTime === true) {
+        // Berechne neue Fastenzeit now + Essenszeit
+        var newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
+        var newFastingStart = "".concat(newFastingStartRaw, ":").concat(addZero(minuteMinus1));
+        console.log('Neue FastenStartZeit', newFastingStart);
+        intervalEventObject.fastingStartTime = newFastingStart;
+    }
+    else {
+        // Setze jetzige Zeit als Fastenzeit
+        intervalEventObject.fastingStartTime = "".concat(splittedNow[0], ":").concat(addZero(minuteMinus1));
+    }
+    save_into_LocalStorage();
 });
 var save_into_LocalStorage = function () {
     localStorage.setItem('stored_IntervallObj', JSON.stringify(intervalEventObject));
-    // console.log('Gespeichert');
 };
 function load_from_LocalStorage() {
     if (localStorage.getItem('stored_IntervallObj') !== null) {
