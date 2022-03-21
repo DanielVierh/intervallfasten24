@@ -15,6 +15,8 @@ const inpFastingStartTime = document.getElementById(
 const outputWhatNow = document.getElementById("outputWhatNow") as HTMLInputElement;
 const lblTimer = document.getElementById("lblTimer") as HTMLInputElement;
 const txtPercent = document.getElementById("txtPercent") as HTMLInputElement;
+const progressCircle = document.querySelector('.progress') as HTMLInputElement;
+
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -70,6 +72,13 @@ function checkFastingStatus() {
         txtPercent.innerHTML = `${diffToEatingInPercent}%`;
     }
 
+}
+
+let radius = progressCircle.r.baseVal.value;
+let circumference = radius * 2 * Math.PI;
+progressCircle.style.strokeDasharray = circumference;
+function circleProgress(percent: number) {
+    progressCircle.style.strokeDashoffset = circumference - (percent / 100) * circumference;
 }
 
 function timeStampIntoNumber(timeStamp: string) {
