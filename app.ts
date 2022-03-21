@@ -36,16 +36,12 @@ let intervalEventObject: {
 
 function init() {
     load_from_LocalStorage();
+    checkIntervall();
 }
 init();
-// Wenn 17:00 Fasten-Start ist: um zu ermitteln, in welchem Bereich wir uns gegenw. befinden
-// Aktuelle Uhrzeit als Variable matchen mit Intervallfasten Start - Essen
-// Essen = 8 Stunden -- 17:00 - 8 Stunden
-// Wenn aktuelle Uhrzeit innerhalb dieser Range, isFasting auf false setzen
-// Zeit runterzählen bis 17:00
 
-// Wenn nach 17:00 Uhr und vor Essens Range, isFasting auf true setzen
-// und zeit bis vor Essens Range
+// Funktion zur Überprüfung, ob gerade Fastenzeit läuft
+// Entsprechend wird die Anzeige der UI Elemente angepasst
 function checkFastingStatus() {
     const now = currentTime();
     const splittedFastingTime = intervalEventObject.fastingStartTime.split(':');
@@ -70,7 +66,7 @@ function checkFastingStatus() {
         (intervalEventObject.fastingTime * 60 * 60)
     ).toFixed(1);
     const diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
-    // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
+    // Wenn Diff kleiner als EatingTime dann ist fasting = false sonst fasting = true
     if (diffToFastingInSeconds < intervalEventObject.eatTime * 60 * 60) {
         isFastingTime = false;
         outputWhatNow.innerHTML = 'Jetzt: Essen';
@@ -118,7 +114,6 @@ function timeStampIntoNumber(timeStamp: string) {
         parseInt(splittedTimestamp[1]) * 60;
     const secondsSum = splittedHour_inSeconds + splittedMinute_inSeconds;
     // console.log('Timestamp in Sec: ', secondsSum);
-
     return secondsSum;
 }
 
@@ -138,7 +133,7 @@ function checkIntervall() {
     }, 1000);
 }
 
-checkIntervall();
+
 
 function addZero(val: any) {
     if (val < 10) {
