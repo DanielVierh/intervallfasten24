@@ -272,3 +272,9 @@ header{
     font-size: 3rem;
     margin: 0;
 }
+
+
+.startEndTimeLabels{
+    font-weight: bold;
+    font-size: 1.5rem;
+}

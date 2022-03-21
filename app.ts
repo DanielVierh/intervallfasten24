@@ -66,14 +66,14 @@ function checkFastingStatus() {
     const diffToFastingInPercent = (
         (timeStampIntoNumber(diffToFasting) * 100) /
         (intervalEventObject.eatTime * 60 * 60)
-    ).toFixed(0);
+    ).toFixed(1);
     const diffToEatingInPercent = (
         (timeStampIntoNumber(diffToEating) * 100) /
         (intervalEventObject.fastingTime * 60 * 60)
-    ).toFixed(0);
+    ).toFixed(1);
     const diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
     // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
-    if (diffToFastingInSeconds < intervalEventObject.eatTime * 60 * 60) {
+    if (diffToFastingInSeconds <= intervalEventObject.eatTime * 60 * 60) {
         outputWhatNow.innerHTML = 'Jetzt: Essen';
         lblTimer.innerHTML = `${diffToFasting}`;
         btnSetNextEvent!.innerHTML = 'Fasten starten';
@@ -219,12 +219,12 @@ function displayFastingTime() {
 
 // Event setzen
 btnSetNextEvent?.addEventListener('click', () => {
-    console.log('Fasten starten');
+    // console.log('Fasten starten');
 });
 
 const save_into_LocalStorage = () => {
     localStorage.setItem('stored_IntervallObj', JSON.stringify(intervalEventObject));
-    console.log('Gespeichert');
+    // console.log('Gespeichert');
 
 };
 
@@ -234,8 +234,8 @@ function load_from_LocalStorage() {
         //@ts-ignore
         intervalEventObject = JSON.parse(localStorage.getItem('stored_IntervallObj'));
         fastingChangeButton!.innerText = `${intervalEventObject.fastingTime}:${intervalEventObject.eatTime}`;
-        console.log('Speicherobj befüllt', intervalEventObject);
+        // console.log('Speicherobj befüllt', intervalEventObject);
     } else {
-        console.warn('Keine Daten vorh');
+        // console.warn('Keine Daten vorh');
     }
 }

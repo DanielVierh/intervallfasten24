@@ -46,12 +46,12 @@ function checkFastingStatus() {
     var diffToFasting = diff("".concat(now), "".concat(intervalEventObject.fastingStartTime));
     var diffToEating = diff("".concat(now), "".concat(fastingStartTimeMinusEatTime, ":").concat(fastingStartMinute));
     var diffToFastingInPercent = ((timeStampIntoNumber(diffToFasting) * 100) /
-        (intervalEventObject.eatTime * 60 * 60)).toFixed(0);
+        (intervalEventObject.eatTime * 60 * 60)).toFixed(1);
     var diffToEatingInPercent = ((timeStampIntoNumber(diffToEating) * 100) /
-        (intervalEventObject.fastingTime * 60 * 60)).toFixed(0);
+        (intervalEventObject.fastingTime * 60 * 60)).toFixed(1);
     var diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
     // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
-    if (diffToFastingInSeconds < intervalEventObject.eatTime * 60 * 60) {
+    if (diffToFastingInSeconds <= intervalEventObject.eatTime * 60 * 60) {
         outputWhatNow.innerHTML = 'Jetzt: Essen';
         lblTimer.innerHTML = "".concat(diffToFasting);
         btnSetNextEvent.innerHTML = 'Fasten starten';
@@ -183,20 +183,20 @@ function displayFastingTime() {
 }
 // Event setzen
 btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener('click', function () {
-    console.log('Fasten starten');
+    // console.log('Fasten starten');
 });
 var save_into_LocalStorage = function () {
     localStorage.setItem('stored_IntervallObj', JSON.stringify(intervalEventObject));
-    console.log('Gespeichert');
+    // console.log('Gespeichert');
 };
 function load_from_LocalStorage() {
     if (localStorage.getItem('stored_IntervallObj') !== null) {
         //@ts-ignore
         intervalEventObject = JSON.parse(localStorage.getItem('stored_IntervallObj'));
         fastingChangeButton.innerText = "".concat(intervalEventObject.fastingTime, ":").concat(intervalEventObject.eatTime);
-        console.log('Speicherobj befüllt', intervalEventObject);
+        // console.log('Speicherobj befüllt', intervalEventObject);
     }
     else {
-        console.warn('Keine Daten vorh');
+        // console.warn('Keine Daten vorh');
     }
 }
