@@ -8,9 +8,9 @@ var fastingChangeButton = document.getElementById('fastingChangeButton');
 var btn_SaveSettings = document.getElementById('btnSaveSettings');
 var btnSetNextEvent = document.getElementById('btnSetNextEvent');
 var inpFastingStartTime = document.getElementById('inpFastingStartTime');
-var outputWhatNow = document.getElementById("outputWhatNow");
-var lblTimer = document.getElementById("lblTimer");
-var txtPercent = document.getElementById("txtPercent");
+var outputWhatNow = document.getElementById('outputWhatNow');
+var lblTimer = document.getElementById('lblTimer');
+var txtPercent = document.getElementById('txtPercent');
 var progressCircle = document.querySelector('.progress');
 var newFastingTime = 0;
 var newEatingTime = 0;
@@ -18,8 +18,13 @@ var isFastingTime = false;
 var intervalEventObject = {
     fastingTime: 16,
     eatTime: 8,
-    fastingStartTime: '17:00'
+    fastingStartTime: '17:00',
+    theme: 'light'
 };
+function init() {
+    load_from_LocalStorage();
+}
+init();
 // Wenn 17:00 Fasten-Start ist: um zu ermitteln, in welchem Bereich wir uns gegenw. befinden
 // Aktuelle Uhrzeit als Variable matchen mit Intervallfasten Start - Essen
 // Essen = 8 Stunden -- 17:00 - 8 Stunden
@@ -38,29 +43,33 @@ function checkFastingStatus() {
     var fastingStartTimeMinusEatTime = fastingStartHour - intervalEventObject.eatTime;
     var diffToFasting = diff("".concat(now), "".concat(intervalEventObject.fastingStartTime));
     var diffToEating = diff("".concat(now), "".concat(fastingStartTimeMinusEatTime, ":").concat(fastingStartMinute));
-    var diffToFastingInPercent = (timeStampIntoNumber(diffToFasting) * 100 / (intervalEventObject.eatTime * 60 * 60)).toFixed(0);
-    var diffToEatingInPercent = (timeStampIntoNumber(diffToEating) * 100 / (intervalEventObject.fastingTime * 60 * 60)).toFixed(0);
+    var diffToFastingInPercent = ((timeStampIntoNumber(diffToFasting) * 100) /
+        (intervalEventObject.eatTime * 60 * 60)).toFixed(0);
+    var diffToEatingInPercent = ((timeStampIntoNumber(diffToEating) * 100) /
+        (intervalEventObject.fastingTime * 60 * 60)).toFixed(0);
     var diffToFastingInSeconds = timeStampIntoNumber(diffToFasting);
     // Wenn Diff kleiner als EatingTime dann ist fasting false else fasting true
-    if (diffToFastingInSeconds < (intervalEventObject.eatTime * 60 * 60)) {
-        outputWhatNow.innerHTML = "Jetzt: Essen";
+    if (diffToFastingInSeconds < intervalEventObject.eatTime * 60 * 60) {
+        outputWhatNow.innerHTML = 'Jetzt: Essen';
         lblTimer.innerHTML = "".concat(diffToFasting);
+        btnSetNextEvent.innerHTML = 'Fasten starten';
         txtPercent.innerHTML = "".concat(diffToFastingInPercent, "%");
         circleProgress(parseInt(diffToFastingInPercent));
         if (parseInt(diffToFastingInPercent) < 10) {
-            txtPercent.style.transform = 'translateX(1.3rem)';
+            txtPercent.style.transform = 'translateX(1.5rem)';
         }
         else {
             txtPercent.style.transform = 'translateX(0rem)';
         }
     }
     else {
-        outputWhatNow.innerHTML = "Jetzt: Fasten";
+        outputWhatNow.innerHTML = 'Jetzt: Fasten';
         lblTimer.innerHTML = "".concat(diffToEating);
+        btnSetNextEvent.innerHTML = 'Essen starten';
         txtPercent.innerHTML = "".concat(diffToEatingInPercent, "%");
         circleProgress(parseInt(diffToEatingInPercent));
         if (parseInt(diffToEatingInPercent) < 10) {
-            txtPercent.style.transform = 'translateX(1.3rem)';
+            txtPercent.style.transform = 'translateX(1.5rem)';
         }
         else {
             txtPercent.style.transform = 'translateX(0rem)';
@@ -71,7 +80,8 @@ var radius = progressCircle.r.baseVal.value;
 var circumference = radius * 2 * Math.PI;
 progressCircle.style.strokeDasharray = circumference;
 function circleProgress(percent) {
-    progressCircle.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+    progressCircle.style.strokeDashoffset =
+        circumference - (percent / 100) * circumference;
 }
 function timeStampIntoNumber(timeStamp) {
     var splittedTimestamp = timeStamp.split(':');
@@ -96,8 +106,8 @@ function addZero(val) {
 }
 // Diff Berechnung
 function diff(start, end) {
-    start = start.split(":");
-    end = end.split(":");
+    start = start.split(':');
+    end = end.split(':');
     var startDate = new Date(0, 0, 0, start[0], start[1], 0);
     var endDate = new Date(0, 0, 0, end[0], end[1], 0);
     var diff = endDate.getTime() - startDate.getTime();
@@ -106,7 +116,11 @@ function diff(start, end) {
     var minutes = Math.floor(diff / 1000 / 60);
     if (hours < 0)
         hours = hours + 24;
-    return (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
+    return ((hours <= 9 ? '0' : '') +
+        hours +
+        ':' +
+        (minutes <= 9 ? '0' : '') +
+        minutes);
 }
 // Einstellungen einblenden
 btn_ShowModalButton === null || btn_ShowModalButton === void 0 ? void 0 : btn_ShowModalButton.addEventListener('click', function () {
@@ -155,6 +169,7 @@ btn_SaveSettings === null || btn_SaveSettings === void 0 ? void 0 : btn_SaveSett
     intervalEventObject.fastingStartTime = inpFastingStartTime.value;
     fastingChangeButton.innerText = "".concat(intervalEventObject.fastingTime, ":").concat(intervalEventObject.eatTime);
     overlay.style.display = 'none';
+    save_into_LocalStorage();
 });
 // Zeigt die Werte im veränderbaren Inputfeld an
 function displayFastingTime() {
@@ -164,3 +179,18 @@ function displayFastingTime() {
 btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener('click', function () {
     console.log('Fasten starten');
 });
+var save_into_LocalStorage = function () {
+    localStorage.setItem('stored_IntervallObj', JSON.stringify(intervalEventObject));
+    console.log('Gespeichert');
+};
+function load_from_LocalStorage() {
+    if (localStorage.getItem('stored_IntervallObj') !== null) {
+        //@ts-ignore
+        intervalEventObject = JSON.parse(localStorage.getItem('stored_IntervallObj'));
+        fastingChangeButton.innerText = "".concat(intervalEventObject.fastingTime, ":").concat(intervalEventObject.eatTime);
+        console.log('Speicherobj befüllt', intervalEventObject);
+    }
+    else {
+        console.warn('Keine Daten vorh');
+    }
+}
