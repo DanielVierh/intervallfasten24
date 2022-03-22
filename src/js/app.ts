@@ -53,7 +53,6 @@ function setTheme() {
         modalWindow!.classList.add("darkTheme");
     }else{
         body.classList.add("lightTheme");
-        txtPercent.classList.add("lightPercentColor");
     }
 }
 
