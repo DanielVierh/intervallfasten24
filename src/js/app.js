@@ -38,6 +38,9 @@ function checkFastingStatus() {
     var fastingStartHour = parseInt(splittedFastingTime[0]);
     var fastingStartMinute = parseInt(splittedFastingTime[1]);
     var fastingStartTimeMinusEatTime = fastingStartHour - intervalEventObject.eatTime;
+    if (fastingStartTimeMinusEatTime < 0) {
+        fastingStartTimeMinusEatTime = 24 + fastingStartTimeMinusEatTime;
+    }
     var diffToFasting = diff("".concat(now), "".concat(intervalEventObject.fastingStartTime));
     var diffToEating = diff("".concat(now), "".concat(fastingStartTimeMinusEatTime, ":").concat(fastingStartMinute));
     var diffToFastingInPercent = ((timeStampIntoNumber(diffToFasting) * 100) /
@@ -193,7 +196,9 @@ btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEven
     if (isFastingTime === true) {
         // Berechne neue Fastenzeit now + Essenszeit
         var newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
-        var newFastingStart = "".concat(newFastingStartRaw, ":").concat(addZero(minuteMinus1));
+        if (newFastingStartRaw > 24)
+            newFastingStartRaw = newFastingStartRaw - 24;
+        var newFastingStart = "".concat(addZero(newFastingStartRaw), ":").concat(addZero(minuteMinus1));
         console.log('Neue FastenStartZeit', newFastingStart);
         intervalEventObject.fastingStartTime = newFastingStart;
     }

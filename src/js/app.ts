@@ -47,8 +47,10 @@ function checkFastingStatus() {
     const splittedFastingTime = intervalEventObject.fastingStartTime.split(':');
     const fastingStartHour: number = parseInt(splittedFastingTime[0]);
     const fastingStartMinute: number = parseInt(splittedFastingTime[1]);
-    const fastingStartTimeMinusEatTime: number =
-        fastingStartHour - intervalEventObject.eatTime;
+    let fastingStartTimeMinusEatTime: number = fastingStartHour - intervalEventObject.eatTime;
+    if(fastingStartTimeMinusEatTime < 0) {
+        fastingStartTimeMinusEatTime = 24 + fastingStartTimeMinusEatTime;
+    }
     const diffToFasting = diff(
         `${now}`,
         `${intervalEventObject.fastingStartTime}`,
@@ -229,8 +231,9 @@ btnSetNextEvent?.addEventListener('click', () => {
     const minuteMinus1 = parseInt(splittedNow[1]) - 1;
     if(isFastingTime === true) {
         // Berechne neue Fastenzeit now + Essenszeit
-        const newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
-        const newFastingStart = `${newFastingStartRaw}:${addZero(minuteMinus1)}`
+        let newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
+        if(newFastingStartRaw > 24)  newFastingStartRaw = newFastingStartRaw - 24
+        const newFastingStart = `${addZero(newFastingStartRaw)}:${addZero(minuteMinus1)}`
         console.log('Neue FastenStartZeit', newFastingStart);
         intervalEventObject.fastingStartTime = newFastingStart;
     }else{
