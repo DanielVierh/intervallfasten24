@@ -15,6 +15,7 @@ var progressCircle = document.querySelector('.progress');
 var outputFrom = document.getElementById("outputFrom");
 var outputTo = document.getElementById('outputTo');
 var themeStyle = document.getElementById("themeStyle");
+var modalWindow = document.getElementById("modalWindow");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
@@ -27,9 +28,24 @@ var intervalEventObject = {
 // Init -- Start
 function init() {
     load_from_LocalStorage();
+    setTheme();
     checkIntervall();
 }
 init();
+function setTheme() {
+    var body = document.body;
+    body.classList.remove("lightTheme");
+    body.classList.remove("darkTheme");
+    modalWindow.classList.remove("darkTheme");
+    modalWindow.classList.remove("lightTheme");
+    if (intervalEventObject.theme === 'Dunkel') {
+        body.classList.add("darkTheme");
+        modalWindow.classList.add("darkTheme");
+    }
+    else {
+        body.classList.add("lightTheme");
+    }
+}
 // Funktion zur Überprüfung, ob gerade Fastenzeit läuft
 // Entsprechend wird die Anzeige der UI Elemente angepasst
 function checkFastingStatus() {
@@ -183,6 +199,7 @@ btn_SaveSettings === null || btn_SaveSettings === void 0 ? void 0 : btn_SaveSett
     fastingChangeButton.innerText = "".concat(intervalEventObject.fastingTime, ":").concat(intervalEventObject.eatTime);
     overlay.style.display = 'none';
     save_into_LocalStorage();
+    setTheme();
 });
 // Zeigt die Werte im veränderbaren Inputfeld an
 function displayFastingTime() {
