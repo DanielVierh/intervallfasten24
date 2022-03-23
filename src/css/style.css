@@ -3,17 +3,13 @@
 }
 
 .lightTheme {
-  background-color: white;
+  background: white;
   color: black;
 }
 
 .darkTheme {
-  background-color: #0b101b;
-  color: #95eaf0;
-}
-
-.lightPercentColor {
-  color: black;
+  background: #0b101b;
+  color: #b9f9fd;
 }
 
 #overlay {
@@ -31,15 +27,16 @@
   max-width: 600px;
   height: 400px;
   margin: auto;
-  background-color: white;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  background: #0b101b;
   border-radius: 15px;
   -webkit-box-shadow: 0 0 35px black;
           box-shadow: 0 0 35px black;
+  color: white;
 }
 
 .showRest {
@@ -233,8 +230,9 @@
       -ms-flex-align: center;
           align-items: center;
   cursor: pointer;
-  background-color: lightblue;
+  background-color: gray;
   margin: 9px;
+  border-radius: 25px;
 }
 
 .main-website {
@@ -311,6 +309,10 @@ header {
   font-weight: bold;
   font-family: sans-serif;
   fill: orange;
+}
+
+.lightPercentColor {
+  fill: black;
 }
 
 .setButton {

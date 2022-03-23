@@ -15,7 +15,7 @@ const progressCircle = document.querySelector('.progress') as any;
 const outputFrom = document.getElementById("outputFrom");
 const outputTo = document.getElementById('outputTo');
 const themeStyle = document.getElementById("themeStyle") as HTMLInputElement;
-const modalWindow = document.getElementById("modalWindow");
+const modalWindow = document.getElementById("modal");
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -46,13 +46,13 @@ function setTheme() {
     const body = document.body;
     body.classList.remove("lightTheme");
     body.classList.remove("darkTheme");
-    modalWindow!.classList.remove("darkTheme");
-    modalWindow!.classList.remove("lightTheme");
+    txtPercent.classList.remove("lightPercentColor");
+
     if(intervalEventObject.theme === 'Dunkel'){
         body.classList.add("darkTheme");
-        modalWindow!.classList.add("darkTheme");
     }else{
         body.classList.add("lightTheme");
+        txtPercent.classList.add("lightPercentColor");
     }
 }
 

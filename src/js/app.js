@@ -15,7 +15,7 @@ var progressCircle = document.querySelector('.progress');
 var outputFrom = document.getElementById("outputFrom");
 var outputTo = document.getElementById('outputTo');
 var themeStyle = document.getElementById("themeStyle");
-var modalWindow = document.getElementById("modalWindow");
+var modalWindow = document.getElementById("modal");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
@@ -36,14 +36,13 @@ function setTheme() {
     var body = document.body;
     body.classList.remove("lightTheme");
     body.classList.remove("darkTheme");
-    modalWindow.classList.remove("darkTheme");
-    modalWindow.classList.remove("lightTheme");
+    txtPercent.classList.remove("lightPercentColor");
     if (intervalEventObject.theme === 'Dunkel') {
         body.classList.add("darkTheme");
-        modalWindow.classList.add("darkTheme");
     }
     else {
         body.classList.add("lightTheme");
+        txtPercent.classList.add("lightPercentColor");
     }
 }
 // Funktion zur Überprüfung, ob gerade Fastenzeit läuft

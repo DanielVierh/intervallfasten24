@@ -1,4 +1,4 @@
-$dark-ForeColor: rgb(149, 234, 240);
+$dark-ForeColor: rgb(185, 249, 253);
 $dark-BackColor: rgb(11, 16, 27);
 
 $light-ForeColor: black;
@@ -11,17 +11,13 @@ $light-BackColor: white;
 
 
 .lightTheme{
-    background-color: $light-BackColor;
+    background: $light-BackColor;
     color: $light-ForeColor;
 }
 
 .darkTheme{
-    background-color: $dark-BackColor;
+    background: $dark-BackColor;
     color: $dark-ForeColor;
-}
-
-.lightPercentColor{
-    color: $light-ForeColor;
 }
 
 
@@ -41,14 +37,15 @@ background-color: rgba(0,0,0,0.5);
     max-width: 600px;
     height: 400px;
     margin: auto;
-    background-color: white;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+    background: $dark-BackColor;
     border-radius: 15px;
     box-shadow: 0 0 35px black;
+    color: white;
 }
 .showRest{
  display: flex;
@@ -62,43 +59,43 @@ background-color: rgba(0,0,0,0.5);
     justify-content: center;
     align-items: center;
     font-family: sans-serif;
+
+    h1{
+        color: rgb(78, 77, 77);
+        font-size: 1.3rem;
+    }
+
+    label{
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-align: right;
+        width: 110px;
+        margin-right: 1rem;
+    }
+
+    input{
+        max-width: 60px;
+        text-align: center;
+        background-color: lightblue;
+        color: black;
+        font-size: 1.2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        border-radius: 5px;
+        height: 20px;
+    }
+
+    select{
+        background-color: lightblue;
+        color: black;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 5px;
+    }
 }
 
-.modalContentContainer h1{
-    color: rgb(78, 77, 77);
-    font-size: 1.3rem;
-}
-
-.modalContentContainer label{
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-align: right;
-    width: 110px;
-    margin-right: 1rem;
-}
-
-.modalContentContainer input{
-    max-width: 60px;
-    text-align: center;
-    background-color: lightblue;
-    color: black;
-    font-size: 1.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    border-radius: 5px;
-    height: 20px;
-
-}
-
-.modalContentContainer select{
-    background-color: lightblue;
-    color: black;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 5px;
-}
 .startTimeInput{
     min-width: 90px;
     text-align: center;
@@ -190,8 +187,9 @@ background-color: rgba(0,0,0,0.5);
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    background-color: lightblue;
+    background-color: gray;
     margin: 9px;
+    border-radius: 25px;
 }
 
 
@@ -248,6 +246,10 @@ header{
     fill: orange;
 }
 
+
+.lightPercentColor{
+    fill: $light-ForeColor;
+}
 
 .setButton{
     width: 160px;
