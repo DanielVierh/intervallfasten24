@@ -30,10 +30,34 @@ left: 0;
 right: 0;
 z-index: 1;
 background-color: rgba(0,0,0,0.5);
-
 }
 
+#overlay2{
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.5);
+    }
+
 #modal{
+    max-width: 600px;
+    height: 400px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $dark-BackColor;
+    border-radius: 15px;
+    box-shadow: 0 0 35px black;
+    color: white;
+}
+#modal2{
     max-width: 600px;
     height: 400px;
     margin: auto;
@@ -298,8 +322,31 @@ header{
     margin: 0;
 }
 
-
 .startEndTimeLabels{
     font-weight: bold;
     font-size: 1.5rem;
+}
+
+.fa-droplet{
+    color: blue;
+}
+
+.waterunit{
+    background-color: lightblue;
+    padding: 11px;
+    margin-right: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 20px;
+    border: 1px solid rgba(0, 0, 255, 0.596);
+    color: black;
+    &.active{
+        box-shadow:0 0 16px lightblue, inset 2px 2px 3px black;
+    }
+}
+
+.drank{
+    color: aqua;
+    font-size: 2rem;
+    font-weight: bold;
 }

@@ -3,7 +3,9 @@ Erstellungsdatum: 18.03.2022 - Daniel Vierheilig
 */
 
 const overlay = document.getElementById('overlay');
+const overlay2 = document.getElementById('overlay2');
 const btn_ShowModalButton = document.getElementById('btn_ShowModal');
+const btn_ShowModalButton2 = document.getElementById('btn_ShowModal2');
 const btn_CloseModal = document.getElementById('close-modal');
 const btn_DecreaseFasting = document.getElementById('btn_DecreaseFasting');
 const btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
@@ -19,7 +21,10 @@ const progressCircle = document.querySelector('.progress') as any;
 const outputFrom = document.getElementById("outputFrom");
 const outputTo = document.getElementById('outputTo');
 const themeStyle = document.getElementById("themeStyle") as HTMLInputElement;
-
+const btnWaterUnit02 = document.getElementById("btnWaterUnit02");
+const btnWaterUnit025 = document.getElementById("btnWaterUnit025");
+const btnWaterUnit033 = document.getElementById("btnWaterUnit033");
+const lblAddingWater = document.getElementById("lblAddingWater") as HTMLInputElement;
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -282,4 +287,37 @@ function load_from_LocalStorage() {
     } else {
         // console.warn('Keine Daten vorh');
     }
+}
+
+
+
+// Heute getrunken
+
+// Wasserfenster einblenden
+btn_ShowModalButton2?.addEventListener('click', () => {
+    overlay2!.style.display = 'block';
+
+});
+
+btnWaterUnit02?.addEventListener("click", ()=>{
+    resetActiveWaterUnit();
+    btnWaterUnit02!.classList.add("active");
+    lblAddingWater.value = '0.2';
+});
+btnWaterUnit025?.addEventListener("click", ()=>{
+    resetActiveWaterUnit();
+    btnWaterUnit025!.classList.add("active");
+    lblAddingWater.value = '0.25';
+});
+btnWaterUnit033?.addEventListener("click", ()=>{
+    resetActiveWaterUnit();
+    btnWaterUnit033!.classList.add("active");
+    lblAddingWater.value = '0.33';
+});
+
+
+function resetActiveWaterUnit(){
+    btnWaterUnit02!.classList.remove("active");
+    btnWaterUnit025!.classList.remove("active");
+    btnWaterUnit033!.classList.remove("active");
 }

@@ -15,10 +15,10 @@
     <header>
         <!-- Button um Einstellungen als Modal zu öffnen -->
         <button id="btn_ShowModal" class="smallButton"><span id="fastingChangeButton">16:8</span> <span><i class="fa-solid fa-pen"></i></span> </button>
-        <button class="smallButton"><span>0</span> <span><i class="fa-solid fa-clock"></i></span> </button>
+        <button id="btn_ShowModal2" class="smallButton"><span>0</span> <span><i class="fa-solid fa-droplet"></i></span> </button>
     </header>
 
-    <!-- Modal -->
+    <!-- Modal 1 für Einstellungen -->
     <div id="overlay">
         <div id="modal">
             <div class="madalHeader">
@@ -48,6 +48,30 @@
             </div>
         </div>
     </div>
+
+        <!-- Modal2 für Wasser -->
+        <div id="overlay2">
+            <div id="modal2">
+                <div class="madalHeader">
+                    <div id="close-modal2" class="buttonClose">X</div>
+                </div>
+                <div class="modalContentContainer">
+                    <h1>Heute getrunken</h1>
+                    <h2 class="drank">2 Liter</h2>
+                    <div class="showRest">
+                        <div class="waterunit active" id="btnWaterUnit02">0,2 L</div>
+                        <div class="waterunit" id="btnWaterUnit025">0,25 L</div>
+                        <div class="waterunit" id="btnWaterUnit033">0,33 L</div>
+                    </div>
+                    <div class="showRest">
+                        <div id="btn_DecreaseWater" class="settingButton">-</div>
+                        <input type="text" id="lblAddingWater" disabled  value="0.2">
+                        <div id="btn_IncreaseWater" class="settingButton">+</div>
+                    </div>
+                    <button class="saveButton" id="btnSaveWater">Speichern</button>
+                </div>
+            </div>
+        </div>
 
     <!-- website-Content -->
     <div class="main-website">

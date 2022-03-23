@@ -2,7 +2,9 @@
 Erstellungsdatum: 18.03.2022 - Daniel Vierheilig
 */
 var overlay = document.getElementById('overlay');
+var overlay2 = document.getElementById('overlay2');
 var btn_ShowModalButton = document.getElementById('btn_ShowModal');
+var btn_ShowModalButton2 = document.getElementById('btn_ShowModal2');
 var btn_CloseModal = document.getElementById('close-modal');
 var btn_DecreaseFasting = document.getElementById('btn_DecreaseFasting');
 var btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
@@ -18,6 +20,10 @@ var progressCircle = document.querySelector('.progress');
 var outputFrom = document.getElementById("outputFrom");
 var outputTo = document.getElementById('outputTo');
 var themeStyle = document.getElementById("themeStyle");
+var btnWaterUnit02 = document.getElementById("btnWaterUnit02");
+var btnWaterUnit025 = document.getElementById("btnWaterUnit025");
+var btnWaterUnit033 = document.getElementById("btnWaterUnit033");
+var lblAddingWater = document.getElementById("lblAddingWater");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
@@ -220,7 +226,6 @@ btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEven
             if (newFastingStartRaw > 24)
                 newFastingStartRaw = newFastingStartRaw - 24;
             var newFastingStart = "".concat(addZero(newFastingStartRaw), ":").concat(addZero(minuteMinus1));
-            console.log('Neue FastenStartZeit', newFastingStart);
             intervalEventObject.fastingStartTime = newFastingStart;
         }
         else {
@@ -243,4 +248,29 @@ function load_from_LocalStorage() {
     else {
         // console.warn('Keine Daten vorh');
     }
+}
+// Heute getrunken
+// Wasserfenster einblenden
+btn_ShowModalButton2 === null || btn_ShowModalButton2 === void 0 ? void 0 : btn_ShowModalButton2.addEventListener('click', function () {
+    overlay2.style.display = 'block';
+});
+btnWaterUnit02 === null || btnWaterUnit02 === void 0 ? void 0 : btnWaterUnit02.addEventListener("click", function () {
+    resetActiveWaterUnit();
+    btnWaterUnit02.classList.add("active");
+    lblAddingWater.value = '0.2';
+});
+btnWaterUnit025 === null || btnWaterUnit025 === void 0 ? void 0 : btnWaterUnit025.addEventListener("click", function () {
+    resetActiveWaterUnit();
+    btnWaterUnit025.classList.add("active");
+    lblAddingWater.value = '0.25';
+});
+btnWaterUnit033 === null || btnWaterUnit033 === void 0 ? void 0 : btnWaterUnit033.addEventListener("click", function () {
+    resetActiveWaterUnit();
+    btnWaterUnit033.classList.add("active");
+    lblAddingWater.value = '0.33';
+});
+function resetActiveWaterUnit() {
+    btnWaterUnit02.classList.remove("active");
+    btnWaterUnit025.classList.remove("active");
+    btnWaterUnit033.classList.remove("active");
 }
