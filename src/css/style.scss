@@ -350,3 +350,18 @@ header{
     font-size: 2rem;
     font-weight: bold;
 }
+
+.waterAnimation{
+    animation:waterEffect 2s infinite linear;
+}
+
+@keyframes waterEffect {
+    from{
+        text-shadow: 4px 0 3px turquoise;
+        color: rgb(45, 45, 250);
+    }
+    to{
+        text-shadow: 0 0 30px turquoise;
+        color: aqua;
+    }
+}

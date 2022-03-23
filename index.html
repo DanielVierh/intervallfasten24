@@ -15,7 +15,7 @@
     <header>
         <!-- Button um Einstellungen als Modal zu öffnen -->
         <button id="btn_ShowModal" class="smallButton"><span id="fastingChangeButton">16:8</span> <span><i class="fa-solid fa-pen"></i></span> </button>
-        <button id="btn_ShowModal2" class="smallButton"><span>0</span> <span><i class="fa-solid fa-droplet"></i></span> </button>
+        <button id="btn_ShowModal2" class="smallButton"><span id="waterButton">0</span> <span><i class="fa-solid fa-droplet"></i></span> </button>
     </header>
 
     <!-- Modal 1 für Einstellungen -->
@@ -57,7 +57,7 @@
                 </div>
                 <div class="modalContentContainer">
                     <h1>Heute getrunken</h1>
-                    <h2 class="drank">2 Liter</h2>
+                    <h2 class="drank" id="outputTodayWater">2 Liter</h2>
                     <div class="showRest">
                         <div class="waterunit active" id="btnWaterUnit02">0,2 L</div>
                         <div class="waterunit" id="btnWaterUnit025">0,25 L</div>

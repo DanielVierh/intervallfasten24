@@ -437,4 +437,31 @@ header {
   font-size: 2rem;
   font-weight: bold;
 }
+
+.waterAnimation {
+  -webkit-animation: waterEffect 2s infinite linear;
+          animation: waterEffect 2s infinite linear;
+}
+
+@-webkit-keyframes waterEffect {
+  from {
+    text-shadow: 4px 0 3px turquoise;
+    color: #2d2dfa;
+  }
+  to {
+    text-shadow: 0 0 30px turquoise;
+    color: aqua;
+  }
+}
+
+@keyframes waterEffect {
+  from {
+    text-shadow: 4px 0 3px turquoise;
+    color: #2d2dfa;
+  }
+  to {
+    text-shadow: 0 0 30px turquoise;
+    color: aqua;
+  }
+}
 /*# sourceMappingURL=style.css.map */

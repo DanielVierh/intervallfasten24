@@ -6,8 +6,11 @@ var overlay2 = document.getElementById('overlay2');
 var btn_ShowModalButton = document.getElementById('btn_ShowModal');
 var btn_ShowModalButton2 = document.getElementById('btn_ShowModal2');
 var btn_CloseModal = document.getElementById('close-modal');
+var btn_CloseModal2 = document.getElementById('close-modal2');
 var btn_DecreaseFasting = document.getElementById('btn_DecreaseFasting');
+var btn_DecreaseWater = document.getElementById('btn_DecreaseWater');
 var btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
+var btn_IncreaseWater = document.getElementById('btn_IncreaseWater');
 var labelFastingTime = document.getElementById('lblfastingTime');
 var fastingChangeButton = document.getElementById('fastingChangeButton');
 var btn_SaveSettings = document.getElementById('btnSaveSettings');
@@ -24,14 +27,19 @@ var btnWaterUnit02 = document.getElementById("btnWaterUnit02");
 var btnWaterUnit025 = document.getElementById("btnWaterUnit025");
 var btnWaterUnit033 = document.getElementById("btnWaterUnit033");
 var lblAddingWater = document.getElementById("lblAddingWater");
+var outputTodayWater = document.getElementById("outputTodayWater");
+var btnSaveWater = document.getElementById("btnSaveWater");
+var waterButton = document.getElementById("waterButton");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
+var newWaterAmount = 0.2;
 var intervalEventObject = {
     fastingTime: 16,
     eatTime: 8,
     fastingStartTime: '17:00',
-    theme: 'light'
+    theme: 'light',
+    water: 0
 };
 // Init -- Start
 function init() {
@@ -243,34 +251,71 @@ function load_from_LocalStorage() {
         //@ts-ignore
         intervalEventObject = JSON.parse(localStorage.getItem('stored_IntervallObj'));
         fastingChangeButton.innerText = "".concat(intervalEventObject.fastingTime, ":").concat(intervalEventObject.eatTime);
-        // console.log('Speicherobj befüllt', intervalEventObject);
+        waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
     }
     else {
         // console.warn('Keine Daten vorh');
     }
 }
 // Heute getrunken
+var waterUnit = 0.2;
 // Wasserfenster einblenden
 btn_ShowModalButton2 === null || btn_ShowModalButton2 === void 0 ? void 0 : btn_ShowModalButton2.addEventListener('click', function () {
     overlay2.style.display = 'block';
+    outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
+    outputTodayWater.classList.remove("waterAnimation");
 });
 btnWaterUnit02 === null || btnWaterUnit02 === void 0 ? void 0 : btnWaterUnit02.addEventListener("click", function () {
     resetActiveWaterUnit();
     btnWaterUnit02.classList.add("active");
-    lblAddingWater.value = '0.2';
+    waterUnit = 0.2;
+    newWaterAmount = waterUnit;
+    lblAddingWater.value = "".concat(waterUnit, " L");
 });
 btnWaterUnit025 === null || btnWaterUnit025 === void 0 ? void 0 : btnWaterUnit025.addEventListener("click", function () {
     resetActiveWaterUnit();
     btnWaterUnit025.classList.add("active");
-    lblAddingWater.value = '0.25';
+    waterUnit = 0.25;
+    newWaterAmount = waterUnit;
+    lblAddingWater.value = "".concat(waterUnit, " L");
 });
 btnWaterUnit033 === null || btnWaterUnit033 === void 0 ? void 0 : btnWaterUnit033.addEventListener("click", function () {
     resetActiveWaterUnit();
     btnWaterUnit033.classList.add("active");
-    lblAddingWater.value = '0.33';
+    waterUnit = 0.33;
+    newWaterAmount = waterUnit;
+    lblAddingWater.value = "".concat(waterUnit, " L");
 });
+// Resetfunc um alle Active Klassen zu entfernen
 function resetActiveWaterUnit() {
     btnWaterUnit02.classList.remove("active");
     btnWaterUnit025.classList.remove("active");
     btnWaterUnit033.classList.remove("active");
 }
+// Modal 2 schließen
+btn_CloseModal2 === null || btn_CloseModal2 === void 0 ? void 0 : btn_CloseModal2.addEventListener("click", function () {
+    overlay2.style.display = 'none';
+});
+btn_IncreaseWater === null || btn_IncreaseWater === void 0 ? void 0 : btn_IncreaseWater.addEventListener("click", function () {
+    (newWaterAmount += waterUnit).toFixed(2);
+    lblAddingWater.value = "".concat(newWaterAmount.toFixed(2), " L");
+});
+btn_DecreaseWater === null || btn_DecreaseWater === void 0 ? void 0 : btn_DecreaseWater.addEventListener("click", function () {
+    if (newWaterAmount > waterUnit) {
+        (newWaterAmount -= waterUnit).toFixed(2);
+        lblAddingWater.value = "".concat(newWaterAmount.toFixed(2), " L");
+    }
+});
+// Speichere neue Wassermenge
+btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEventListener("click", function () {
+    if (newWaterAmount > 0) {
+        intervalEventObject.water += newWaterAmount;
+        save_into_LocalStorage();
+        waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
+        outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
+        outputTodayWater.classList.add("waterAnimation");
+        setTimeout(function () {
+            overlay2.style.display = 'none';
+        }, 2000);
+    }
+});
