@@ -1,3 +1,7 @@
+/*
+Erstellungsdatum: 18.03.2022 - Daniel Vierheilig
+*/
+
 const overlay = document.getElementById('overlay');
 const btn_ShowModalButton = document.getElementById('btn_ShowModal');
 const btn_CloseModal = document.getElementById('close-modal');
@@ -15,7 +19,7 @@ const progressCircle = document.querySelector('.progress') as any;
 const outputFrom = document.getElementById("outputFrom");
 const outputTo = document.getElementById('outputTo');
 const themeStyle = document.getElementById("themeStyle") as HTMLInputElement;
-const modalWindow = document.getElementById("modal");
+
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -94,11 +98,11 @@ function checkFastingStatus() {
         outputFrom!.innerHTML = `${addZero(fastingStartTimeMinusEatTime)}:${addZero(fastingStartMinute)}`;
         outputTo!.innerHTML = `${intervalEventObject.fastingStartTime}`;
         circleProgress(parseInt(diffToFastingInPercent));
-        if (parseInt(diffToFastingInPercent) < 10) {
-            txtPercent.style.transform = 'translateX(1.5rem)';
-        } else {
-            txtPercent.style.transform = 'translateX(0rem)';
-        }
+        // if (parseInt(diffToFastingInPercent) < 10) {
+        //     txtPercent.style.transform = 'translateX(1.5rem)';
+        // } else {
+        //     txtPercent.style.transform = 'translateX(0rem)';
+        // }
     } else {
         isFastingTime = true;
         outputWhatNow.innerHTML = 'Jetzt: Fasten';

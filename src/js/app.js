@@ -73,12 +73,11 @@ function checkFastingStatus() {
         outputFrom.innerHTML = "".concat(addZero(fastingStartTimeMinusEatTime), ":").concat(addZero(fastingStartMinute));
         outputTo.innerHTML = "".concat(intervalEventObject.fastingStartTime);
         circleProgress(parseInt(diffToFastingInPercent));
-        if (parseInt(diffToFastingInPercent) < 10) {
-            txtPercent.style.transform = 'translateX(1.5rem)';
-        }
-        else {
-            txtPercent.style.transform = 'translateX(0rem)';
-        }
+        // if (parseInt(diffToFastingInPercent) < 10) {
+        //     txtPercent.style.transform = 'translateX(1.5rem)';
+        // } else {
+        //     txtPercent.style.transform = 'translateX(0rem)';
+        // }
     }
     else {
         isFastingTime = true;
