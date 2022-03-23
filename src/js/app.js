@@ -251,7 +251,14 @@ function load_from_LocalStorage() {
         //@ts-ignore
         intervalEventObject = JSON.parse(localStorage.getItem('stored_IntervallObj'));
         fastingChangeButton.innerText = "".concat(intervalEventObject.fastingTime, ":").concat(intervalEventObject.eatTime);
-        waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
+        try {
+            waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
+        }
+        catch (err) {
+            console.log(err);
+            intervalEventObject.water = 0;
+            waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
+        }
     }
     else {
         // console.warn('Keine Daten vorh');
