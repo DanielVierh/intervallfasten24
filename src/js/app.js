@@ -52,13 +52,13 @@ function setTheme() {
     var body = document.body;
     body.classList.remove("lightTheme");
     body.classList.remove("darkTheme");
-    txtPercent.classList.remove("lightPercentColor");
+    lblTimer.classList.remove("lightPercentColor");
     if (intervalEventObject.theme === 'Dunkel') {
         body.classList.add("darkTheme");
     }
     else {
         body.classList.add("lightTheme");
-        txtPercent.classList.add("lightPercentColor");
+        lblTimer.classList.add("lightPercentColor");
     }
 }
 // Funktion zur Überprüfung, ob gerade Fastenzeit läuft
@@ -85,7 +85,7 @@ function checkFastingStatus() {
         outputWhatNow.innerHTML = 'Jetzt: Essen';
         lblTimer.innerHTML = "".concat(diffToFasting);
         btnSetNextEvent.innerHTML = 'Fasten starten';
-        txtPercent.innerHTML = "".concat(diffToFastingInPercent, "%");
+        // txtPercent.innerHTML = `${diffToFastingInPercent}%`;
         outputFrom.innerHTML = "".concat(addZero(fastingStartTimeMinusEatTime), ":").concat(addZero(fastingStartMinute));
         outputTo.innerHTML = "".concat(intervalEventObject.fastingStartTime);
         circleProgress(parseInt(diffToFastingInPercent));
@@ -100,16 +100,15 @@ function checkFastingStatus() {
         outputWhatNow.innerHTML = 'Jetzt: Fasten';
         lblTimer.innerHTML = "".concat(diffToEating);
         btnSetNextEvent.innerHTML = 'Essen starten';
-        txtPercent.innerHTML = "".concat(diffToEatingInPercent, "%");
+        // txtPercent.innerHTML = `${diffToEatingInPercent}%`;
         outputFrom.innerHTML = "".concat(intervalEventObject.fastingStartTime);
         outputTo.innerHTML = "".concat(addZero(fastingStartTimeMinusEatTime), ":").concat(addZero(fastingStartMinute));
         circleProgress(parseInt(diffToEatingInPercent));
-        if (parseInt(diffToEatingInPercent) < 10) {
-            txtPercent.style.transform = 'translateX(1.5rem)';
-        }
-        else {
-            txtPercent.style.transform = 'translateX(0rem)';
-        }
+        // if (parseInt(diffToEatingInPercent) < 10) {
+        //     txtPercent.style.transform = 'translateX(1.5rem)';
+        // } else {
+        //     txtPercent.style.transform = 'translateX(0rem)';
+        // }
     }
 }
 var radius = progressCircle.r.baseVal.value;

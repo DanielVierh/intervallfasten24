@@ -64,13 +64,13 @@ function setTheme() {
     const body = document.body;
     body.classList.remove("lightTheme");
     body.classList.remove("darkTheme");
-    txtPercent.classList.remove("lightPercentColor");
+    lblTimer.classList.remove("lightPercentColor");
 
     if(intervalEventObject.theme === 'Dunkel'){
         body.classList.add("darkTheme");
     }else{
         body.classList.add("lightTheme");
-        txtPercent.classList.add("lightPercentColor");
+        lblTimer.classList.add("lightPercentColor");
     }
 }
 
@@ -108,7 +108,7 @@ function checkFastingStatus() {
         outputWhatNow.innerHTML = 'Jetzt: Essen';
         lblTimer.innerHTML = `${diffToFasting}`;
         btnSetNextEvent!.innerHTML = 'Fasten starten';
-        txtPercent.innerHTML = `${diffToFastingInPercent}%`;
+        // txtPercent.innerHTML = `${diffToFastingInPercent}%`;
         outputFrom!.innerHTML = `${addZero(fastingStartTimeMinusEatTime)}:${addZero(fastingStartMinute)}`;
         outputTo!.innerHTML = `${intervalEventObject.fastingStartTime}`;
         circleProgress(parseInt(diffToFastingInPercent));
@@ -122,15 +122,15 @@ function checkFastingStatus() {
         outputWhatNow.innerHTML = 'Jetzt: Fasten';
         lblTimer.innerHTML = `${diffToEating}`;
         btnSetNextEvent!.innerHTML = 'Essen starten';
-        txtPercent.innerHTML = `${diffToEatingInPercent}%`;
+        // txtPercent.innerHTML = `${diffToEatingInPercent}%`;
         outputFrom!.innerHTML = `${intervalEventObject.fastingStartTime}`;
         outputTo!.innerHTML = `${addZero(fastingStartTimeMinusEatTime)}:${addZero(fastingStartMinute)}`;
         circleProgress(parseInt(diffToEatingInPercent));
-        if (parseInt(diffToEatingInPercent) < 10) {
-            txtPercent.style.transform = 'translateX(1.5rem)';
-        } else {
-            txtPercent.style.transform = 'translateX(0rem)';
-        }
+        // if (parseInt(diffToEatingInPercent) < 10) {
+        //     txtPercent.style.transform = 'translateX(1.5rem)';
+        // } else {
+        //     txtPercent.style.transform = 'translateX(0rem)';
+        // }
     }
 }
 
