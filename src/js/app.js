@@ -1,3 +1,6 @@
+/*
+Erstellungsdatum: 18.03.2022 - Daniel Vierheilig
+*/
 var overlay = document.getElementById('overlay');
 var btn_ShowModalButton = document.getElementById('btn_ShowModal');
 var btn_CloseModal = document.getElementById('close-modal');
@@ -15,7 +18,6 @@ var progressCircle = document.querySelector('.progress');
 var outputFrom = document.getElementById("outputFrom");
 var outputTo = document.getElementById('outputTo');
 var themeStyle = document.getElementById("themeStyle");
-var modalWindow = document.getElementById("modal");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
@@ -205,23 +207,28 @@ function displayFastingTime() {
 }
 // Event setzen
 btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener('click', function () {
-    var now = currentTime();
-    var splittedNow = now.split(':');
-    var minuteMinus1 = parseInt(splittedNow[1]) - 1;
-    if (isFastingTime === true) {
-        // Berechne neue Fastenzeit now + Essenszeit
-        var newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
-        if (newFastingStartRaw > 24)
-            newFastingStartRaw = newFastingStartRaw - 24;
-        var newFastingStart = "".concat(addZero(newFastingStartRaw), ":").concat(addZero(minuteMinus1));
-        console.log('Neue FastenStartZeit', newFastingStart);
-        intervalEventObject.fastingStartTime = newFastingStart;
+    var nextEvent = '';
+    isFastingTime ? nextEvent = 'Essen' : nextEvent = 'Fasten';
+    var request = window.confirm("M\u00F6chtest du die Phase: \"".concat(nextEvent, "\" wirklich vorzeitig starten?"));
+    if (request) {
+        var now = currentTime();
+        var splittedNow = now.split(':');
+        var minuteMinus1 = parseInt(splittedNow[1]) - 1;
+        if (isFastingTime === true) {
+            // Berechne neue Fastenzeit now + Essenszeit
+            var newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
+            if (newFastingStartRaw > 24)
+                newFastingStartRaw = newFastingStartRaw - 24;
+            var newFastingStart = "".concat(addZero(newFastingStartRaw), ":").concat(addZero(minuteMinus1));
+            console.log('Neue FastenStartZeit', newFastingStart);
+            intervalEventObject.fastingStartTime = newFastingStart;
+        }
+        else {
+            // Setze jetzige Zeit als Fastenzeit
+            intervalEventObject.fastingStartTime = "".concat(splittedNow[0], ":").concat(addZero(minuteMinus1));
+        }
+        save_into_LocalStorage();
     }
-    else {
-        // Setze jetzige Zeit als Fastenzeit
-        intervalEventObject.fastingStartTime = "".concat(splittedNow[0], ":").concat(addZero(minuteMinus1));
-    }
-    save_into_LocalStorage();
 });
 var save_into_LocalStorage = function () {
     localStorage.setItem('stored_IntervallObj', JSON.stringify(intervalEventObject));

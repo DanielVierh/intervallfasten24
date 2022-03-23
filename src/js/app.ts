@@ -247,21 +247,25 @@ function displayFastingTime() {
 
 // Event setzen
 btnSetNextEvent?.addEventListener('click', () => {
-    const now = currentTime();
-    const splittedNow = now.split(':');
-    const minuteMinus1 = parseInt(splittedNow[1]) - 1;
-    if(isFastingTime === true) {
-        // Berechne neue Fastenzeit now + Essenszeit
-        let newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
-        if(newFastingStartRaw > 24)  newFastingStartRaw = newFastingStartRaw - 24
-        const newFastingStart = `${addZero(newFastingStartRaw)}:${addZero(minuteMinus1)}`
-        console.log('Neue FastenStartZeit', newFastingStart);
-        intervalEventObject.fastingStartTime = newFastingStart;
-    }else{
-        // Setze jetzige Zeit als Fastenzeit
-        intervalEventObject.fastingStartTime = `${splittedNow[0]}:${addZero(minuteMinus1)}`
+    let nextEvent = ''
+    isFastingTime ? nextEvent = 'Essen' : nextEvent = 'Fasten';
+    const request = window.confirm(`Möchtest du die Phase: "${nextEvent}" wirklich vorzeitig starten?`)
+    if(request) {
+        const now = currentTime();
+        const splittedNow = now.split(':');
+        const minuteMinus1 = parseInt(splittedNow[1]) - 1;
+        if(isFastingTime === true) {
+            // Berechne neue Fastenzeit now + Essenszeit
+            let newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
+            if(newFastingStartRaw > 24)  newFastingStartRaw = newFastingStartRaw - 24
+            const newFastingStart = `${addZero(newFastingStartRaw)}:${addZero(minuteMinus1)}`
+            intervalEventObject.fastingStartTime = newFastingStart;
+        }else{
+            // Setze jetzige Zeit als Fastenzeit
+            intervalEventObject.fastingStartTime = `${splittedNow[0]}:${addZero(minuteMinus1)}`
+        }
+         save_into_LocalStorage()
     }
-     save_into_LocalStorage()
 });
 
 const save_into_LocalStorage = () => {
