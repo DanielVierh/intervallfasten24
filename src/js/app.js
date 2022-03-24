@@ -19,6 +19,7 @@ var inpFastingStartTime = document.getElementById('inpFastingStartTime');
 var outputWhatNow = document.getElementById('outputWhatNow');
 var lblTimer = document.getElementById('lblTimer');
 var txtPercent = document.getElementById('txtPercent');
+var circleTrack = document.getElementById("circleTrack");
 var progressCircle = document.querySelector('.progress');
 var outputFrom = document.getElementById("outputFrom");
 var outputTo = document.getElementById('outputTo');
@@ -54,12 +55,16 @@ function setTheme() {
     body.classList.remove("lightTheme");
     body.classList.remove("darkTheme");
     lblTimer.classList.remove("lightPercentColor");
+    circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.remove("darkThemeRing");
+    circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.remove("lightThemeRing");
     if (intervalEventObject.theme === 'Dunkel') {
         body.classList.add("darkTheme");
+        circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add("darkThemeRing");
     }
     else {
         body.classList.add("lightTheme");
         lblTimer.classList.add("lightPercentColor");
+        circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add("lightThemeRing");
     }
 }
 // Funktion zur Überprüfung, ob gerade Fastenzeit läuft
@@ -335,11 +340,13 @@ btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEven
 });
 // Reset Water
 btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener("click", function () {
-    var confirm = window.confirm("Soll die getrunkene Menge von ".concat(intervalEventObject.water.toFixed(2), " L wirklich zur\u00FCckgesetzt werden?"));
-    if (confirm) {
-        intervalEventObject.water = 0;
-        outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
-        waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
-        save_into_LocalStorage();
+    if (intervalEventObject.water > 0) {
+        var confirm_1 = window.confirm("Soll die getrunkene Menge von ".concat(intervalEventObject.water.toFixed(2), " L wirklich zur\u00FCckgesetzt werden?"));
+        if (confirm_1) {
+            intervalEventObject.water = 0;
+            outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
+            waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
+            save_into_LocalStorage();
+        }
     }
 });

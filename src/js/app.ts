@@ -20,6 +20,7 @@ const inpFastingStartTime = document.getElementById('inpFastingStartTime') as HT
 const outputWhatNow = document.getElementById('outputWhatNow') as HTMLInputElement;
 const lblTimer = document.getElementById('lblTimer') as HTMLInputElement;
 const txtPercent = document.getElementById('txtPercent') as any;
+const circleTrack = document.getElementById("circleTrack");
 const progressCircle = document.querySelector('.progress') as any;
 const outputFrom = document.getElementById("outputFrom");
 const outputTo = document.getElementById('outputTo');
@@ -66,12 +67,16 @@ function setTheme() {
     body.classList.remove("lightTheme");
     body.classList.remove("darkTheme");
     lblTimer.classList.remove("lightPercentColor");
+    circleTrack?.classList.remove("darkThemeRing");
+    circleTrack?.classList.remove("lightThemeRing");
 
     if(intervalEventObject.theme === 'Dunkel'){
         body.classList.add("darkTheme");
+        circleTrack?.classList.add("darkThemeRing");
     }else{
         body.classList.add("lightTheme");
         lblTimer.classList.add("lightPercentColor");
+        circleTrack?.classList.add("lightThemeRing");
     }
 }
 
@@ -388,11 +393,14 @@ btnSaveWater?.addEventListener("click", ()=>{
 
 // Reset Water
 btnReset?.addEventListener("click", ()=>{
-    const confirm = window.confirm(`Soll die getrunkene Menge von ${intervalEventObject.water.toFixed(2)} L wirklich zurückgesetzt werden?`)
-    if(confirm) {
-        intervalEventObject.water = 0;
-        outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
-        waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
-        save_into_LocalStorage();
+    if(intervalEventObject.water >0) {
+        const confirm = window.confirm(`Soll die getrunkene Menge von ${intervalEventObject.water.toFixed(2)} L wirklich zurückgesetzt werden?`)
+        if(confirm) {
+            intervalEventObject.water = 0;
+            outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
+            waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
+            save_into_LocalStorage();
+        }
     }
+
 })

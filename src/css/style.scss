@@ -15,9 +15,8 @@ $light-BackColor: white;
     color: $light-ForeColor;
 }
 
-.darkTheme{
-    background: $dark-BackColor;
-    color: $dark-ForeColor;
+.lightThemeRing{
+    stroke: rgba(211, 211, 211, 0.7);
 }
 
 
@@ -85,7 +84,7 @@ background-color: rgba(0,0,0,0.5);
     font-family: sans-serif;
 
     h1{
-        color: rgb(78, 77, 77);
+        color: white;
         font-size: 1.3rem;
     }
 
@@ -100,8 +99,8 @@ background-color: rgba(0,0,0,0.5);
     input{
         max-width: 60px;
         text-align: center;
-        background-color: lightblue;
-        color: black;
+        background-color: rgb(5, 26, 32);
+        color: white;
         font-size: 1.2rem;
         display: flex;
         justify-content: center;
@@ -184,6 +183,8 @@ background-color: rgba(0,0,0,0.5);
     cursor: pointer;
     width: 130px;
     height: 38px;
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 .saveButton:active{
@@ -249,9 +250,18 @@ header{
 
 .track {
     stroke-width: 1;
-    stroke: rgba(211, 211, 211, 0.7);
+    stroke: rgba(182, 182, 182, 0.7);
     fill: none;
     stroke-width: 30;
+}
+
+.darkTheme{
+    background: $dark-BackColor;
+    color: $dark-ForeColor;
+}
+
+.darkThemeRing{
+    stroke: azure;
 }
 
 .progress {
