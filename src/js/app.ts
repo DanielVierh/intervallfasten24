@@ -404,3 +404,13 @@ btnReset?.addEventListener("click", ()=>{
     }
 
 })
+
+
+
+labelFastingTime.addEventListener("click", ()=>{
+    labelFastingTime.disabled = true;
+})
+
+lblAddingWater.addEventListener("click", ()=>{
+    lblAddingWater.disabled = true;
+})

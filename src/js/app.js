@@ -350,3 +350,9 @@ btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener("c
         }
     }
 });
+labelFastingTime.addEventListener("click", function () {
+    labelFastingTime.disabled = true;
+});
+lblAddingWater.addEventListener("click", function () {
+    lblAddingWater.disabled = true;
+});
