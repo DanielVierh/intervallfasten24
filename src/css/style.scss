@@ -145,7 +145,8 @@ background-color: rgba(0,0,0,0.5);
 
 .madalHeader{
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.3rem;
     background: rgb(75, 85, 88);
 }
@@ -352,7 +353,7 @@ header{
 }
 
 .waterAnimation{
-    animation:waterEffect 2s infinite linear;
+    animation:waterEffect 1.5s infinite linear;
 }
 
 @keyframes waterEffect {
@@ -364,4 +365,12 @@ header{
         text-shadow: 0 0 30px turquoise;
         color: aqua;
     }
+}
+
+
+.resetButton{
+    background-color: red;
+    padding: 8px;
+    border-radius: 10px;
+    margin: 5px;
 }

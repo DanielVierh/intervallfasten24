@@ -31,6 +31,7 @@ const lblAddingWater = document.getElementById("lblAddingWater") as HTMLInputEle
 const outputTodayWater = document.getElementById("outputTodayWater");
 const btnSaveWater = document.getElementById("btnSaveWater");
 const waterButton = document.getElementById("waterButton");
+const btnReset = document.getElementById("btnReset");
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -299,14 +300,14 @@ function load_from_LocalStorage() {
             intervalEventObject.water = 0;
             waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
         }
-        
+
     } else {
         // console.warn('Keine Daten vorh');
     }
 }
 
 
-
+//################################################################################
 // Heute getrunken
 let waterUnit: number = 0.2;
 
@@ -362,7 +363,7 @@ btn_IncreaseWater?.addEventListener("click", ()=>{
 btn_DecreaseWater?.addEventListener("click", ()=>{
     if(newWaterAmount > waterUnit){
         (newWaterAmount -= waterUnit).toFixed(2);
-        lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`; 
+        lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`;
     }
 });
 
@@ -376,7 +377,17 @@ btnSaveWater?.addEventListener("click", ()=>{
         outputTodayWater!.classList.add("waterAnimation");
         setTimeout(() => {
             overlay2!.style.display = 'none';
-        }, 2000);
+        }, 1500);
     }
 })
 
+// Reset Water
+btnReset?.addEventListener("click", ()=>{
+    const confirm = window.confirm(`Soll die getrunkene Menge von ${intervalEventObject.water.toFixed(2)} L wirklich zurückgesetzt werden?`)
+    if(confirm) {
+        intervalEventObject.water = 0;
+        outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
+        waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
+        save_into_LocalStorage();
+    }
+})

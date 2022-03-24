@@ -30,6 +30,7 @@ var lblAddingWater = document.getElementById("lblAddingWater");
 var outputTodayWater = document.getElementById("outputTodayWater");
 var btnSaveWater = document.getElementById("btnSaveWater");
 var waterButton = document.getElementById("waterButton");
+var btnReset = document.getElementById("btnReset");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
@@ -263,6 +264,7 @@ function load_from_LocalStorage() {
         // console.warn('Keine Daten vorh');
     }
 }
+//################################################################################
 // Heute getrunken
 var waterUnit = 0.2;
 // Wasserfenster einblenden
@@ -322,6 +324,16 @@ btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEven
         outputTodayWater.classList.add("waterAnimation");
         setTimeout(function () {
             overlay2.style.display = 'none';
-        }, 2000);
+        }, 1500);
+    }
+});
+// Reset Water
+btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener("click", function () {
+    var confirm = window.confirm("Soll die getrunkene Menge von ".concat(intervalEventObject.water.toFixed(2), " L wirklich zur\u00FCckgesetzt werden?"));
+    if (confirm) {
+        intervalEventObject.water = 0;
+        outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
+        waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
+        save_into_LocalStorage();
     }
 });
