@@ -308,24 +308,30 @@ btn_IncreaseWater === null || btn_IncreaseWater === void 0 ? void 0 : btn_Increa
     (newWaterAmount += waterUnit).toFixed(2);
     lblAddingWater.value = "".concat(newWaterAmount.toFixed(2), " L");
 });
+// Wassermenge abziehen
 btn_DecreaseWater === null || btn_DecreaseWater === void 0 ? void 0 : btn_DecreaseWater.addEventListener("click", function () {
     if (newWaterAmount > waterUnit) {
         (newWaterAmount -= waterUnit).toFixed(2);
         lblAddingWater.value = "".concat(newWaterAmount.toFixed(2), " L");
     }
+    else {
+        newWaterAmount = 0 - waterUnit;
+        lblAddingWater.value = "".concat(newWaterAmount.toFixed(2), " L");
+    }
 });
 // Speichere neue Wassermenge
 btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEventListener("click", function () {
-    if (newWaterAmount > 0) {
-        intervalEventObject.water += newWaterAmount;
-        save_into_LocalStorage();
-        waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
-        outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
-        outputTodayWater.classList.add("waterAnimation");
-        setTimeout(function () {
-            overlay2.style.display = 'none';
-        }, 1500);
+    intervalEventObject.water += newWaterAmount;
+    if (intervalEventObject.water < 0) {
+        intervalEventObject.water = 0;
     }
+    save_into_LocalStorage();
+    waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
+    outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
+    outputTodayWater.classList.add("waterAnimation");
+    setTimeout(function () {
+        overlay2.style.display = 'none';
+    }, 1500);
 });
 // Reset Water
 btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener("click", function () {

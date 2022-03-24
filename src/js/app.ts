@@ -360,17 +360,23 @@ btn_IncreaseWater?.addEventListener("click", ()=>{
     lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`;
 });
 
+// Wassermenge abziehen
 btn_DecreaseWater?.addEventListener("click", ()=>{
     if(newWaterAmount > waterUnit){
         (newWaterAmount -= waterUnit).toFixed(2);
+        lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`;
+    }else{
+        newWaterAmount = 0 - waterUnit;
         lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`;
     }
 });
 
 // Speichere neue Wassermenge
 btnSaveWater?.addEventListener("click", ()=>{
-    if(newWaterAmount > 0) {
         intervalEventObject.water += newWaterAmount;
+        if(intervalEventObject.water <0) {
+            intervalEventObject.water = 0;
+        }
         save_into_LocalStorage();
         waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
         outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
@@ -378,8 +384,7 @@ btnSaveWater?.addEventListener("click", ()=>{
         setTimeout(() => {
             overlay2!.style.display = 'none';
         }, 1500);
-    }
-})
+});
 
 // Reset Water
 btnReset?.addEventListener("click", ()=>{
