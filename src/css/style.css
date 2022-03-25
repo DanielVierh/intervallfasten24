@@ -244,6 +244,7 @@
   /* background: linear-gradient(to right, rgb(172, 171, 171), rgb(214, 214, 214)); */
   -webkit-box-shadow: inset 2px 2px 4px white;
           box-shadow: inset 2px 2px 4px white;
+  cursor: pointer;
 }
 
 .settingButton {
@@ -438,6 +439,7 @@ header {
   font-size: 20px;
   border: 1px solid rgba(0, 0, 255, 0.596);
   color: black;
+  cursor: pointer;
 }
 
 .waterunit.active {
@@ -483,6 +485,7 @@ header {
   padding: 8px;
   border-radius: 10px;
   margin: 5px;
+  cursor: pointer;
 }
 
 .emptyButton {

@@ -202,6 +202,7 @@ background-color: rgba(0,0,0,0.5);
     color: black;
     /* background: linear-gradient(to right, rgb(172, 171, 171), rgb(214, 214, 214)); */
     box-shadow: inset 2px 2px 4px white;
+    cursor: pointer;
 }
 
 .settingButton{
@@ -351,6 +352,7 @@ header{
     font-size: 20px;
     border: 1px solid rgba(0, 0, 255, 0.596);
     color: black;
+    cursor: pointer;
     &.active{
         box-shadow:0 0 16px lightblue, inset 2px 2px 3px black;
     }
@@ -383,6 +385,7 @@ header{
     padding: 8px;
     border-radius: 10px;
     margin: 5px;
+    cursor: pointer;
 }
 
 
