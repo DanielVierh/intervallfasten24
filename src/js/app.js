@@ -336,7 +336,7 @@ btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEven
     outputTodayWater.classList.add("waterAnimation");
     setTimeout(function () {
         overlay2.style.display = 'none';
-    }, 1500);
+    }, 700);
 });
 // Reset Water
 btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener("click", function () {

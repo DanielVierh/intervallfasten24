@@ -388,7 +388,7 @@ btnSaveWater?.addEventListener("click", ()=>{
         outputTodayWater!.classList.add("waterAnimation");
         setTimeout(() => {
             overlay2!.style.display = 'none';
-        }, 1500);
+        }, 700);
 });
 
 // Reset Water

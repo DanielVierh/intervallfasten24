@@ -456,8 +456,8 @@ header {
 }
 
 .waterAnimation {
-  -webkit-animation: waterEffect 1.5s infinite linear;
-          animation: waterEffect 1.5s infinite linear;
+  -webkit-animation: waterEffect .7s infinite linear;
+          animation: waterEffect .7s infinite linear;
 }
 
 @-webkit-keyframes waterEffect {
