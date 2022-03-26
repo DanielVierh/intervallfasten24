@@ -51,7 +51,7 @@
 
 #modal2 {
   max-width: 600px;
-  height: 400px;
+  height: 450px;
   margin: auto;
   position: absolute;
   top: 0;
@@ -432,11 +432,11 @@ header {
 
 .waterunit {
   background-color: lightblue;
-  padding: 11px;
+  padding: 7px;
   margin-right: 10px;
   border-radius: 15px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   border: 1px solid rgba(0, 0, 255, 0.596);
   color: black;
   cursor: pointer;
@@ -451,8 +451,11 @@ header {
 
 .drank {
   color: aqua;
-  font-size: 2rem;
+  font-size: 45px;
   font-weight: bold;
+  padding: 0;
+  margin: 0;
+  letter-spacing: 3px;
 }
 
 .waterAnimation {

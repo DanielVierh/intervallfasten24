@@ -33,11 +33,13 @@ const outputTodayWater = document.getElementById("outputTodayWater");
 const btnSaveWater = document.getElementById("btnSaveWater");
 const waterButton = document.getElementById("waterButton");
 const btnReset = document.getElementById("btnReset");
+const lblLastWater = document.getElementById("lblLastWater");
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
 let isFastingTime: Boolean = false;
 let newWaterAmount: number = 0.2;
+let lastWater: string = '-';
 
 let intervalEventObject: {
     fastingTime: number;
@@ -45,12 +47,14 @@ let intervalEventObject: {
     fastingStartTime: string;
     theme: string;
     water: number;
+    lastWater: string;
 } = {
     fastingTime: 16,
     eatTime: 8,
     fastingStartTime: '17:00',
     theme: 'light',
     water: 0,
+    lastWater: '-'
 };
 
 
@@ -305,6 +309,17 @@ function load_from_LocalStorage() {
             intervalEventObject.water = 0;
             waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
         }
+        try {
+            if(intervalEventObject.lastWater === undefined){
+                lastWater = '-';
+            }else{
+                lastWater = intervalEventObject.lastWater;
+            }
+            
+        } catch (err) {
+            console.log(err);
+            lastWater = '-';
+        }
 
     } else {
         // console.warn('Keine Daten vorh');
@@ -321,7 +336,7 @@ btn_ShowModalButton2?.addEventListener('click', () => {
     overlay2!.style.display = 'block';
     outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
     outputTodayWater!.classList.remove("waterAnimation");
-
+    lblLastWater!.innerHTML = lastWater;
 });
 
 btnWaterUnit02?.addEventListener("click", ()=>{
@@ -381,7 +396,11 @@ btnSaveWater?.addEventListener("click", ()=>{
         intervalEventObject.water += newWaterAmount;
         if(intervalEventObject.water <0) {
             intervalEventObject.water = 0;
+        }else{
+            lastWater = `Zuletzt ${newWaterAmount} L um ${currentTime()}`;
+            intervalEventObject.lastWater = lastWater;
         }
+
         save_into_LocalStorage();
         waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
         outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
@@ -399,6 +418,9 @@ btnReset?.addEventListener("click", ()=>{
             intervalEventObject.water = 0;
             outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
             waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
+            lastWater = '-';
+            lblLastWater!.innerHTML = lastWater;
+            intervalEventObject.lastWater = lastWater
             save_into_LocalStorage();
         }
     }

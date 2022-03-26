@@ -32,16 +32,19 @@ var outputTodayWater = document.getElementById("outputTodayWater");
 var btnSaveWater = document.getElementById("btnSaveWater");
 var waterButton = document.getElementById("waterButton");
 var btnReset = document.getElementById("btnReset");
+var lblLastWater = document.getElementById("lblLastWater");
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
 var newWaterAmount = 0.2;
+var lastWater = '-';
 var intervalEventObject = {
     fastingTime: 16,
     eatTime: 8,
     fastingStartTime: '17:00',
     theme: 'light',
-    water: 0
+    water: 0,
+    lastWater: '-'
 };
 // Init -- Start
 function init() {
@@ -264,6 +267,18 @@ function load_from_LocalStorage() {
             intervalEventObject.water = 0;
             waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
         }
+        try {
+            if (intervalEventObject.lastWater === undefined) {
+                lastWater = '-';
+            }
+            else {
+                lastWater = intervalEventObject.lastWater;
+            }
+        }
+        catch (err) {
+            console.log(err);
+            lastWater = '-';
+        }
     }
     else {
         // console.warn('Keine Daten vorh');
@@ -277,6 +292,7 @@ btn_ShowModalButton2 === null || btn_ShowModalButton2 === void 0 ? void 0 : btn_
     overlay2.style.display = 'block';
     outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
     outputTodayWater.classList.remove("waterAnimation");
+    lblLastWater.innerHTML = lastWater;
 });
 btnWaterUnit02 === null || btnWaterUnit02 === void 0 ? void 0 : btnWaterUnit02.addEventListener("click", function () {
     resetActiveWaterUnit();
@@ -330,6 +346,10 @@ btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEven
     if (intervalEventObject.water < 0) {
         intervalEventObject.water = 0;
     }
+    else {
+        lastWater = "Zuletzt ".concat(newWaterAmount, " L um ").concat(currentTime());
+        intervalEventObject.lastWater = lastWater;
+    }
     save_into_LocalStorage();
     waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
     outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
@@ -346,6 +366,9 @@ btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener("c
             intervalEventObject.water = 0;
             outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
             waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
+            lastWater = '-';
+            lblLastWater.innerHTML = lastWater;
+            intervalEventObject.lastWater = lastWater;
             save_into_LocalStorage();
         }
     }
