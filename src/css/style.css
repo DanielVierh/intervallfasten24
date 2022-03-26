@@ -445,6 +445,8 @@ header {
 .waterunit.active {
   -webkit-box-shadow: 0 0 16px lightblue, inset 2px 2px 3px black;
           box-shadow: 0 0 16px lightblue, inset 2px 2px 3px black;
+  background-color: black;
+  color: aqua;
 }
 
 .drank {
