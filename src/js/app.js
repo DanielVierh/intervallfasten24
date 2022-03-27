@@ -38,6 +38,7 @@ var newEatingTime = 0;
 var isFastingTime = false;
 var newWaterAmount = 0.2;
 var lastWater = '-';
+var finishedFasting = [16, 14, 15, 17, 16, 16, 15];
 var intervalEventObject = {
     fastingTime: 16,
     eatTime: 8,
@@ -46,6 +47,14 @@ var intervalEventObject = {
     water: 0,
     lastWater: '-'
 };
+var FastingIdentifier = /** @class */ (function () {
+    function FastingIdentifier(id, fastingTime, approxFastingStartTime) {
+        this.id = id;
+        this.fastingTime = fastingTime;
+        this.approxFastingStartTime = approxFastingStartTime;
+    }
+    return FastingIdentifier;
+}());
 // Init -- Start
 function init() {
     load_from_LocalStorage();
@@ -379,3 +388,48 @@ labelFastingTime.addEventListener("click", function () {
 lblAddingWater.addEventListener("click", function () {
     lblAddingWater.disabled = true;
 });
+// Chart
+// Max 180px
+function renderDayChart() {
+    var max = -1;
+    // ermittle max Wert
+    for (var i = 0; i < finishedFasting.length; i++) {
+        if (finishedFasting[i] > max) {
+            max = finishedFasting[i];
+        }
+    }
+    // Rendern
+    for (var i = 0; i < finishedFasting.length; i++) {
+        var day = "lblDay".concat(i);
+        // errechne Pixelhöhe
+        var pixelHeight = Math.floor(finishedFasting[i] * 180 / max);
+        //@ts-ignore
+        document.getElementById(day).style.height = "".concat(pixelHeight, "px");
+    }
+}
+renderDayChart();
+// Wenn normaler durchlauf auf hinterlegten Stunden berufen
+// Wenn manuell gesetzt wird, und nun
+/*
+Ich schaue auf mein Handy. Es ist 18:05 Uhr. Fasten läuft seit 1 Stunde.
+Jetzt zieht sich eine Funktion den Tag, Uhrzeit und Fastenzeitraum
+Abgeglichen wird der Wert mit den Werten aus IntervallObj
+-Funktion wird alle 10 Sekunden aufgerufen
+Wenn TagDiff <= 1 :
+    -
+
+id: ISD/IED // intfasten Start Datum - intervallfasten End Datum
+Mon/Thu
+
+Wenn jetzt fasten: ist es vor oder nach Fastenstart
+Wenn vorher dann ist es Restfasten vom vortag
+-ID wird generiert CurrentDate - 1 Sat/Sun currentDate
+Hierzu wird noch zum vergleich die Sollfastenzeit abgespeichert
+
+-Später wird wieder auf das Handy geschaut mittlerweile wird gegessen
+-Es wird geschaut ob vor fasten.
+-ID wird generiert
+-ID wird verglichen
+-Nun kann der Zeitstempel gesetzt werden
+
+*/
