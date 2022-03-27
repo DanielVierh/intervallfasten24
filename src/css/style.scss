@@ -322,11 +322,15 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 25px;
 }
 
 .box{
     margin: auto;
     text-align: center;
+    p{
+        margin: 0;
+    }
 }
 
 .timer{
