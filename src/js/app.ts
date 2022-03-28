@@ -12,35 +12,47 @@ const btn_DecreaseFasting = document.getElementById('btn_DecreaseFasting');
 const btn_DecreaseWater = document.getElementById('btn_DecreaseWater');
 const btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
 const btn_IncreaseWater = document.getElementById('btn_IncreaseWater');
-const labelFastingTime = document.getElementById('lblfastingTime') as HTMLInputElement;
+const labelFastingTime = document.getElementById(
+    'lblfastingTime',
+) as HTMLInputElement;
 const fastingChangeButton = document.getElementById('fastingChangeButton');
 const btn_SaveSettings = document.getElementById('btnSaveSettings');
 const btnSetNextEvent = document.getElementById('btnSetNextEvent');
-const inpFastingStartTime = document.getElementById('inpFastingStartTime') as HTMLInputElement;
-const outputWhatNow = document.getElementById('outputWhatNow') as HTMLInputElement;
+const inpFastingStartTime = document.getElementById(
+    'inpFastingStartTime',
+) as HTMLInputElement;
+const outputWhatNow = document.getElementById(
+    'outputWhatNow',
+) as HTMLInputElement;
 const lblTimer = document.getElementById('lblTimer') as HTMLInputElement;
 const txtPercent = document.getElementById('txtPercent') as any;
-const circleTrack = document.getElementById("circleTrack");
+const circleTrack = document.getElementById('circleTrack');
 const progressCircle = document.querySelector('.progress') as any;
-const outputFrom = document.getElementById("outputFrom");
+const outputFrom = document.getElementById('outputFrom');
 const outputTo = document.getElementById('outputTo');
-const themeStyle = document.getElementById("themeStyle") as HTMLInputElement;
-const btnWaterUnit02 = document.getElementById("btnWaterUnit02");
-const btnWaterUnit025 = document.getElementById("btnWaterUnit025");
-const btnWaterUnit033 = document.getElementById("btnWaterUnit033");
-const lblAddingWater = document.getElementById("lblAddingWater") as HTMLInputElement;
-const outputTodayWater = document.getElementById("outputTodayWater");
-const btnSaveWater = document.getElementById("btnSaveWater");
-const waterButton = document.getElementById("waterButton");
-const btnReset = document.getElementById("btnReset");
-const lblLastWater = document.getElementById("lblLastWater");
+const themeStyle = document.getElementById('themeStyle') as HTMLInputElement;
+const btnWaterUnit02 = document.getElementById('btnWaterUnit02');
+const btnWaterUnit025 = document.getElementById('btnWaterUnit025');
+const btnWaterUnit033 = document.getElementById('btnWaterUnit033');
+const lblAddingWater = document.getElementById(
+    'lblAddingWater',
+) as HTMLInputElement;
+const outputTodayWater = document.getElementById('outputTodayWater');
+const btnSaveWater = document.getElementById('btnSaveWater');
+const waterButton = document.getElementById('waterButton');
+const btnReset = document.getElementById('btnReset');
+const lblLastWater = document.getElementById('lblLastWater');
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
-let isFastingTime: Boolean = false;
+let isFastingTime: boolean = false;
 let newWaterAmount: number = 0.2;
 let lastWater: string = '-';
-let finishedFasting = [16,14,15,17,16,16,15];
+
+let finishedFasting = [0, 0, 0, 0, 0, 0, 0];
+let checkInterv_5Sec: number = 0;
+let lastIdentifier = '';
+let identifierObjStr: string = '';
 
 let intervalEventObject: {
     fastingTime: number;
@@ -49,27 +61,36 @@ let intervalEventObject: {
     theme: string;
     water: number;
     lastWater: string;
+    finishedFasting: number[];
+    lastIdentifier: string;
+    identifierObjStr: string;
 } = {
     fastingTime: 16,
     eatTime: 8,
     fastingStartTime: '17:00',
     theme: 'light',
     water: 0,
-    lastWater: '-'
+    lastWater: '-',
+    finishedFasting: [0, 0, 0, 0, 0, 0, 0],
+    lastIdentifier: '',
+    identifierObjStr: identifierObjStr,
 };
 
 class FastingIdentifier {
     id: string;
     fastingTime: number;
     approxFastingStartTime: string;
-    constructor(id: string, fastingTime: number, approxFastingStartTime: string) {
+    constructor(
+        id: string,
+        fastingTime: number,
+        approxFastingStartTime: string,
+    ) {
         this.id = id;
         this.fastingTime = fastingTime;
         this.approxFastingStartTime = approxFastingStartTime;
     }
 }
-
-
+let identifierObj = new FastingIdentifier('', 0, '');
 
 // Init -- Start
 function init() {
@@ -81,31 +102,35 @@ init();
 
 function setTheme() {
     const body = document.body;
-    body.classList.remove("lightTheme");
-    body.classList.remove("darkTheme");
-    lblTimer.classList.remove("lightPercentColor");
-    circleTrack?.classList.remove("darkThemeRing");
-    circleTrack?.classList.remove("lightThemeRing");
+    body.classList.remove('lightTheme');
+    body.classList.remove('darkTheme');
+    lblTimer.classList.remove('lightPercentColor');
+    circleTrack?.classList.remove('darkThemeRing');
+    circleTrack?.classList.remove('lightThemeRing');
 
-    if(intervalEventObject.theme === 'Dunkel'){
-        body.classList.add("darkTheme");
-        circleTrack?.classList.add("darkThemeRing");
-    }else{
-        body.classList.add("lightTheme");
-        lblTimer.classList.add("lightPercentColor");
-        circleTrack?.classList.add("lightThemeRing");
+    if (intervalEventObject.theme === 'Dunkel') {
+        body.classList.add('darkTheme');
+        circleTrack?.classList.add('darkThemeRing');
+    } else {
+        body.classList.add('lightTheme');
+        lblTimer.classList.add('lightPercentColor');
+        circleTrack?.classList.add('lightThemeRing');
     }
 }
 
 // Funktion zur Überprüfung, ob gerade Fastenzeit läuft
 // Entsprechend wird die Anzeige der UI Elemente angepasst
 function checkFastingStatus() {
+    // Es wird alle 10 Sekunden die ...
+    checkInterv_5Sec < 5 ? checkInterv_5Sec++ : initIdentifier();
+
     const now = currentTime();
     const splittedFastingTime = intervalEventObject.fastingStartTime.split(':');
     const fastingStartHour: number = parseInt(splittedFastingTime[0]);
     const fastingStartMinute: number = parseInt(splittedFastingTime[1]);
-    let fastingStartTimeMinusEatTime: number = fastingStartHour - intervalEventObject.eatTime;
-    if(fastingStartTimeMinusEatTime < 0) {
+    let fastingStartTimeMinusEatTime: number =
+        fastingStartHour - intervalEventObject.eatTime;
+    if (fastingStartTimeMinusEatTime < 0) {
         fastingStartTimeMinusEatTime = 24 + fastingStartTimeMinusEatTime;
     }
     const diffToFasting = diff(
@@ -132,14 +157,11 @@ function checkFastingStatus() {
         lblTimer.innerHTML = `${diffToFasting}`;
         btnSetNextEvent!.innerHTML = 'Fasten starten';
         // txtPercent.innerHTML = `${diffToFastingInPercent}%`;
-        outputFrom!.innerHTML = `${addZero(fastingStartTimeMinusEatTime)}:${addZero(fastingStartMinute)}`;
+        outputFrom!.innerHTML = `${addZero(
+            fastingStartTimeMinusEatTime,
+        )}:${addZero(fastingStartMinute)}`;
         outputTo!.innerHTML = `${intervalEventObject.fastingStartTime}`;
         circleProgress(parseInt(diffToFastingInPercent));
-        // if (parseInt(diffToFastingInPercent) < 10) {
-        //     txtPercent.style.transform = 'translateX(1.5rem)';
-        // } else {
-        //     txtPercent.style.transform = 'translateX(0rem)';
-        // }
     } else {
         isFastingTime = true;
         outputWhatNow.innerHTML = 'Jetzt: Fasten';
@@ -147,13 +169,10 @@ function checkFastingStatus() {
         btnSetNextEvent!.innerHTML = 'Essen starten';
         // txtPercent.innerHTML = `${diffToEatingInPercent}%`;
         outputFrom!.innerHTML = `${intervalEventObject.fastingStartTime}`;
-        outputTo!.innerHTML = `${addZero(fastingStartTimeMinusEatTime)}:${addZero(fastingStartMinute)}`;
+        outputTo!.innerHTML = `${addZero(
+            fastingStartTimeMinusEatTime,
+        )}:${addZero(fastingStartMinute)}`;
         circleProgress(parseInt(diffToEatingInPercent));
-        // if (parseInt(diffToEatingInPercent) < 10) {
-        //     txtPercent.style.transform = 'translateX(1.5rem)';
-        // } else {
-        //     txtPercent.style.transform = 'translateX(0rem)';
-        // }
     }
 }
 
@@ -184,15 +203,12 @@ function currentTime() {
     return now;
 }
 
-
 // Sekündlicher Funktionsaufruf für Check Func
 function checkIntervall() {
     setInterval(() => {
         checkFastingStatus();
     }, 1000);
 }
-
-
 
 function addZero(val: any) {
     if (val < 10) {
@@ -257,7 +273,7 @@ function changeFastingTime(direction: string) {
         }
         // Fasten verkürzen
     } else {
-        if (newFastingTime > 2) {
+        if (newFastingTime > 13) {
             newFastingTime--;
             newEatingTime = 24 - newFastingTime;
             displayFastingTime();
@@ -284,61 +300,102 @@ function displayFastingTime() {
 
 // Event setzen
 btnSetNextEvent?.addEventListener('click', () => {
-    let nextEvent = ''
-    isFastingTime ? nextEvent = 'Essen' : nextEvent = 'Fasten';
-    const request = window.confirm(`Möchtest du die Phase: "${nextEvent}" wirklich vorzeitig starten?`)
-    if(request) {
+    let nextEvent = '';
+    isFastingTime ? (nextEvent = 'Essen') : (nextEvent = 'Fasten');
+    const request = window.confirm(
+        `Möchtest du die Phase: "${nextEvent}" wirklich vorzeitig starten?`,
+    );
+    if (request) {
         const now = currentTime();
         const splittedNow = now.split(':');
         const minuteMinus1 = parseInt(splittedNow[1]) - 1;
-        if(isFastingTime === true) {
+        if (isFastingTime === true) {
             // Berechne neue Fastenzeit now + Essenszeit
-            let newFastingStartRaw = parseInt(splittedNow[0]) + intervalEventObject.eatTime;
-            if(newFastingStartRaw > 24)  newFastingStartRaw = newFastingStartRaw - 24
-            const newFastingStart = `${addZero(newFastingStartRaw)}:${addZero(minuteMinus1)}`
+            let newFastingStartRaw =
+                parseInt(splittedNow[0]) + intervalEventObject.eatTime;
+            if (newFastingStartRaw > 24)
+                newFastingStartRaw = newFastingStartRaw - 24;
+            const newFastingStart = `${addZero(newFastingStartRaw)}:${addZero(
+                minuteMinus1,
+            )}`;
             intervalEventObject.fastingStartTime = newFastingStart;
-        }else{
+        } else {
             // Setze jetzige Zeit als Fastenzeit
-            intervalEventObject.fastingStartTime = `${splittedNow[0]}:${addZero(minuteMinus1)}`
+            intervalEventObject.fastingStartTime = `${splittedNow[0]}:${addZero(
+                minuteMinus1,
+            )}`;
         }
-         save_into_LocalStorage()
+        save_into_LocalStorage();
     }
 });
 
+//################################################################################
+// Save LocalStorage
+//################################################################################
 const save_into_LocalStorage = () => {
-    localStorage.setItem('stored_IntervallObj', JSON.stringify(intervalEventObject));
+    localStorage.setItem(
+        'stored_IntervallObj',
+        JSON.stringify(intervalEventObject),
+    );
 };
 
-
+//################################################################################
+// Load from LocalStorage
+//################################################################################
 function load_from_LocalStorage() {
     if (localStorage.getItem('stored_IntervallObj') !== null) {
         //@ts-ignore
-        intervalEventObject = JSON.parse(localStorage.getItem('stored_IntervallObj'));
+        intervalEventObject = JSON.parse(localStorage.getItem('stored_IntervallObj'),
+        );
         fastingChangeButton!.innerText = `${intervalEventObject.fastingTime}:${intervalEventObject.eatTime}`;
         try {
-            waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
+            waterButton!.innerText = `${intervalEventObject.water.toFixed(
+                2,
+            )} L`;
         } catch (err) {
             console.log(err);
             intervalEventObject.water = 0;
-            waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
+            waterButton!.innerText = `${intervalEventObject.water.toFixed(
+                2,
+            )} L`;
         }
         try {
-            if(intervalEventObject.lastWater === undefined){
+            if (intervalEventObject.lastWater === undefined) {
                 lastWater = '-';
-            }else{
+            } else {
                 lastWater = intervalEventObject.lastWater;
             }
-
         } catch (err) {
             console.log(err);
             lastWater = '-';
         }
+        // Identifier
+        try {
+            finishedFasting = intervalEventObject.finishedFasting;
+            console.log('finishedFasting', finishedFasting);
+        } catch (err) {
+            console.log(err);
+            finishedFasting = [0, 0, 0, 0, 0, 0, 0];
+            console.log('finishedFasting', finishedFasting);
+        }
+        try {
+            lastIdentifier = intervalEventObject.lastIdentifier;
+        } catch (err) {
+            console.log(err);
+            lastIdentifier = '';
+        }
 
+        try {
+            identifierObjStr = intervalEventObject.identifierObjStr;
+        } catch (err) {
+            console.log(err);
+            identifierObjStr = '';
+        }
     } else {
         // console.warn('Keine Daten vorh');
     }
+    console.log(intervalEventObject);
 }
-
 
 //################################################################################
 // Heute getrunken
@@ -347,156 +404,243 @@ let waterUnit: number = 0.2;
 // Wasserfenster einblenden
 btn_ShowModalButton2?.addEventListener('click', () => {
     overlay2!.style.display = 'block';
-    outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
-    outputTodayWater!.classList.remove("waterAnimation");
+    outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(
+        2,
+    )} Liter`;
+    outputTodayWater!.classList.remove('waterAnimation');
     lblLastWater!.innerHTML = lastWater;
 });
 
-btnWaterUnit02?.addEventListener("click", ()=>{
+btnWaterUnit02?.addEventListener('click', () => {
     resetActiveWaterUnit();
-    btnWaterUnit02!.classList.add("active");
+    btnWaterUnit02!.classList.add('active');
     waterUnit = 0.2;
     newWaterAmount = waterUnit;
     lblAddingWater.value = `${waterUnit} L`;
-
 });
-btnWaterUnit025?.addEventListener("click", ()=>{
+btnWaterUnit025?.addEventListener('click', () => {
     resetActiveWaterUnit();
-    btnWaterUnit025!.classList.add("active");
+    btnWaterUnit025!.classList.add('active');
     waterUnit = 0.25;
     newWaterAmount = waterUnit;
     lblAddingWater.value = `${waterUnit} L`;
 });
-btnWaterUnit033?.addEventListener("click", ()=>{
+btnWaterUnit033?.addEventListener('click', () => {
     resetActiveWaterUnit();
-    btnWaterUnit033!.classList.add("active");
+    btnWaterUnit033!.classList.add('active');
     waterUnit = 0.33;
     newWaterAmount = waterUnit;
     lblAddingWater.value = `${waterUnit} L`;
 });
 
 // Resetfunc um alle Active Klassen zu entfernen
-function resetActiveWaterUnit(){
-    btnWaterUnit02!.classList.remove("active");
-    btnWaterUnit025!.classList.remove("active");
-    btnWaterUnit033!.classList.remove("active");
+function resetActiveWaterUnit() {
+    btnWaterUnit02!.classList.remove('active');
+    btnWaterUnit025!.classList.remove('active');
+    btnWaterUnit033!.classList.remove('active');
 }
 
 // Modal 2 schließen
-btn_CloseModal2?.addEventListener("click", ()=>{
+btn_CloseModal2?.addEventListener('click', () => {
     overlay2!.style.display = 'none';
-})
+});
 
-
-btn_IncreaseWater?.addEventListener("click", ()=>{
+btn_IncreaseWater?.addEventListener('click', () => {
     (newWaterAmount += waterUnit).toFixed(2);
     lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`;
 });
 
 // Wassermenge abziehen
-btn_DecreaseWater?.addEventListener("click", ()=>{
-    if(newWaterAmount > waterUnit){
+btn_DecreaseWater?.addEventListener('click', () => {
+    if (newWaterAmount > waterUnit) {
         (newWaterAmount -= waterUnit).toFixed(2);
         lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`;
-    }else{
+    } else {
         newWaterAmount = 0 - waterUnit;
         lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`;
     }
 });
 
 // Speichere neue Wassermenge
-btnSaveWater?.addEventListener("click", ()=>{
-        intervalEventObject.water += newWaterAmount;
-        if(intervalEventObject.water <0) {
-            intervalEventObject.water = 0;
-        }else{
-            lastWater = `Zuletzt ${newWaterAmount} L um ${currentTime()}`;
-            intervalEventObject.lastWater = lastWater;
-        }
+btnSaveWater?.addEventListener('click', () => {
+    intervalEventObject.water += newWaterAmount;
+    if (intervalEventObject.water < 0) {
+        intervalEventObject.water = 0;
+    } else {
+        lastWater = `Zuletzt ${newWaterAmount} L um ${currentTime()}`;
+        intervalEventObject.lastWater = lastWater;
+    }
 
-        save_into_LocalStorage();
-        waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
-        outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
-        outputTodayWater!.classList.add("waterAnimation");
-        setTimeout(() => {
-            overlay2!.style.display = 'none';
-        }, 700);
+    save_into_LocalStorage();
+    waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
+    outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(
+        2,
+    )} Liter`;
+    outputTodayWater!.classList.add('waterAnimation');
+    setTimeout(() => {
+        overlay2!.style.display = 'none';
+    }, 700);
 });
 
 // Reset Water
-btnReset?.addEventListener("click", ()=>{
-    if(intervalEventObject.water >0) {
-        const confirm = window.confirm(`Soll die getrunkene Menge von ${intervalEventObject.water.toFixed(2)} L wirklich zurückgesetzt werden?`)
-        if(confirm) {
+btnReset?.addEventListener('click', () => {
+    if (intervalEventObject.water > 0) {
+        const confirm = window.confirm(
+            `Soll die getrunkene Menge von ${intervalEventObject.water.toFixed(2)} L wirklich zurückgesetzt werden?`);
+        if (confirm) {
             intervalEventObject.water = 0;
             outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
             waterButton!.innerText = `${intervalEventObject.water.toFixed(2)} L`;
             lastWater = '-';
             lblLastWater!.innerHTML = lastWater;
-            intervalEventObject.lastWater = lastWater
+            intervalEventObject.lastWater = lastWater;
             save_into_LocalStorage();
         }
     }
+});
 
-})
-
-
-
-labelFastingTime.addEventListener("click", ()=>{
+labelFastingTime.addEventListener('click', () => {
     labelFastingTime.disabled = true;
-})
+});
 
-lblAddingWater.addEventListener("click", ()=>{
+lblAddingWater.addEventListener('click', () => {
     lblAddingWater.disabled = true;
-})
+});
 
-
+//################################################################################
 // Chart
+//################################################################################
 
-// Max 180px
-function renderDayChart(){
-    let max = -1;
-           // ermittle max Wert
-   for (let i = 0; i < finishedFasting.length; i++){
-       if(finishedFasting[i] > max){
-           max = finishedFasting[i];
-       }
-   }
-    // Rendern
-   for (let i = 0; i < finishedFasting.length; i++){
-    const day = `lblDay${i}`
-    // errechne Pixelhöhe
-    const pixelHeight = Math.floor(finishedFasting[i] * 180 / max)
-    //@ts-ignore
-    document.getElementById(day).style.height = `${pixelHeight}px`;
+function renderDayChart() {
+    try {
+        let max = -1;
+        // ermittle max Wert
+        for (let i = 0; i < finishedFasting.length; i++) {
+            if (finishedFasting[i] > max) {
+                max = finishedFasting[i];
+            }
+        }
+        // Rendern
+        for (let i = 0; i < finishedFasting.length; i++) {
+            const day = `lblDay${i}`;
+            // errechne Pixelhöhe
+            const pixelHeight = Math.floor((finishedFasting[i] * 180) / max);
+            //@ts-ignore
+            document.getElementById(day).style.height = `${pixelHeight}px`;
+        }
+    } catch (err) {
+        console.log(err);
     }
 }
 
-renderDayChart()
+renderDayChart();
 
-// Wenn normaler durchlauf auf hinterlegten Stunden berufen
-// Wenn manuell gesetzt wird, und nun
 
-/*
-Ich schaue auf mein Handy. Es ist 18:05 Uhr. Fasten läuft seit 1 Stunde.
-Jetzt zieht sich eine Funktion den Tag, Uhrzeit und Fastenzeitraum
-Abgeglichen wird der Wert mit den Werten aus IntervallObj
--Funktion wird alle 10 Sekunden aufgerufen
-Wenn TagDiff <= 1 :
-    -
+//!#######################################
+// ! Baustelle
+//!#######################################
+// Diese Funktion wird alle 10 Sekunden ausgeführt und erstellt eine ID
+function initIdentifier() {
+    checkInterv_5Sec = 0;
+    // Aktueller Identifier wird generiert
+    identifierObj = new FastingIdentifier(
+        setIdentifier(),
+        intervalEventObject.fastingTime,
+        intervalEventObject.fastingStartTime,
+    );
+    identifierObjStr = `${identifierObj.id}/${identifierObj.approxFastingStartTime}/${identifierObj.fastingTime}`;
+    // console.log('identifierObjStr', identifierObjStr);
 
-id: ISD/IED // intfasten Start Datum - intervallfasten End Datum
-Mon/Thu
+    // Todo Klasse FastingIdentifier anpassen.
+    // Todo: ID muss besser sein
+    // Wenn Essen erlaubt ist, ID abgleichen
+    if (isFastingTime === false) {
+        // Neue ID wird mit gespeicherten ID abgeglichen
+        if (lastIdentifier === identifierObj.id) {
+            // console.log('Sind identisch');
+        } else {
+            // console.log('Sind nicht identisch');
+            // Auslesen des zuletzt abgespeicherten Identifiers
+            const identifierObjStrInArr = identifierObjStr.split('/');
+            const savedFastHr: number = parseInt(identifierObjStrInArr[3]);
+            const savedApproxStartTime = identifierObjStrInArr[2];
+            const savedStartDay = identifierObjStrInArr[0];
+            const weekday = savedStartDay.substring(0, 3);
+            console.log('weekday', weekday);
+            // Funktion aufrufen, die den Index vom Wochentag zurück gibt
+            const indexDay = getIndexOfWeekday(weekday);
+            // Abgleichen, ob sich die Fasten- Stunden geändert haben
+            if(savedFastHr === identifierObj.fastingTime) {
+                console.log('Fastenzeit ist gleich geblieben');
+                // Sonst einfach die Fastenzeit in Stunden übernehmen
+                finishedFasting.splice(indexDay, 1, savedFastHr)
+                intervalEventObject.finishedFasting = finishedFasting;
+            }else{
+                console.log('Fastenzeit ist NICHT gleich geblieben');
+                if(savedApproxStartTime === identifierObj.approxFastingStartTime) {
+                    console.log('Die Startzeit ist aber gleich geblieben');
+                }else{
+                    console.log('Auch die Startzeit hat sich geändert');
+                     // Todo Diff berechnen wenn dies so ist.
+                }
+            }
+            // ID wird in Variable ersetzt mit neuer ID
+            lastIdentifier = identifierObj.id;
+            // Todo persistent speichern lastIdentifier & identifierObj
+            intervalEventObject.lastIdentifier = lastIdentifier;
+            intervalEventObject.identifierObjStr = identifierObjStr;
+            save_into_LocalStorage();
+        }
+    } else {
+        // console.log('Identifier wird nicht observiert, da Fastenzeit');
+    }
+}
 
-Wenn jetzt fasten: ist es vor oder nach Fastenstart
-Wenn vorher dann ist es Restfasten vom vortag
--ID wird generiert CurrentDate - 1 Sat/Sun currentDate
-Hierzu wird noch zum vergleich die Sollfastenzeit abgespeichert
+function getIndexOfWeekday(weekday: string) {
+    let index = -1;
+    switch (weekday) {
+        case 'Mon':
+            index = 0;
+            break;
+        case 'Tue':
+            index = 1;
+            break;
+        case 'Wed':
+            index = 2;
+            break;
+        case 'Thu':
+            index = 3;
+            break;
+        case 'Fri':
+            index = 4;
+            break;
+        case 'Sat':
+            index = 5;
+            break;
+        case 'Sun':
+            index = 6;
+            break;
+        default:
+            break;
+    }
+    return index;
+}
 
--Später wird wieder auf das Handy geschaut mittlerweile wird gegessen
--Es wird geschaut ob vor fasten.
--ID wird generiert
--ID wird verglichen
--Nun kann der Zeitstempel gesetzt werden
+function setIdentifier() {
+    // Todo: noch den Wochentag vom Vortag ermitteln
+    let date = new Date();
+    let dateString = `${date}`;
+    const currentDateWeekday = dateString.slice(0, 3);
+    const currentDateDay = dateString.slice(8, 10);
 
-*/
+    // Create Day + 1
+    date.setDate(date.getDate() + 1); // ? +1 Tag
+    dateString = `${date}`;
+    const tomorrowDateWeekday = dateString.slice(0, 3);
+    const tomorrowDateDay = dateString.slice(8, 10);
+    // Identifier
+    const currentIdentifier = `${currentDateWeekday}${currentDateDay}/${tomorrowDateWeekday}${tomorrowDateDay}`;
+
+    // console.log('Identifier: ', currentIdentifier);
+    return currentIdentifier;
+}

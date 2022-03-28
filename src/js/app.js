@@ -19,33 +19,39 @@ var inpFastingStartTime = document.getElementById('inpFastingStartTime');
 var outputWhatNow = document.getElementById('outputWhatNow');
 var lblTimer = document.getElementById('lblTimer');
 var txtPercent = document.getElementById('txtPercent');
-var circleTrack = document.getElementById("circleTrack");
+var circleTrack = document.getElementById('circleTrack');
 var progressCircle = document.querySelector('.progress');
-var outputFrom = document.getElementById("outputFrom");
+var outputFrom = document.getElementById('outputFrom');
 var outputTo = document.getElementById('outputTo');
-var themeStyle = document.getElementById("themeStyle");
-var btnWaterUnit02 = document.getElementById("btnWaterUnit02");
-var btnWaterUnit025 = document.getElementById("btnWaterUnit025");
-var btnWaterUnit033 = document.getElementById("btnWaterUnit033");
-var lblAddingWater = document.getElementById("lblAddingWater");
-var outputTodayWater = document.getElementById("outputTodayWater");
-var btnSaveWater = document.getElementById("btnSaveWater");
-var waterButton = document.getElementById("waterButton");
-var btnReset = document.getElementById("btnReset");
-var lblLastWater = document.getElementById("lblLastWater");
+var themeStyle = document.getElementById('themeStyle');
+var btnWaterUnit02 = document.getElementById('btnWaterUnit02');
+var btnWaterUnit025 = document.getElementById('btnWaterUnit025');
+var btnWaterUnit033 = document.getElementById('btnWaterUnit033');
+var lblAddingWater = document.getElementById('lblAddingWater');
+var outputTodayWater = document.getElementById('outputTodayWater');
+var btnSaveWater = document.getElementById('btnSaveWater');
+var waterButton = document.getElementById('waterButton');
+var btnReset = document.getElementById('btnReset');
+var lblLastWater = document.getElementById('lblLastWater');
 var newFastingTime = 0;
 var newEatingTime = 0;
 var isFastingTime = false;
 var newWaterAmount = 0.2;
 var lastWater = '-';
-var finishedFasting = [16, 14, 15, 17, 16, 16, 15];
+var finishedFasting = [0, 0, 0, 0, 0, 0, 0];
+var checkInterv_5Sec = 0;
+var lastIdentifier = '';
+var identifierObjStr = '';
 var intervalEventObject = {
     fastingTime: 16,
     eatTime: 8,
     fastingStartTime: '17:00',
     theme: 'light',
     water: 0,
-    lastWater: '-'
+    lastWater: '-',
+    finishedFasting: [0, 0, 0, 0, 0, 0, 0],
+    lastIdentifier: '',
+    identifierObjStr: identifierObjStr
 };
 var FastingIdentifier = /** @class */ (function () {
     function FastingIdentifier(id, fastingTime, approxFastingStartTime) {
@@ -55,6 +61,7 @@ var FastingIdentifier = /** @class */ (function () {
     }
     return FastingIdentifier;
 }());
+var identifierObj = new FastingIdentifier('', 0, '');
 // Init -- Start
 function init() {
     load_from_LocalStorage();
@@ -64,24 +71,26 @@ function init() {
 init();
 function setTheme() {
     var body = document.body;
-    body.classList.remove("lightTheme");
-    body.classList.remove("darkTheme");
-    lblTimer.classList.remove("lightPercentColor");
-    circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.remove("darkThemeRing");
-    circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.remove("lightThemeRing");
+    body.classList.remove('lightTheme');
+    body.classList.remove('darkTheme');
+    lblTimer.classList.remove('lightPercentColor');
+    circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.remove('darkThemeRing');
+    circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.remove('lightThemeRing');
     if (intervalEventObject.theme === 'Dunkel') {
-        body.classList.add("darkTheme");
-        circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add("darkThemeRing");
+        body.classList.add('darkTheme');
+        circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add('darkThemeRing');
     }
     else {
-        body.classList.add("lightTheme");
-        lblTimer.classList.add("lightPercentColor");
-        circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add("lightThemeRing");
+        body.classList.add('lightTheme');
+        lblTimer.classList.add('lightPercentColor');
+        circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add('lightThemeRing');
     }
 }
 // Funktion zur Überprüfung, ob gerade Fastenzeit läuft
 // Entsprechend wird die Anzeige der UI Elemente angepasst
 function checkFastingStatus() {
+    // Es wird alle 10 Sekunden die ...
+    checkInterv_5Sec < 5 ? checkInterv_5Sec++ : initIdentifier();
     var now = currentTime();
     var splittedFastingTime = intervalEventObject.fastingStartTime.split(':');
     var fastingStartHour = parseInt(splittedFastingTime[0]);
@@ -107,11 +116,6 @@ function checkFastingStatus() {
         outputFrom.innerHTML = "".concat(addZero(fastingStartTimeMinusEatTime), ":").concat(addZero(fastingStartMinute));
         outputTo.innerHTML = "".concat(intervalEventObject.fastingStartTime);
         circleProgress(parseInt(diffToFastingInPercent));
-        // if (parseInt(diffToFastingInPercent) < 10) {
-        //     txtPercent.style.transform = 'translateX(1.5rem)';
-        // } else {
-        //     txtPercent.style.transform = 'translateX(0rem)';
-        // }
     }
     else {
         isFastingTime = true;
@@ -122,11 +126,6 @@ function checkFastingStatus() {
         outputFrom.innerHTML = "".concat(intervalEventObject.fastingStartTime);
         outputTo.innerHTML = "".concat(addZero(fastingStartTimeMinusEatTime), ":").concat(addZero(fastingStartMinute));
         circleProgress(parseInt(diffToEatingInPercent));
-        // if (parseInt(diffToEatingInPercent) < 10) {
-        //     txtPercent.style.transform = 'translateX(1.5rem)';
-        // } else {
-        //     txtPercent.style.transform = 'translateX(0rem)';
-        // }
     }
 }
 var radius = progressCircle.r.baseVal.value;
@@ -214,7 +213,7 @@ function changeFastingTime(direction) {
         // Fasten verkürzen
     }
     else {
-        if (newFastingTime > 2) {
+        if (newFastingTime > 13) {
             newFastingTime--;
             newEatingTime = 24 - newFastingTime;
             displayFastingTime();
@@ -239,7 +238,7 @@ function displayFastingTime() {
 // Event setzen
 btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEvent.addEventListener('click', function () {
     var nextEvent = '';
-    isFastingTime ? nextEvent = 'Essen' : nextEvent = 'Fasten';
+    isFastingTime ? (nextEvent = 'Essen') : (nextEvent = 'Fasten');
     var request = window.confirm("M\u00F6chtest du die Phase: \"".concat(nextEvent, "\" wirklich vorzeitig starten?"));
     if (request) {
         var now = currentTime();
@@ -260,9 +259,15 @@ btnSetNextEvent === null || btnSetNextEvent === void 0 ? void 0 : btnSetNextEven
         save_into_LocalStorage();
     }
 });
+//################################################################################
+// Save LocalStorage
+//################################################################################
 var save_into_LocalStorage = function () {
     localStorage.setItem('stored_IntervallObj', JSON.stringify(intervalEventObject));
 };
+//################################################################################
+// Load from LocalStorage
+//################################################################################
 function load_from_LocalStorage() {
     if (localStorage.getItem('stored_IntervallObj') !== null) {
         //@ts-ignore
@@ -288,10 +293,35 @@ function load_from_LocalStorage() {
             console.log(err);
             lastWater = '-';
         }
+        // Identifier
+        try {
+            finishedFasting = intervalEventObject.finishedFasting;
+            console.log('finishedFasting', finishedFasting);
+        }
+        catch (err) {
+            console.log(err);
+            finishedFasting = [0, 0, 0, 0, 0, 0, 0];
+            console.log('finishedFasting', finishedFasting);
+        }
+        try {
+            lastIdentifier = intervalEventObject.lastIdentifier;
+        }
+        catch (err) {
+            console.log(err);
+            lastIdentifier = '';
+        }
+        try {
+            identifierObjStr = intervalEventObject.identifierObjStr;
+        }
+        catch (err) {
+            console.log(err);
+            identifierObjStr = '';
+        }
     }
     else {
         // console.warn('Keine Daten vorh');
     }
+    console.log(intervalEventObject);
 }
 //################################################################################
 // Heute getrunken
@@ -300,46 +330,46 @@ var waterUnit = 0.2;
 btn_ShowModalButton2 === null || btn_ShowModalButton2 === void 0 ? void 0 : btn_ShowModalButton2.addEventListener('click', function () {
     overlay2.style.display = 'block';
     outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
-    outputTodayWater.classList.remove("waterAnimation");
+    outputTodayWater.classList.remove('waterAnimation');
     lblLastWater.innerHTML = lastWater;
 });
-btnWaterUnit02 === null || btnWaterUnit02 === void 0 ? void 0 : btnWaterUnit02.addEventListener("click", function () {
+btnWaterUnit02 === null || btnWaterUnit02 === void 0 ? void 0 : btnWaterUnit02.addEventListener('click', function () {
     resetActiveWaterUnit();
-    btnWaterUnit02.classList.add("active");
+    btnWaterUnit02.classList.add('active');
     waterUnit = 0.2;
     newWaterAmount = waterUnit;
     lblAddingWater.value = "".concat(waterUnit, " L");
 });
-btnWaterUnit025 === null || btnWaterUnit025 === void 0 ? void 0 : btnWaterUnit025.addEventListener("click", function () {
+btnWaterUnit025 === null || btnWaterUnit025 === void 0 ? void 0 : btnWaterUnit025.addEventListener('click', function () {
     resetActiveWaterUnit();
-    btnWaterUnit025.classList.add("active");
+    btnWaterUnit025.classList.add('active');
     waterUnit = 0.25;
     newWaterAmount = waterUnit;
     lblAddingWater.value = "".concat(waterUnit, " L");
 });
-btnWaterUnit033 === null || btnWaterUnit033 === void 0 ? void 0 : btnWaterUnit033.addEventListener("click", function () {
+btnWaterUnit033 === null || btnWaterUnit033 === void 0 ? void 0 : btnWaterUnit033.addEventListener('click', function () {
     resetActiveWaterUnit();
-    btnWaterUnit033.classList.add("active");
+    btnWaterUnit033.classList.add('active');
     waterUnit = 0.33;
     newWaterAmount = waterUnit;
     lblAddingWater.value = "".concat(waterUnit, " L");
 });
 // Resetfunc um alle Active Klassen zu entfernen
 function resetActiveWaterUnit() {
-    btnWaterUnit02.classList.remove("active");
-    btnWaterUnit025.classList.remove("active");
-    btnWaterUnit033.classList.remove("active");
+    btnWaterUnit02.classList.remove('active');
+    btnWaterUnit025.classList.remove('active');
+    btnWaterUnit033.classList.remove('active');
 }
 // Modal 2 schließen
-btn_CloseModal2 === null || btn_CloseModal2 === void 0 ? void 0 : btn_CloseModal2.addEventListener("click", function () {
+btn_CloseModal2 === null || btn_CloseModal2 === void 0 ? void 0 : btn_CloseModal2.addEventListener('click', function () {
     overlay2.style.display = 'none';
 });
-btn_IncreaseWater === null || btn_IncreaseWater === void 0 ? void 0 : btn_IncreaseWater.addEventListener("click", function () {
+btn_IncreaseWater === null || btn_IncreaseWater === void 0 ? void 0 : btn_IncreaseWater.addEventListener('click', function () {
     (newWaterAmount += waterUnit).toFixed(2);
     lblAddingWater.value = "".concat(newWaterAmount.toFixed(2), " L");
 });
 // Wassermenge abziehen
-btn_DecreaseWater === null || btn_DecreaseWater === void 0 ? void 0 : btn_DecreaseWater.addEventListener("click", function () {
+btn_DecreaseWater === null || btn_DecreaseWater === void 0 ? void 0 : btn_DecreaseWater.addEventListener('click', function () {
     if (newWaterAmount > waterUnit) {
         (newWaterAmount -= waterUnit).toFixed(2);
         lblAddingWater.value = "".concat(newWaterAmount.toFixed(2), " L");
@@ -350,7 +380,7 @@ btn_DecreaseWater === null || btn_DecreaseWater === void 0 ? void 0 : btn_Decrea
     }
 });
 // Speichere neue Wassermenge
-btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEventListener("click", function () {
+btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEventListener('click', function () {
     intervalEventObject.water += newWaterAmount;
     if (intervalEventObject.water < 0) {
         intervalEventObject.water = 0;
@@ -362,13 +392,13 @@ btnSaveWater === null || btnSaveWater === void 0 ? void 0 : btnSaveWater.addEven
     save_into_LocalStorage();
     waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
     outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
-    outputTodayWater.classList.add("waterAnimation");
+    outputTodayWater.classList.add('waterAnimation');
     setTimeout(function () {
         overlay2.style.display = 'none';
     }, 700);
 });
 // Reset Water
-btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener("click", function () {
+btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener('click', function () {
     if (intervalEventObject.water > 0) {
         var confirm_1 = window.confirm("Soll die getrunkene Menge von ".concat(intervalEventObject.water.toFixed(2), " L wirklich zur\u00FCckgesetzt werden?"));
         if (confirm_1) {
@@ -382,29 +412,35 @@ btnReset === null || btnReset === void 0 ? void 0 : btnReset.addEventListener("c
         }
     }
 });
-labelFastingTime.addEventListener("click", function () {
+labelFastingTime.addEventListener('click', function () {
     labelFastingTime.disabled = true;
 });
-lblAddingWater.addEventListener("click", function () {
+lblAddingWater.addEventListener('click', function () {
     lblAddingWater.disabled = true;
 });
+//################################################################################
 // Chart
-// Max 180px
+//################################################################################
 function renderDayChart() {
-    var max = -1;
-    // ermittle max Wert
-    for (var i = 0; i < finishedFasting.length; i++) {
-        if (finishedFasting[i] > max) {
-            max = finishedFasting[i];
+    try {
+        var max = -1;
+        // ermittle max Wert
+        for (var i = 0; i < finishedFasting.length; i++) {
+            if (finishedFasting[i] > max) {
+                max = finishedFasting[i];
+            }
+        }
+        // Rendern
+        for (var i = 0; i < finishedFasting.length; i++) {
+            var day = "lblDay".concat(i);
+            // errechne Pixelhöhe
+            var pixelHeight = Math.floor((finishedFasting[i] * 180) / max);
+            //@ts-ignore
+            document.getElementById(day).style.height = "".concat(pixelHeight, "px");
         }
     }
-    // Rendern
-    for (var i = 0; i < finishedFasting.length; i++) {
-        var day = "lblDay".concat(i);
-        // errechne Pixelhöhe
-        var pixelHeight = Math.floor(finishedFasting[i] * 180 / max);
-        //@ts-ignore
-        document.getElementById(day).style.height = "".concat(pixelHeight, "px");
+    catch (err) {
+        console.log(err);
     }
 }
 renderDayChart();
@@ -431,5 +467,109 @@ Hierzu wird noch zum vergleich die Sollfastenzeit abgespeichert
 -ID wird generiert
 -ID wird verglichen
 -Nun kann der Zeitstempel gesetzt werden
-
 */
+// let dayMinus1 = new Date(2022, 2, 26)
+// console.log('BD: ', dayMinus1);
+//!#######################################
+// ! Baustelle
+//!#######################################
+// Diese Funktion wird alle 10 Sekunden ausgeführt und erstellt eine ID
+function initIdentifier() {
+    checkInterv_5Sec = 0;
+    // Aktueller Identifier wird generiert
+    identifierObj = new FastingIdentifier(setIdentifier(), intervalEventObject.fastingTime, intervalEventObject.fastingStartTime);
+    identifierObjStr = "".concat(identifierObj.id, "/").concat(identifierObj.approxFastingStartTime, "/").concat(identifierObj.fastingTime);
+    // console.log('identifierObjStr', identifierObjStr);
+    // Todo Klasse FastingIdentifier anpassen.
+    // Todo: ID muss besser sein
+    // Wenn Essen erlaubt ist, ID abgleichen
+    if (isFastingTime === false) {
+        // Neue ID wird mit gespeicherten ID abgeglichen
+        if (lastIdentifier === identifierObj.id) {
+            // console.log('Sind identisch');
+        }
+        else {
+            // console.log('Sind nicht identisch');
+            // Auslesen des zuletzt abgespeicherten Identifiers
+            var identifierObjStrInArr = identifierObjStr.split('/');
+            var savedFastHr = parseInt(identifierObjStrInArr[3]);
+            var savedApproxStartTime = identifierObjStrInArr[2];
+            var savedStartDay = identifierObjStrInArr[0];
+            var weekday = savedStartDay.substring(0, 3);
+            console.log('weekday', weekday);
+            // Funktion aufrufen, die den Index vom Wochentag zurück gibt
+            var indexDay = getIndexOfWeekday(weekday);
+            // Abgleichen, ob sich die Fasten- Stunden geändert haben
+            if (savedFastHr === identifierObj.fastingTime) {
+                console.log('Fastenzeit ist gleich geblieben');
+                // Sonst einfach die Fastenzeit in Stunden übernehmen
+                finishedFasting.splice(indexDay, 1, savedFastHr);
+                intervalEventObject.finishedFasting = finishedFasting;
+            }
+            else {
+                console.log('Fastenzeit ist NICHT gleich geblieben');
+                if (savedApproxStartTime === identifierObj.approxFastingStartTime) {
+                    console.log('Die Startzeit ist aber gleich geblieben');
+                }
+                else {
+                    console.log('Auch die Startzeit hat sich geändert');
+                    // Todo Diff berechnen wenn dies so ist.
+                }
+            }
+            // ID wird in Variable ersetzt mit neuer ID
+            lastIdentifier = identifierObj.id;
+            // Todo persistent speichern lastIdentifier & identifierObj
+            intervalEventObject.lastIdentifier = lastIdentifier;
+            intervalEventObject.identifierObjStr = identifierObjStr;
+            save_into_LocalStorage();
+        }
+    }
+    else {
+        // console.log('Identifier wird nicht observiert, da Fastenzeit');
+    }
+}
+function getIndexOfWeekday(weekday) {
+    var index = -1;
+    switch (weekday) {
+        case 'Mon':
+            index = 0;
+            break;
+        case 'Tue':
+            index = 1;
+            break;
+        case 'Wed':
+            index = 2;
+            break;
+        case 'Thu':
+            index = 3;
+            break;
+        case 'Fri':
+            index = 4;
+            break;
+        case 'Sat':
+            index = 5;
+            break;
+        case 'Sun':
+            index = 6;
+            break;
+        default:
+            break;
+    }
+    return index;
+}
+function setIdentifier() {
+    // Todo: noch den Wochentag vom Vortag ermitteln
+    var date = new Date();
+    var dateString = "".concat(date);
+    var currentDateWeekday = dateString.slice(0, 3);
+    var currentDateDay = dateString.slice(8, 10);
+    // Create Day + 1
+    date.setDate(date.getDate() + 1); // ? +1 Tag
+    dateString = "".concat(date);
+    var tomorrowDateWeekday = dateString.slice(0, 3);
+    var tomorrowDateDay = dateString.slice(8, 10);
+    // Identifier
+    var currentIdentifier = "".concat(currentDateWeekday).concat(currentDateDay, "/").concat(tomorrowDateWeekday).concat(tomorrowDateDay);
+    // console.log('Identifier: ', currentIdentifier);
+    return currentIdentifier;
+}
