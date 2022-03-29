@@ -404,9 +404,7 @@ let waterUnit: number = 0.2;
 // Wasserfenster einblenden
 btn_ShowModalButton2?.addEventListener('click', () => {
     overlay2!.style.display = 'block';
-    outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(
-        2,
-    )} Liter`;
+    outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
     outputTodayWater!.classList.remove('waterAnimation');
     lblLastWater!.innerHTML = lastWater;
 });

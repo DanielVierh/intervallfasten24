@@ -444,32 +444,6 @@ function renderDayChart() {
     }
 }
 renderDayChart();
-// Wenn normaler durchlauf auf hinterlegten Stunden berufen
-// Wenn manuell gesetzt wird, und nun
-/*
-Ich schaue auf mein Handy. Es ist 18:05 Uhr. Fasten läuft seit 1 Stunde.
-Jetzt zieht sich eine Funktion den Tag, Uhrzeit und Fastenzeitraum
-Abgeglichen wird der Wert mit den Werten aus IntervallObj
--Funktion wird alle 10 Sekunden aufgerufen
-Wenn TagDiff <= 1 :
-    -
-
-id: ISD/IED // intfasten Start Datum - intervallfasten End Datum
-Mon/Thu
-
-Wenn jetzt fasten: ist es vor oder nach Fastenstart
-Wenn vorher dann ist es Restfasten vom vortag
--ID wird generiert CurrentDate - 1 Sat/Sun currentDate
-Hierzu wird noch zum vergleich die Sollfastenzeit abgespeichert
-
--Später wird wieder auf das Handy geschaut mittlerweile wird gegessen
--Es wird geschaut ob vor fasten.
--ID wird generiert
--ID wird verglichen
--Nun kann der Zeitstempel gesetzt werden
-*/
-// let dayMinus1 = new Date(2022, 2, 26)
-// console.log('BD: ', dayMinus1);
 //!#######################################
 // ! Baustelle
 //!#######################################
