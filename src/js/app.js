@@ -459,11 +459,7 @@ function initIdentifier() {
     // Wenn Essen erlaubt ist, ID abgleichen
     if (isFastingTime === false) {
         // Neue ID wird mit gespeicherten ID abgeglichen
-        if (lastIdentifier === identifierObj.id) {
-            // console.log('Sind identisch');
-        }
-        else {
-            // console.log('Sind nicht identisch');
+        if (lastIdentifier !== identifierObj.id && lastIdentifier !== '') {
             // Auslesen des zuletzt abgespeicherten Identifiers
             var identifierObjStrInArr = identifierObjStr.split('/');
             var savedFastHr = parseInt(identifierObjStrInArr[3]);
@@ -491,16 +487,19 @@ function initIdentifier() {
                 }
             }
             // ID wird in Variable ersetzt mit neuer ID
-            lastIdentifier = identifierObj.id;
-            // Todo persistent speichern lastIdentifier & identifierObj
-            intervalEventObject.lastIdentifier = lastIdentifier;
-            intervalEventObject.identifierObjStr = identifierObjStr;
-            save_into_LocalStorage();
+            replaceIdentier();
+        }
+        else if (lastIdentifier === '') {
+            console.log('LastIdentifer war leer');
+            replaceIdentier();
         }
     }
-    else {
-        // console.log('Identifier wird nicht observiert, da Fastenzeit');
-    }
+}
+function replaceIdentier() {
+    lastIdentifier = identifierObj.id;
+    intervalEventObject.lastIdentifier = lastIdentifier;
+    intervalEventObject.identifierObjStr = identifierObjStr;
+    save_into_LocalStorage();
 }
 function getIndexOfWeekday(weekday) {
     var index = -1;
@@ -544,6 +543,6 @@ function setIdentifier() {
     var tomorrowDateDay = dateString.slice(8, 10);
     // Identifier
     var currentIdentifier = "".concat(currentDateWeekday).concat(currentDateDay, "/").concat(tomorrowDateWeekday).concat(tomorrowDateDay);
-    // console.log('Identifier: ', currentIdentifier);
+    console.log("currentIdentifier: ".concat(currentIdentifier, " // LastIdentifier: ").concat(lastIdentifier));
     return currentIdentifier;
 }
