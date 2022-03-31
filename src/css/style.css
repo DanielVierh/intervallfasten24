@@ -279,6 +279,10 @@
   transition: 0.5s ease;
 }
 
+.smallerTitle {
+  font-size: 12px;
+}
+
 .main-website {
   display: -webkit-box;
   display: -ms-flexbox;

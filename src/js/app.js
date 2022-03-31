@@ -95,12 +95,12 @@ function setTheme() {
 }
 window.addEventListener("scroll", function () {
     var scrollHeigth = Math.floor(window.pageYOffset);
-    if (scrollHeigth >= 25) {
-        outputWhatNow.style.fontSize = '12px';
+    if (scrollHeigth > 0) {
+        outputWhatNow.classList.add("smallerTitle");
         console.log('Größer');
     }
     else {
-        outputWhatNow.style.fontSize = '32px';
+        outputWhatNow.classList.remove("smallerTitle");
         console.log('Kleiner');
     }
     console.log(scrollHeigth);
