@@ -274,6 +274,11 @@
   border-radius: 25px;
 }
 
+#outputWhatNow {
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
+}
+
 .main-website {
   display: -webkit-box;
   display: -ms-flexbox;

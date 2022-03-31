@@ -100,6 +100,11 @@ function init() {
 }
 init();
 
+//#########################################################################
+// View
+//#########################################################################
+
+
 function setTheme() {
     const body = document.body;
     body.classList.remove('lightTheme');
@@ -122,8 +127,25 @@ function setTheme() {
     }
 }
 
+window.addEventListener("scroll", ()=>{
+    let scrollHeigth = Math.floor(window.pageYOffset)
+    if(scrollHeigth >= 25) {
+        outputWhatNow.style.fontSize = '12px';
+        console.log('Größer');
+
+    }else{
+        outputWhatNow.style.fontSize = '32px';
+        console.log('Kleiner');
+
+    }
+    console.log(scrollHeigth);
+
+})
+
+//#########################################################################
 // Funktion zur Überprüfung, ob gerade Fastenzeit läuft
 // Entsprechend wird die Anzeige der UI Elemente angepasst
+//#########################################################################
 function checkFastingStatus() {
     // Es wird alle 10 Sekunden die ...
     checkInterv_5Sec < 5 ? checkInterv_5Sec++ : initIdentifier();

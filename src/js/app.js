@@ -69,6 +69,9 @@ function init() {
     checkIntervall();
 }
 init();
+//#########################################################################
+// View
+//#########################################################################
 function setTheme() {
     var body = document.body;
     body.classList.remove('lightTheme');
@@ -90,8 +93,22 @@ function setTheme() {
         circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add('lightThemeRing');
     }
 }
+window.addEventListener("scroll", function () {
+    var scrollHeigth = Math.floor(window.pageYOffset);
+    if (scrollHeigth >= 25) {
+        outputWhatNow.style.fontSize = '12px';
+        console.log('Größer');
+    }
+    else {
+        outputWhatNow.style.fontSize = '32px';
+        console.log('Kleiner');
+    }
+    console.log(scrollHeigth);
+});
+//#########################################################################
 // Funktion zur Überprüfung, ob gerade Fastenzeit läuft
 // Entsprechend wird die Anzeige der UI Elemente angepasst
+//#########################################################################
 function checkFastingStatus() {
     // Es wird alle 10 Sekunden die ...
     checkInterv_5Sec < 5 ? checkInterv_5Sec++ : initIdentifier();
