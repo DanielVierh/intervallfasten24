@@ -76,9 +76,13 @@ function setTheme() {
     lblTimer.classList.remove('lightPercentColor');
     circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.remove('darkThemeRing');
     circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.remove('lightThemeRing');
+    btn_ShowModalButton === null || btn_ShowModalButton === void 0 ? void 0 : btn_ShowModalButton.classList.remove("smallButton-dark");
+    btn_ShowModalButton2 === null || btn_ShowModalButton2 === void 0 ? void 0 : btn_ShowModalButton2.classList.remove("smallButton-dark");
     if (intervalEventObject.theme === 'Dunkel') {
         body.classList.add('darkTheme');
         circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add('darkThemeRing');
+        btn_ShowModalButton === null || btn_ShowModalButton === void 0 ? void 0 : btn_ShowModalButton.classList.add("smallButton-dark");
+        btn_ShowModalButton2 === null || btn_ShowModalButton2 === void 0 ? void 0 : btn_ShowModalButton2.classList.add("smallButton-dark");
     }
     else {
         body.classList.add('lightTheme');
@@ -277,7 +281,7 @@ function load_from_LocalStorage() {
             waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
         }
         catch (err) {
-            console.log(err);
+            // console.log(err);
             intervalEventObject.water = 0;
             waterButton.innerText = "".concat(intervalEventObject.water.toFixed(2), " L");
         }
@@ -290,18 +294,18 @@ function load_from_LocalStorage() {
             }
         }
         catch (err) {
-            console.log(err);
+            // console.log(err);
             lastWater = '-';
         }
         // Identifier
         try {
             finishedFasting = intervalEventObject.finishedFasting;
-            console.log('finishedFasting', finishedFasting);
+            // console.log('finishedFasting', finishedFasting);
         }
         catch (err) {
             console.log(err);
             finishedFasting = [0, 0, 0, 0, 0, 0, 0];
-            console.log('finishedFasting', finishedFasting);
+            // console.log('finishedFasting', finishedFasting);
         }
         try {
             lastIdentifier = intervalEventObject.lastIdentifier;
@@ -314,14 +318,14 @@ function load_from_LocalStorage() {
             identifierObjStr = intervalEventObject.identifierObjStr;
         }
         catch (err) {
-            console.log(err);
+            // console.log(err);
             identifierObjStr = '';
         }
     }
     else {
         // console.warn('Keine Daten vorh');
     }
-    console.log(intervalEventObject);
+    // console.log(intervalEventObject);
 }
 //################################################################################
 // Heute getrunken
@@ -444,9 +448,9 @@ function renderDayChart() {
     }
 }
 renderDayChart();
-//!#######################################
-// ! Baustelle
-//!#######################################
+//#######################################
+//  Ermittlung letzter Fastenzeiten
+//#######################################
 // Diese Funktion wird alle 10 Sekunden ausgeführt und erstellt eine ID
 function initIdentifier() {
     checkInterv_5Sec = 0;
@@ -456,41 +460,41 @@ function initIdentifier() {
     // console.log('identifierObjStr', identifierObjStr);
     // Todo Klasse FastingIdentifier anpassen.
     // Todo: ID muss besser sein
-    // Wenn Essen erlaubt ist, ID abgleichen
+    //? Wenn Essen erlaubt ist, ID abgleichen
     if (isFastingTime === false) {
         // Neue ID wird mit gespeicherten ID abgeglichen
         if (lastIdentifier !== identifierObj.id && lastIdentifier !== '') {
-            // Auslesen des zuletzt abgespeicherten Identifiers
+            //? Auslesen des zuletzt abgespeicherten Identifiers
             var identifierObjStrInArr = identifierObjStr.split('/');
             var savedFastHr = parseInt(identifierObjStrInArr[3]);
             var savedApproxStartTime = identifierObjStrInArr[2];
             var savedStartDay = identifierObjStrInArr[0];
             var weekday = savedStartDay.substring(0, 3);
-            console.log('weekday', weekday);
-            // Funktion aufrufen, die den Index vom Wochentag zurück gibt
+            // console.log('weekday', weekday);
+            //? Funktion aufrufen, die den Index vom Wochentag zurück gibt
             var indexDay = getIndexOfWeekday(weekday);
-            // Abgleichen, ob sich die Fasten- Stunden geändert haben
+            //? Abgleichen, ob sich die Fasten- Stunden geändert haben
             if (savedFastHr === identifierObj.fastingTime) {
-                console.log('Fastenzeit ist gleich geblieben');
-                // Sonst einfach die Fastenzeit in Stunden übernehmen
+                // console.log('Fastenzeit ist gleich geblieben');
+                //? Sonst einfach die Fastenzeit in Stunden übernehmen
                 finishedFasting.splice(indexDay, 1, savedFastHr);
                 intervalEventObject.finishedFasting = finishedFasting;
             }
             else {
-                console.log('Fastenzeit ist NICHT gleich geblieben');
+                //? Fastenzeit ist NICHT gleich geblieben
                 if (savedApproxStartTime === identifierObj.approxFastingStartTime) {
-                    console.log('Die Startzeit ist aber gleich geblieben');
+                    // console.log('Die Startzeit ist aber gleich geblieben');
                 }
                 else {
-                    console.log('Auch die Startzeit hat sich geändert');
+                    // console.log('Auch die Startzeit hat sich geändert');
                     // Todo Diff berechnen wenn dies so ist.
                 }
             }
-            // ID wird in Variable ersetzt mit neuer ID
+            //? ID wird in Variable ersetzt mit neuer ID
             replaceIdentier();
         }
         else if (lastIdentifier === '') {
-            console.log('LastIdentifer war leer');
+            // console.log('LastIdentifer war leer');
             replaceIdentier();
         }
     }
@@ -543,6 +547,6 @@ function setIdentifier() {
     var tomorrowDateDay = dateString.slice(8, 10);
     // Identifier
     var currentIdentifier = "".concat(currentDateWeekday).concat(currentDateDay, "/").concat(tomorrowDateWeekday).concat(tomorrowDateDay);
-    console.log("currentIdentifier: ".concat(currentIdentifier, " // LastIdentifier: ").concat(lastIdentifier));
+    // console.log(`currentIdentifier: ${currentIdentifier} // LastIdentifier: ${lastIdentifier}`);
     return currentIdentifier;
 }

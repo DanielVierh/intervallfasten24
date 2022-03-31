@@ -107,10 +107,14 @@ function setTheme() {
     lblTimer.classList.remove('lightPercentColor');
     circleTrack?.classList.remove('darkThemeRing');
     circleTrack?.classList.remove('lightThemeRing');
+    btn_ShowModalButton?.classList.remove("smallButton-dark");
+    btn_ShowModalButton2?.classList.remove("smallButton-dark");
 
     if (intervalEventObject.theme === 'Dunkel') {
         body.classList.add('darkTheme');
         circleTrack?.classList.add('darkThemeRing');
+        btn_ShowModalButton?.classList.add("smallButton-dark");
+        btn_ShowModalButton2?.classList.add("smallButton-dark");
     } else {
         body.classList.add('lightTheme');
         lblTimer.classList.add('lightPercentColor');
@@ -353,7 +357,7 @@ function load_from_LocalStorage() {
                 2,
             )} L`;
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             intervalEventObject.water = 0;
             waterButton!.innerText = `${intervalEventObject.water.toFixed(
                 2,
@@ -366,17 +370,17 @@ function load_from_LocalStorage() {
                 lastWater = intervalEventObject.lastWater;
             }
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             lastWater = '-';
         }
         // Identifier
         try {
             finishedFasting = intervalEventObject.finishedFasting;
-            console.log('finishedFasting', finishedFasting);
+            // console.log('finishedFasting', finishedFasting);
         } catch (err) {
             console.log(err);
             finishedFasting = [0, 0, 0, 0, 0, 0, 0];
-            console.log('finishedFasting', finishedFasting);
+            // console.log('finishedFasting', finishedFasting);
         }
         try {
             lastIdentifier = intervalEventObject.lastIdentifier;
@@ -388,13 +392,13 @@ function load_from_LocalStorage() {
         try {
             identifierObjStr = intervalEventObject.identifierObjStr;
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             identifierObjStr = '';
         }
     } else {
         // console.warn('Keine Daten vorh');
     }
-    console.log(intervalEventObject);
+    // console.log(intervalEventObject);
 }
 
 //################################################################################
@@ -534,9 +538,9 @@ function renderDayChart() {
 renderDayChart();
 
 
-//!#######################################
-// ! Baustelle
-//!#######################################
+//#######################################
+//  Ermittlung letzter Fastenzeiten
+//#######################################
 // Diese Funktion wird alle 10 Sekunden ausgeführt und erstellt eine ID
 function initIdentifier() {
     checkInterv_5Sec = 0;
@@ -551,38 +555,38 @@ function initIdentifier() {
 
     // Todo Klasse FastingIdentifier anpassen.
     // Todo: ID muss besser sein
-    // Wenn Essen erlaubt ist, ID abgleichen
+    //? Wenn Essen erlaubt ist, ID abgleichen
     if (isFastingTime === false) {
         // Neue ID wird mit gespeicherten ID abgeglichen
         if (lastIdentifier !== identifierObj.id && lastIdentifier !== '') {
-            // Auslesen des zuletzt abgespeicherten Identifiers
+            //? Auslesen des zuletzt abgespeicherten Identifiers
             const identifierObjStrInArr = identifierObjStr.split('/');
             const savedFastHr: number = parseInt(identifierObjStrInArr[3]);
             const savedApproxStartTime = identifierObjStrInArr[2];
             const savedStartDay = identifierObjStrInArr[0];
             const weekday = savedStartDay.substring(0, 3);
-            console.log('weekday', weekday);
-            // Funktion aufrufen, die den Index vom Wochentag zurück gibt
+            // console.log('weekday', weekday);
+            //? Funktion aufrufen, die den Index vom Wochentag zurück gibt
             const indexDay = getIndexOfWeekday(weekday);
-            // Abgleichen, ob sich die Fasten- Stunden geändert haben
+            //? Abgleichen, ob sich die Fasten- Stunden geändert haben
             if(savedFastHr === identifierObj.fastingTime) {
-                console.log('Fastenzeit ist gleich geblieben');
-                // Sonst einfach die Fastenzeit in Stunden übernehmen
+                // console.log('Fastenzeit ist gleich geblieben');
+                //? Sonst einfach die Fastenzeit in Stunden übernehmen
                 finishedFasting.splice(indexDay, 1, savedFastHr)
                 intervalEventObject.finishedFasting = finishedFasting;
             }else{
-                console.log('Fastenzeit ist NICHT gleich geblieben');
+                //? Fastenzeit ist NICHT gleich geblieben
                 if(savedApproxStartTime === identifierObj.approxFastingStartTime) {
-                    console.log('Die Startzeit ist aber gleich geblieben');
+                    // console.log('Die Startzeit ist aber gleich geblieben');
                 }else{
-                    console.log('Auch die Startzeit hat sich geändert');
+                    // console.log('Auch die Startzeit hat sich geändert');
                      // Todo Diff berechnen wenn dies so ist.
                 }
             }
-            // ID wird in Variable ersetzt mit neuer ID
+            //? ID wird in Variable ersetzt mit neuer ID
             replaceIdentier();
         }else if(lastIdentifier === '') {
-            console.log('LastIdentifer war leer');
+            // console.log('LastIdentifer war leer');
             replaceIdentier();
         }
     }
@@ -640,6 +644,6 @@ function setIdentifier() {
     // Identifier
     const currentIdentifier = `${currentDateWeekday}${currentDateDay}/${tomorrowDateWeekday}${tomorrowDateDay}`;
 
-    console.log(`currentIdentifier: ${currentIdentifier} // LastIdentifier: ${lastIdentifier}`);
+    // console.log(`currentIdentifier: ${currentIdentifier} // LastIdentifier: ${lastIdentifier}`);
     return currentIdentifier;
 }

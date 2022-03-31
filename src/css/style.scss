@@ -200,9 +200,15 @@ background-color: rgba(0,0,0,0.5);
     font-weight: bold;
     font-size: 1.1rem;
     color: black;
-    /* background: linear-gradient(to right, rgb(172, 171, 171), rgb(214, 214, 214)); */
     box-shadow: inset 2px 2px 4px white;
     cursor: pointer;
+}
+
+.smallButton-dark{
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    color: white;
+    background-color: rgba(24, 220, 242, 0.295);
+    box-shadow: inset 2px 4px 18px rgba(255, 255, 255, 0.436), 0 0 10px rgba(255, 255, 255, 0.436);
 }
 
 .settingButton{
