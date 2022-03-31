@@ -127,12 +127,13 @@ function setTheme() {
     }
 }
 
+// Eventlistener um zu prüfen, ob man runterscrollt.
+// Wenn ja, Label "Jetzt: Essen oder Fasten" kleiner machen
 window.addEventListener("scroll", ()=>{
     let scrollHeigth = Math.floor(window.pageYOffset)
     if(scrollHeigth > 0) {
         outputWhatNow.classList.add("smallerTitle");
         console.log('Größer');
-
     }else{
         outputWhatNow.classList.remove("smallerTitle");
         console.log('Kleiner');
