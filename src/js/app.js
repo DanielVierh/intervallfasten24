@@ -93,6 +93,8 @@ function setTheme() {
         circleTrack === null || circleTrack === void 0 ? void 0 : circleTrack.classList.add('lightThemeRing');
     }
 }
+// Eventlistener um zu prüfen, ob man runterscrollt.
+// Wenn ja, Label "Jetzt: Essen oder Fasten" kleiner machen
 window.addEventListener("scroll", function () {
     var scrollHeigth = Math.floor(window.pageYOffset);
     if (scrollHeigth > 0) {
@@ -464,7 +466,7 @@ function renderDayChart() {
         console.log(err);
     }
 }
-renderDayChart();
+//renderDayChart();
 //#######################################
 //  Ermittlung letzter Fastenzeiten
 //#######################################

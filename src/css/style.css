@@ -425,7 +425,7 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: 25px;
+  margin: 70px 25px;
 }
 
 .box {

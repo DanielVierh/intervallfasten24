@@ -1,7 +1,7 @@
 /*
 Erstellungsdatum: 18.03.2022 - Daniel Vierheilig
 */
-
+ 
 const overlay = document.getElementById('overlay');
 const overlay2 = document.getElementById('overlay2');
 const btn_ShowModalButton = document.getElementById('btn_ShowModal');
@@ -558,7 +558,7 @@ function renderDayChart() {
     }
 }
 
-renderDayChart();
+//renderDayChart();
 
 
 //#######################################
