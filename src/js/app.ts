@@ -434,6 +434,9 @@ btn_ShowModalButton2?.addEventListener('click', () => {
     outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
     outputTodayWater!.classList.remove('waterAnimation');
     lblLastWater!.innerHTML = lastWater;
+    waterUnit = 0.2;
+    newWaterAmount = waterUnit;
+    lblAddingWater.value = `${waterUnit} L`;
 });
 
 btnWaterUnit02?.addEventListener('click', () => {

@@ -355,6 +355,9 @@ btn_ShowModalButton2 === null || btn_ShowModalButton2 === void 0 ? void 0 : btn_
     outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
     outputTodayWater.classList.remove('waterAnimation');
     lblLastWater.innerHTML = lastWater;
+    waterUnit = 0.2;
+    newWaterAmount = waterUnit;
+    lblAddingWater.value = "".concat(waterUnit, " L");
 });
 btnWaterUnit02 === null || btnWaterUnit02 === void 0 ? void 0 : btnWaterUnit02.addEventListener('click', function () {
     resetActiveWaterUnit();
