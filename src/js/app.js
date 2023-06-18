@@ -355,6 +355,9 @@ btn_ShowModalButton2 === null || btn_ShowModalButton2 === void 0 ? void 0 : btn_
     outputTodayWater.innerHTML = "".concat(intervalEventObject.water.toFixed(2), " Liter");
     outputTodayWater.classList.remove('waterAnimation');
     lblLastWater.innerHTML = lastWater;
+    btnWaterUnit025.classList.remove('active');
+    btnWaterUnit033.classList.remove('active');
+    btnWaterUnit02.classList.add('active');
     waterUnit = 0.2;
     newWaterAmount = waterUnit;
     lblAddingWater.value = "".concat(waterUnit, " L");
