@@ -44,7 +44,7 @@ background-color: rgba(0,0,0,0.5);
 
 #modal{
     max-width: 600px;
-    height: 400px;
+    height: 500px;
     margin: auto;
     position: absolute;
     top: 0;
@@ -438,4 +438,26 @@ header{
     font-weight: bold;
     padding: 6px;
 
+}
+
+.section-wrapper {
+    margin: 15px auto 40px auto;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    padding: 20px 0;
+
+    h3 {
+        margin: 0 auto 10px auto;
+        text-align: center;
+    }
+
+    .fasting-button {
+        background-color: rgb(16, 102, 131);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 15px;
+        box-shadow: inset 0 0 15px white;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
 }
