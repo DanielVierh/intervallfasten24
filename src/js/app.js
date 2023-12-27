@@ -645,7 +645,6 @@ btn_start_stop_longFasting === null || btn_start_stop_longFasting === void 0 ? v
             var longfasting_start_stamp = new Date();
             intervalEventObject.longTimeFastingStart = String(longfasting_start_stamp);
             save_into_LocalStorage();
-            console.log('intervalEventObject', intervalEventObject);
             modal_longtimeFasting === null || modal_longtimeFasting === void 0 ? void 0 : modal_longtimeFasting.classList.add('active');
         }
     }
@@ -656,6 +655,8 @@ btn_start_stop_longFasting === null || btn_start_stop_longFasting === void 0 ? v
             is_longtime_fasting = false;
             btn_start_stop_longFasting.innerHTML = 'Längeres Fasten starten';
             modal_longtimeFasting === null || modal_longtimeFasting === void 0 ? void 0 : modal_longtimeFasting.classList.remove('active');
+            intervalEventObject.longTimeFastingStart = '';
+            save_into_LocalStorage();
         }
     }
 });

@@ -27,7 +27,7 @@ top: 0;
 bottom: 0;
 left: 0;
 right: 0;
-z-index: 1;
+z-index: 12;
 background-color: rgba(0,0,0,0.5);
 }
 
@@ -38,7 +38,7 @@ background-color: rgba(0,0,0,0.5);
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 12;
     background-color: rgba(0,0,0,0.5);
     }
 
@@ -251,6 +251,7 @@ header{
     align-items: center;
     justify-content: space-between;
     margin: auto;
+    z-index: 11;
 }
 
 .circleContainer{
@@ -472,11 +473,11 @@ header{
     &.active {
         display: flex;
         position: fixed;
-        bottom: 80px;
+        bottom: 10px;
         left: 50%;
         transform: translatex(-50%);
-        width: 90vw;
-        height: 80vh;
+        width: 98vw;
+        height: 98vh;
         background-color: rgba(0, 0, 0, 0.7);
         color: white;
         backdrop-filter: blur(13px);
@@ -485,6 +486,7 @@ header{
         justify-content: center;
         align-items: center;
         box-shadow: 0 0 30px black;
+        z-index: 10;
     }
 
 

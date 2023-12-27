@@ -753,9 +753,7 @@ btn_start_stop_longFasting?.addEventListener('click', ()=> {
             const longfasting_start_stamp = new Date();
             intervalEventObject.longTimeFastingStart = String(longfasting_start_stamp);
             save_into_LocalStorage();
-            console.log('intervalEventObject', intervalEventObject);
             modal_longtimeFasting?.classList.add('active');
-            
         }
     }else {
         // Stopp Longtime Fasting
@@ -764,6 +762,8 @@ btn_start_stop_longFasting?.addEventListener('click', ()=> {
             is_longtime_fasting = false;
             btn_start_stop_longFasting.innerHTML = 'Längeres Fasten starten';
             modal_longtimeFasting?.classList.remove('active');
+            intervalEventObject.longTimeFastingStart = '';
+            save_into_LocalStorage();
         }
 
     }
