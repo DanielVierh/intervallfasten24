@@ -11,6 +11,7 @@ var btn_DecreaseFasting = document.getElementById('btn_DecreaseFasting');
 var btn_DecreaseWater = document.getElementById('btn_DecreaseWater');
 var btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
 var btn_IncreaseWater = document.getElementById('btn_IncreaseWater');
+var btn_start_stop_longFasting = document.getElementById('btn_start_stop_longFasting');
 var labelFastingTime = document.getElementById('lblfastingTime');
 var fastingChangeButton = document.getElementById('fastingChangeButton');
 var btn_SaveSettings = document.getElementById('btnSaveSettings');
@@ -42,6 +43,7 @@ var finishedFasting = [0, 0, 0, 0, 0, 0, 0];
 var checkInterv_5Sec = 0;
 var lastIdentifier = '';
 var identifierObjStr = '';
+var is_longtime_fasting = false;
 var intervalEventObject = {
     fastingTime: 16,
     eatTime: 8,
@@ -51,7 +53,8 @@ var intervalEventObject = {
     lastWater: '-',
     finishedFasting: [0, 0, 0, 0, 0, 0, 0],
     lastIdentifier: '',
-    identifierObjStr: identifierObjStr
+    identifierObjStr: identifierObjStr,
+    longTimeFastingStart: ''
 };
 var FastingIdentifier = /** @class */ (function () {
     function FastingIdentifier(id, fastingTime, approxFastingStartTime) {
@@ -340,6 +343,28 @@ function load_from_LocalStorage() {
             // console.log(err);
             identifierObjStr = '';
         }
+        // Longtime fasting
+        try {
+            if (intervalEventObject.longTimeFastingStart === undefined) {
+                intervalEventObject.longTimeFastingStart = '';
+                is_longtime_fasting = false;
+                btn_start_stop_longFasting.innerHTML = 'Längeres Fasten starten';
+                //console.log('longTimeFastingStart is undefined', intervalEventObject.longTimeFastingStart);
+            }
+            if (intervalEventObject.longTimeFastingStart !== '') {
+                is_longtime_fasting = true;
+                btn_start_stop_longFasting.innerHTML = 'Stoppe Fasten';
+                // console.log('longTimeFastingStart is set', intervalEventObject.longTimeFastingStart);
+            }
+            else {
+                is_longtime_fasting = false;
+                btn_start_stop_longFasting.innerHTML = 'Längeres Fasten starten';
+                // console.log('longTimeFastingStart is empty', intervalEventObject.longTimeFastingStart);
+            }
+        }
+        catch (error) {
+            console.log('Longtime fasting error: ', error);
+        }
     }
     else {
         // console.warn('Keine Daten vorh');
@@ -575,3 +600,26 @@ function setIdentifier() {
     // console.log(`currentIdentifier: ${currentIdentifier} // LastIdentifier: ${lastIdentifier}`);
     return currentIdentifier;
 }
+//*ANCHOR - Event Listener um lanzeitfasten zu starten und zu stoppen
+btn_start_stop_longFasting === null || btn_start_stop_longFasting === void 0 ? void 0 : btn_start_stop_longFasting.addEventListener('click', function () {
+    if (is_longtime_fasting === false) {
+        // Start Longtime Fasting
+        var confirm_longtimeFasting = window.confirm('Soll ein längeres Fasten gestartet werden?');
+        if (confirm_longtimeFasting) {
+            is_longtime_fasting = true;
+            btn_start_stop_longFasting.innerHTML = 'Stoppe Fasten';
+            var longfasting_start_stamp = new Date();
+            intervalEventObject.longTimeFastingStart = String(longfasting_start_stamp);
+            save_into_LocalStorage();
+            console.log('intervalEventObject', intervalEventObject);
+        }
+    }
+    else {
+        // Stopp Longtime Fasting
+        var confirm_longtimeFasting_Stop = window.confirm('Soll das Fasten gestoppt werden?');
+        if (confirm_longtimeFasting_Stop) {
+            is_longtime_fasting = false;
+            btn_start_stop_longFasting.innerHTML = 'Längeres Fasten starten';
+        }
+    }
+});
