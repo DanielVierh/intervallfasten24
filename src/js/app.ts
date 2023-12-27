@@ -35,6 +35,8 @@ const themeStyle = document.getElementById('themeStyle') as HTMLInputElement;
 const btnWaterUnit02 = document.getElementById('btnWaterUnit02');
 const btnWaterUnit025 = document.getElementById('btnWaterUnit025');
 const btnWaterUnit033 = document.getElementById('btnWaterUnit033');
+const modal_longtimeFasting = document.getElementById('modal_longtimeFasting');
+const lbl_longtimeFastingTime = document.getElementById('lbl_longtimeFastingTime');
 const lblAddingWater = document.getElementById(
     'lblAddingWater',
 ) as HTMLInputElement;
@@ -205,6 +207,40 @@ function checkFastingStatus() {
         )}:${addZero(fastingStartMinute)}`;
         circleProgress(parseInt(diffToEatingInPercent));
     }
+
+    //* longtime fasting label update
+    try {
+        if(is_longtime_fasting) {
+            const nowStamp = new Date();
+            const startStampStr = intervalEventObject.longTimeFastingStart
+            const startStamp = new Date(startStampStr);
+            const longtimefastingdiff = minutesDiff(nowStamp, startStamp);
+            lbl_longtimeFastingTime!.innerHTML = longtimefastingdiff;
+            
+        }
+    } catch (error) {
+        
+    }
+}
+
+function minutesDiff(dateTimeValue2: Date, dateTimeValue1: Date) {
+    var differenceValue = (dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
+    differenceValue /= 60;
+    const rawMinuteTime = Math.abs(Math.round(differenceValue))
+    const hour = Math.floor(rawMinuteTime / 60);
+    const minutes = Math.floor(rawMinuteTime % 60);
+    const time = `${add_zero(hour)}:${add_zero(minutes)}`;
+    return time;
+}
+
+function add_zero(val: number) {
+    let returnVal: string = '';
+    if (val < 10) {
+        returnVal = `0${val}`;
+    }else {
+        returnVal = String(val)
+    }
+    return returnVal;
 }
 
 let radius = progressCircle.r.baseVal.value;
@@ -433,6 +469,7 @@ function load_from_LocalStorage() {
             }
             if(intervalEventObject.longTimeFastingStart !== '') {
                 is_longtime_fasting = true;
+                modal_longtimeFasting?.classList.add('active');
                 btn_start_stop_longFasting!.innerHTML = 'Stoppe Fasten';
                 // console.log('longTimeFastingStart is set', intervalEventObject.longTimeFastingStart);
             }else {
@@ -717,6 +754,7 @@ btn_start_stop_longFasting?.addEventListener('click', ()=> {
             intervalEventObject.longTimeFastingStart = String(longfasting_start_stamp);
             save_into_LocalStorage();
             console.log('intervalEventObject', intervalEventObject);
+            modal_longtimeFasting?.classList.add('active');
             
         }
     }else {
@@ -725,6 +763,7 @@ btn_start_stop_longFasting?.addEventListener('click', ()=> {
         if(confirm_longtimeFasting_Stop) {
             is_longtime_fasting = false;
             btn_start_stop_longFasting.innerHTML = 'Längeres Fasten starten';
+            modal_longtimeFasting?.classList.remove('active');
         }
 
     }

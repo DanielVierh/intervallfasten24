@@ -28,6 +28,8 @@ var themeStyle = document.getElementById('themeStyle');
 var btnWaterUnit02 = document.getElementById('btnWaterUnit02');
 var btnWaterUnit025 = document.getElementById('btnWaterUnit025');
 var btnWaterUnit033 = document.getElementById('btnWaterUnit033');
+var modal_longtimeFasting = document.getElementById('modal_longtimeFasting');
+var lbl_longtimeFastingTime = document.getElementById('lbl_longtimeFastingTime');
 var lblAddingWater = document.getElementById('lblAddingWater');
 var outputTodayWater = document.getElementById('outputTodayWater');
 var btnSaveWater = document.getElementById('btnSaveWater');
@@ -153,6 +155,37 @@ function checkFastingStatus() {
         outputTo.innerHTML = "".concat(addZero(fastingStartTimeMinusEatTime), ":").concat(addZero(fastingStartMinute));
         circleProgress(parseInt(diffToEatingInPercent));
     }
+    //* longtime fasting label update
+    try {
+        if (is_longtime_fasting) {
+            var nowStamp = new Date();
+            var startStampStr = intervalEventObject.longTimeFastingStart;
+            var startStamp = new Date(startStampStr);
+            var longtimefastingdiff = minutesDiff(nowStamp, startStamp);
+            lbl_longtimeFastingTime.innerHTML = longtimefastingdiff;
+        }
+    }
+    catch (error) {
+    }
+}
+function minutesDiff(dateTimeValue2, dateTimeValue1) {
+    var differenceValue = (dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
+    differenceValue /= 60;
+    var rawMinuteTime = Math.abs(Math.round(differenceValue));
+    var hour = Math.floor(rawMinuteTime / 60);
+    var minutes = Math.floor(rawMinuteTime % 60);
+    var time = "".concat(add_zero(hour), ":").concat(add_zero(minutes));
+    return time;
+}
+function add_zero(val) {
+    var returnVal = '';
+    if (val < 10) {
+        returnVal = "0".concat(val);
+    }
+    else {
+        returnVal = String(val);
+    }
+    return returnVal;
 }
 var radius = progressCircle.r.baseVal.value;
 var circumference = radius * 2 * Math.PI;
@@ -353,6 +386,7 @@ function load_from_LocalStorage() {
             }
             if (intervalEventObject.longTimeFastingStart !== '') {
                 is_longtime_fasting = true;
+                modal_longtimeFasting === null || modal_longtimeFasting === void 0 ? void 0 : modal_longtimeFasting.classList.add('active');
                 btn_start_stop_longFasting.innerHTML = 'Stoppe Fasten';
                 // console.log('longTimeFastingStart is set', intervalEventObject.longTimeFastingStart);
             }
@@ -612,6 +646,7 @@ btn_start_stop_longFasting === null || btn_start_stop_longFasting === void 0 ? v
             intervalEventObject.longTimeFastingStart = String(longfasting_start_stamp);
             save_into_LocalStorage();
             console.log('intervalEventObject', intervalEventObject);
+            modal_longtimeFasting === null || modal_longtimeFasting === void 0 ? void 0 : modal_longtimeFasting.classList.add('active');
         }
     }
     else {
@@ -620,6 +655,7 @@ btn_start_stop_longFasting === null || btn_start_stop_longFasting === void 0 ? v
         if (confirm_longtimeFasting_Stop) {
             is_longtime_fasting = false;
             btn_start_stop_longFasting.innerHTML = 'Längeres Fasten starten';
+            modal_longtimeFasting === null || modal_longtimeFasting === void 0 ? void 0 : modal_longtimeFasting.classList.remove('active');
         }
     }
 });

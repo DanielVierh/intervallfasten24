@@ -465,3 +465,36 @@ header{
         text-align: center;
     }
 }
+
+.sticky-label {
+    display: none;
+
+    &.active {
+        display: flex;
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translatex(-50%);
+        width: 90vw;
+        height: 80vh;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        backdrop-filter: blur(13px);
+        border-radius: 15px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 30px black;
+    }
+
+
+    h3 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    p {
+        font-size: 3rem;
+        text-shadow: 0 0 5px gray;
+        letter-spacing: 3px;
+    }
+}
