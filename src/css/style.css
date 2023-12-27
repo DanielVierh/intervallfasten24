@@ -436,4 +436,8 @@ header {
   box-shadow: inset 0 0 15px white;
   font-weight: bold;
   letter-spacing: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }/*# sourceMappingURL=style.css.map */
