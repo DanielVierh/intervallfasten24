@@ -172,9 +172,11 @@ function minutesDiff(dateTimeValue2, dateTimeValue1) {
     var differenceValue = (dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
     differenceValue /= 60;
     var rawMinuteTime = Math.abs(Math.round(differenceValue));
-    var hour = Math.floor(rawMinuteTime / 60);
-    var minutes = Math.floor(rawMinuteTime % 60);
-    var time = "".concat(add_zero(hour), ":").concat(add_zero(minutes));
+    var days = Math.floor(rawMinuteTime / (24 * 60));
+    var remainingMinutes = rawMinuteTime % (24 * 60);
+    var hours = Math.floor(remainingMinutes / 60);
+    var minutes = remainingMinutes % 60;
+    var time = "Tage: ".concat(add_zero(days), " \n Stunden: ").concat(add_zero(hours), " \n Minuten: ").concat(add_zero(minutes));
     return time;
 }
 function add_zero(val) {

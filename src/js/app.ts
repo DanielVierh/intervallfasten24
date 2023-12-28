@@ -226,10 +226,14 @@ function checkFastingStatus() {
 function minutesDiff(dateTimeValue2: Date, dateTimeValue1: Date) {
     var differenceValue = (dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
     differenceValue /= 60;
-    const rawMinuteTime = Math.abs(Math.round(differenceValue))
-    const hour = Math.floor(rawMinuteTime / 60);
-    const minutes = Math.floor(rawMinuteTime % 60);
-    const time = `${add_zero(hour)}:${add_zero(minutes)}`;
+
+    const rawMinuteTime = Math.abs(Math.round(differenceValue));
+    const days = Math.floor(rawMinuteTime / (24 * 60));
+    const remainingMinutes = rawMinuteTime % (24 * 60);
+    const hours = Math.floor(remainingMinutes / 60);
+    const minutes = remainingMinutes % 60;
+
+    const time = `Tage: ${add_zero(days)} \n Stunden: ${add_zero(hours)} \n Minuten: ${add_zero(minutes)}`;
     return time;
 }
 

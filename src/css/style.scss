@@ -478,7 +478,7 @@ header{
         transform: translatex(-50%);
         width: 98vw;
         height: 98vh;
-        background-color: rgba(0, 0, 0, 0.7);
+        background: linear-gradient(to top, rgba(8, 54, 76, 0.9), rgba(128, 128, 128, 0.9));
         color: white;
         backdrop-filter: blur(13px);
         border-radius: 15px;
@@ -493,10 +493,13 @@ header{
     h3 {
         font-size: 1.5rem;
         text-align: center;
+        color: rgb(0, 247, 255);
     }
     p {
         font-size: 3rem;
         text-shadow: 0 0 5px gray;
         letter-spacing: 3px;
+        text-align: right;
+        padding-right: 60px;
     }
 }
