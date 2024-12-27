@@ -13,18 +13,12 @@ const btn_DecreaseWater = document.getElementById('btn_DecreaseWater');
 const btn_IncreaseFasting = document.getElementById('btn_IncreaseFasting');
 const btn_IncreaseWater = document.getElementById('btn_IncreaseWater');
 const btn_start_stop_longFasting = document.getElementById('btn_start_stop_longFasting');
-const labelFastingTime = document.getElementById(
-    'lblfastingTime',
-) as HTMLInputElement;
+const labelFastingTime = document.getElementById('lblfastingTime') as HTMLInputElement;
 const fastingChangeButton = document.getElementById('fastingChangeButton');
 const btn_SaveSettings = document.getElementById('btnSaveSettings');
 const btnSetNextEvent = document.getElementById('btnSetNextEvent');
-const inpFastingStartTime = document.getElementById(
-    'inpFastingStartTime',
-) as HTMLInputElement;
-const outputWhatNow = document.getElementById(
-    'outputWhatNow',
-) as HTMLInputElement;
+const inpFastingStartTime = document.getElementById('inpFastingStartTime') as HTMLInputElement;
+const outputWhatNow = document.getElementById('outputWhatNow') as HTMLInputElement;
 const lblTimer = document.getElementById('lblTimer') as HTMLInputElement;
 const txtPercent = document.getElementById('txtPercent') as any;
 const circleTrack = document.getElementById('circleTrack');
@@ -45,6 +39,7 @@ const btnSaveWater = document.getElementById('btnSaveWater');
 const waterButton = document.getElementById('waterButton');
 const btnReset = document.getElementById('btnReset');
 const lblLastWater = document.getElementById('lblLastWater');
+const fastingSince = document.getElementById('fastingSince') as HTMLInputElement;
 
 let newFastingTime: number = 0;
 let newEatingTime: number = 0;
@@ -274,7 +269,7 @@ function currentTime() {
     return now;
 }
 
-// Sekündlicher Funktionsaufruf für Check Func
+//* Sekündlicher Funktionsaufruf für Check Func
 function checkIntervall() {
     setInterval(() => {
         checkFastingStatus();
@@ -288,7 +283,7 @@ function addZero(val: any) {
     return val;
 }
 
-// Diff Berechnung
+//* Diff Berechnung
 function diff(start: any, end: any) {
     start = start.split(':');
     end = end.split(':');
@@ -308,7 +303,7 @@ function diff(start: any, end: any) {
     );
 }
 
-// Einstellungen einblenden
+//* Einstellungen einblenden
 btn_ShowModalButton?.addEventListener('click', () => {
     overlay!.style.display = 'block';
     newFastingTime = intervalEventObject.fastingTime;
@@ -318,31 +313,31 @@ btn_ShowModalButton?.addEventListener('click', () => {
     displayFastingTime();
 });
 
-// Fasten Wert rauf und runter schalten
+//* Fasten Wert rauf und runter schalten
 btn_IncreaseFasting?.addEventListener('click', () => {
     changeFastingTime('incre');
 });
 
-// Fasten Wert rauf und runter schalten
+//* Fasten Wert rauf und runter schalten
 btn_DecreaseFasting?.addEventListener('click', () => {
     changeFastingTime('decr');
 });
 
-// Einstellungen ausblenden
+//* Einstellungen ausblenden
 btn_CloseModal?.addEventListener('click', () => {
     overlay!.style.display = 'none';
 });
 
-// Fastenzeit ändern
+//* Fastenzeit ändern
 function changeFastingTime(direction: string) {
-    // Fasten verlängern
+    //* Fasten verlängern
     if (direction === 'incre') {
         if (newFastingTime < 23) {
             newFastingTime++;
             newEatingTime = 24 - newFastingTime;
             displayFastingTime();
         }
-        // Fasten verkürzen
+        //* Fasten verkürzen
     } else {
         if (newFastingTime > 13) {
             newFastingTime--;
@@ -352,7 +347,7 @@ function changeFastingTime(direction: string) {
     }
 }
 
-// Einstellungen speichern
+//* Einstellungen speichern
 btn_SaveSettings?.addEventListener('click', () => {
     intervalEventObject.fastingTime = newFastingTime;
     intervalEventObject.eatTime = newEatingTime;
@@ -364,12 +359,12 @@ btn_SaveSettings?.addEventListener('click', () => {
     setTheme();
 });
 
-// Zeigt die Werte im veränderbaren Inputfeld an
+//* Zeigt die Werte im veränderbaren Inputfeld an
 function displayFastingTime() {
     labelFastingTime.value = `${newFastingTime}:${newEatingTime}`;
 }
 
-// Event setzen
+//* Event setzen
 btnSetNextEvent?.addEventListener('click', () => {
     let nextEvent = '';
     isFastingTime ? (nextEvent = 'Essen') : (nextEvent = 'Fasten');
@@ -381,7 +376,7 @@ btnSetNextEvent?.addEventListener('click', () => {
         const splittedNow = now.split(':');
         const minuteMinus1 = parseInt(splittedNow[1]) - 1;
         if (isFastingTime === true) {
-            // Berechne neue Fastenzeit now + Essenszeit
+            //* Berechne neue Fastenzeit now + Essenszeit
             let newFastingStartRaw =
                 parseInt(splittedNow[0]) + intervalEventObject.eatTime;
             if (newFastingStartRaw > 24)
@@ -391,7 +386,7 @@ btnSetNextEvent?.addEventListener('click', () => {
             )}`;
             intervalEventObject.fastingStartTime = newFastingStart;
         } else {
-            // Setze jetzige Zeit als Fastenzeit
+            //* Setze jetzige Zeit als Fastenzeit
             intervalEventObject.fastingStartTime = `${splittedNow[0]}:${addZero(
                 minuteMinus1,
             )}`;
@@ -401,7 +396,7 @@ btnSetNextEvent?.addEventListener('click', () => {
 });
 
 //################################################################################
-// Save LocalStorage
+//* Save LocalStorage
 //################################################################################
 const save_into_LocalStorage = () => {
     localStorage.setItem(
@@ -411,7 +406,7 @@ const save_into_LocalStorage = () => {
 };
 
 //################################################################################
-// Load from LocalStorage
+//* Load from LocalStorage
 //################################################################################
 function load_from_LocalStorage() {
     if (localStorage.getItem('stored_IntervallObj') !== null) {
@@ -424,7 +419,7 @@ function load_from_LocalStorage() {
                 2,
             )} L`;
         } catch (err) {
-            // console.log(err);
+            //* console.log(err);
             intervalEventObject.water = 0;
             waterButton!.innerText = `${intervalEventObject.water.toFixed(
                 2,
@@ -437,17 +432,17 @@ function load_from_LocalStorage() {
                 lastWater = intervalEventObject.lastWater;
             }
         } catch (err) {
-            // console.log(err);
+            //* console.log(err);
             lastWater = '-';
         }
-        // Identifier
+        //* Identifier
         try {
             finishedFasting = intervalEventObject.finishedFasting;
-            // console.log('finishedFasting', finishedFasting);
+            //* console.log('finishedFasting', finishedFasting);
         } catch (err) {
             console.log(err);
             finishedFasting = [0, 0, 0, 0, 0, 0, 0];
-            // console.log('finishedFasting', finishedFasting);
+            //* console.log('finishedFasting', finishedFasting);
         }
         try {
             lastIdentifier = intervalEventObject.lastIdentifier;
@@ -459,11 +454,11 @@ function load_from_LocalStorage() {
         try {
             identifierObjStr = intervalEventObject.identifierObjStr;
         } catch (err) {
-            // console.log(err);
+            //* console.log(err);
             identifierObjStr = '';
         }
 
-        // Longtime fasting
+        //* Longtime fasting
         try {
             if(intervalEventObject.longTimeFastingStart === undefined) {
                 intervalEventObject.longTimeFastingStart = '';
@@ -475,11 +470,16 @@ function load_from_LocalStorage() {
                 is_longtime_fasting = true;
                 modal_longtimeFasting?.classList.add('active');
                 btn_start_stop_longFasting!.innerHTML = 'Stoppe Fasten';
-                // console.log('longTimeFastingStart is set', intervalEventObject.longTimeFastingStart);
+
+                const date = new Date(intervalEventObject.longTimeFastingStart);
+                const formattedDate = date.toLocaleString('sv-SE', { timeZoneName: 'short' }).slice(0, 16);
+                fastingSince.value = formattedDate;
+
+                //* console.log('longTimeFastingStart is set', intervalEventObject.longTimeFastingStart);
             }else {
                 is_longtime_fasting = false;
                 btn_start_stop_longFasting!.innerHTML = 'Längeres Fasten starten';
-                // console.log('longTimeFastingStart is empty', intervalEventObject.longTimeFastingStart);
+                //* console.log('longTimeFastingStart is empty', intervalEventObject.longTimeFastingStart);
             }
 
         } catch (error) {
@@ -487,16 +487,16 @@ function load_from_LocalStorage() {
             
         }
     } else {
-        // console.warn('Keine Daten vorh');
+        //* console.warn('Keine Daten vorh');
     }
     // console.log(intervalEventObject);
 }
 
 //################################################################################
-// Heute getrunken
+//* Heute getrunken
 let waterUnit: number = 0.2;
 
-// Wasserfenster einblenden
+//* Wasserfenster einblenden
 btn_ShowModalButton2?.addEventListener('click', () => {
     overlay2!.style.display = 'block';
     outputTodayWater!.innerHTML = `${intervalEventObject.water.toFixed(2)} Liter`;
@@ -532,14 +532,14 @@ btnWaterUnit033?.addEventListener('click', () => {
     lblAddingWater.value = `${waterUnit} L`;
 });
 
-// Resetfunc um alle Active Klassen zu entfernen
+//* Resetfunc um alle Active Klassen zu entfernen
 function resetActiveWaterUnit() {
     btnWaterUnit02!.classList.remove('active');
     btnWaterUnit025!.classList.remove('active');
     btnWaterUnit033!.classList.remove('active');
 }
 
-// Modal 2 schließen
+//* Modal 2 schließen
 btn_CloseModal2?.addEventListener('click', () => {
     overlay2!.style.display = 'none';
 });
@@ -549,7 +549,7 @@ btn_IncreaseWater?.addEventListener('click', () => {
     lblAddingWater.value = `${newWaterAmount.toFixed(2)} L`;
 });
 
-// Wassermenge abziehen
+//* Wassermenge abziehen
 btn_DecreaseWater?.addEventListener('click', () => {
     if (newWaterAmount > waterUnit) {
         (newWaterAmount -= waterUnit).toFixed(2);
@@ -560,7 +560,7 @@ btn_DecreaseWater?.addEventListener('click', () => {
     }
 });
 
-// Speichere neue Wassermenge
+//* Speichere neue Wassermenge
 btnSaveWater?.addEventListener('click', () => {
     intervalEventObject.water += newWaterAmount;
     if (intervalEventObject.water < 0) {
@@ -581,7 +581,7 @@ btnSaveWater?.addEventListener('click', () => {
     }, 700);
 });
 
-// Reset Water
+//* Reset Water
 btnReset?.addEventListener('click', () => {
     if (intervalEventObject.water > 0) {
         const confirm = window.confirm(
@@ -607,7 +607,7 @@ lblAddingWater.addEventListener('click', () => {
 });
 
 //################################################################################
-// Chart
+//* Chart
 //################################################################################
 
 function renderDayChart() {
@@ -636,12 +636,12 @@ function renderDayChart() {
 
 
 //#######################################
-//  Ermittlung letzter Fastenzeiten
+// * Ermittlung letzter Fastenzeiten
 //#######################################
-// Diese Funktion wird alle 10 Sekunden ausgeführt und erstellt eine ID
+//* Diese Funktion wird alle 10 Sekunden ausgeführt und erstellt eine ID
 function initIdentifier() {
     checkInterv_5Sec = 0;
-    // Aktueller Identifier wird generiert
+    //* Aktueller Identifier wird generiert
     identifierObj = new FastingIdentifier(
         setIdentifier(),
         intervalEventObject.fastingTime,
@@ -654,7 +654,7 @@ function initIdentifier() {
     // Todo: ID muss besser sein
     //? Wenn Essen erlaubt ist, ID abgleichen
     if (isFastingTime === false) {
-        // Neue ID wird mit gespeicherten ID abgeglichen
+        //* Neue ID wird mit gespeicherten ID abgeglichen
         if (lastIdentifier !== identifierObj.id && lastIdentifier !== '') {
             //? Auslesen des zuletzt abgespeicherten Identifiers
             const identifierObjStrInArr = identifierObjStr.split('/');
@@ -749,24 +749,36 @@ function setIdentifier() {
 //*ANCHOR - Event Listener um lanzeitfasten zu starten und zu stoppen
 btn_start_stop_longFasting?.addEventListener('click', ()=> {
     if(is_longtime_fasting === false) {
-        // Start Longtime Fasting
+        //* Start Longtime Fasting
         const confirm_longtimeFasting = window.confirm('Soll ein längeres Fasten gestartet werden?')
+        let longfasting_start_stamp = new Date();
         if(confirm_longtimeFasting) {
+            if(fastingSince.value === '') {
+                const date = longfasting_start_stamp;
+                const formattedDate = date.toLocaleString('sv-SE', { timeZoneName: 'short' }).slice(0, 16);
+                fastingSince.value = formattedDate;
+            }else {
+                const date = new Date(fastingSince.value);
+                const formattedDate = date.toLocaleString('sv-SE', { timeZoneName: 'short' }).slice(0, 16);
+                fastingSince.value = formattedDate;
+                longfasting_start_stamp = new Date(fastingSince.value);
+            }
+            
             is_longtime_fasting = true;
             btn_start_stop_longFasting.innerHTML = 'Stoppe Fasten';
-            const longfasting_start_stamp = new Date();
             intervalEventObject.longTimeFastingStart = String(longfasting_start_stamp);
             save_into_LocalStorage();
             modal_longtimeFasting?.classList.add('active');
         }
     }else {
-        // Stopp Longtime Fasting
+        //* Stopp Longtime Fasting
         const confirm_longtimeFasting_Stop = window.confirm('Soll das Fasten gestoppt werden?')
         if(confirm_longtimeFasting_Stop) {
             is_longtime_fasting = false;
             btn_start_stop_longFasting.innerHTML = 'Längeres Fasten starten';
             modal_longtimeFasting?.classList.remove('active');
             intervalEventObject.longTimeFastingStart = '';
+            fastingSince.value = '';
             save_into_LocalStorage();
         }
 
